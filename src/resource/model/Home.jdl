@@ -1,0 +1,74 @@
+/**
+ * JHipster JDL model for Accounting
+ */
+ 
+
+entity Idea {
+    title String
+    description TextBlob
+    ideatype Ideatype
+    interest Float
+    active Boolean
+}
+
+entity Balancesheet {
+	name String
+}
+
+entity Income {
+	description String
+	value Float
+}
+
+entity Outgoings {
+	description String
+	value Float
+}
+
+entity Worksheet {
+	jobtitle String
+	jobdescription TextBlob
+	date LocalDate
+	costHour Float
+	hours Duration
+	total Float
+}
+
+
+enum Language {
+    ENGLISH, GERMAN
+}
+
+enum Ideatype {
+	PRODUCTION, SERVICE, PURCHASE
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+    Balancesheet{incomes} to Income
+    Balancesheet{outgoings} to Outgoings
+    Idea{worksheet} to Worksheet
+    Idea{parent} to Idea
+}
+ 
+
+// defining multiple oneToOne relationships
+relationship OneToOne {
+    Idea{balancesheet} to Balancesheet{idea}
+}
+
+relationship ManyToOne {
+	Idea{user} to User
+	Worksheet{user} to User
+}
+
+// Set pagination options
+paginate Idea with pagination
+paginate Income, Outgoings with pagination
+
+//dto * with mapstruct
+
+// Set service options to all 
+service all with serviceImpl 
+
+
