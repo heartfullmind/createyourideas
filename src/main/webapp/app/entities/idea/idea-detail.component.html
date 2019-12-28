@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="idea">
+            <h2><span jhiTranslate="homeApp.idea.detail.title">Idea</span> {{idea.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="homeApp.idea.title">Title</span></dt>
+                <dd>
+                    <span>{{idea.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.description">Description</span></dt>
+                <dd>
+                    <span>{{idea.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.ideatype">Ideatype</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'homeApp.Ideatype.' + idea.ideatype}}">{{idea.ideatype}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.interest">Interest</span></dt>
+                <dd>
+                    <span>{{idea.interest}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.parent">Parentidea</span></dt>
+                <dd>
+                    <div *ngIf="idea.idea">
+                        <a [routerLink]="['/idea', idea.idea?.id, 'view']">{{idea.idea?.title}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/idea', idea.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

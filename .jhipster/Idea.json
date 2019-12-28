@@ -1,0 +1,78 @@
+{
+    "name": "Idea",
+    "fields": [
+        {
+            "fieldName": "title",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "ideatype",
+            "fieldType": "Ideatype",
+            "fieldValues": "PRODUCTION,SERVICE,PURCHASE"
+        },
+        {
+            "fieldName": "interest",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "income",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "incomes"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "outgoings",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "outgoings"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "worksheet",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "worksheet"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "parent"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "parent",
+            "relationshipName": "idea",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191216151543",
+    "javadoc": "JHipster JDL model for Accounting",
+    "entityTableName": "idea",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

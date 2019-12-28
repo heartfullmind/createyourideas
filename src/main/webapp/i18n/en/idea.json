@@ -1,0 +1,32 @@
+{
+  "homeApp": {
+    "idea": {
+      "home": {
+        "title": "Ideas",
+        "createLabel": "Create a new Idea",
+        "createOrEditLabel": "Create or edit a Idea",
+        "notFound": "No Ideas found"
+      },
+      "created": "A new Idea is created with identifier {{ param }}",
+      "updated": "A Idea is updated with identifier {{ param }}",
+      "deleted": "A Idea is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Idea {{ id }}?"
+      },
+      "detail": {
+        "title": "Idea"
+      },
+      "title": "Title",
+      "description": "Description",
+      "ideatype": "Ideatype",
+      "interest": "Interest",
+      "active": "Active",
+      "incomes": "Incomes",
+      "outgoings": "Outgoings",
+      "worksheet": "Worksheet",
+      "parent": "Parent",
+      "user": "User",
+      "idea": "Idea"
+    }
+  }
+}

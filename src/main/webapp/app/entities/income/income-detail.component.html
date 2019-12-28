@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="income">
+            <h2><span jhiTranslate="homeApp.income.detail.title">Income</span> {{income.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="homeApp.income.description">Description</span></dt>
+                <dd>
+                    <span>{{income.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.income.date">Date</span></dt>
+                <dd>
+                    <span>{{income.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.income.value">Value</span></dt>
+                <dd>
+                    <span>{{income.value}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.income.idea">Idea</span></dt>
+                <dd>
+                    <div *ngIf="income.idea">
+                        <a [routerLink]="['/idea', income.idea?.id, 'view']">{{income.idea?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/income', income.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

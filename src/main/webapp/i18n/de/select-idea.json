@@ -1,0 +1,10 @@
+{
+  "homeapp": {
+    "selectIdea": {
+      "main": {
+        "selectedIdea": "Ausgewählte Idee: ",
+        "selectIdea": "Wähle Idee"
+      }
+    }
+  }  
+}

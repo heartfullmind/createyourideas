@@ -1,0 +1,56 @@
+{
+    "name": "Worksheet",
+    "fields": [
+        {
+            "fieldName": "jobtitle",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jobdescription",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "costHour",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "hours",
+            "fieldType": "Duration"
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "worksheet",
+            "relationshipName": "user",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "worksheet",
+            "relationshipName": "idea",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191216151547",
+    "entityTableName": "worksheet",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

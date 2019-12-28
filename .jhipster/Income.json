@@ -1,0 +1,36 @@
+{
+    "name": "Income",
+    "fields": [
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "incomes",
+            "relationshipName": "idea",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20191216151545",
+    "entityTableName": "income",
+    "dto": "no",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

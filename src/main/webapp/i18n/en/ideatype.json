@@ -1,0 +1,10 @@
+{
+  "homeApp": {
+    "Ideatype": {
+      "null": "",
+      "PRODUCTION": "PRODUCTION",
+      "SERVICE": "SERVICE",
+      "PURCHASE": "PURCHASE"
+    }
+  }
+}

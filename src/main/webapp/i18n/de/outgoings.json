@@ -1,0 +1,25 @@
+{
+  "homeApp": {
+    "outgoings": {
+      "home": {
+        "title": "Outgoings",
+        "createLabel": "Outgoings erstellen",
+        "createOrEditLabel": "Outgoings erstellen oder bearbeiten",
+        "notFound": "No Outgoings found"
+      },
+      "created": "Outgoings erstellt mit ID {{ param }}",
+      "updated": "Outgoings aktualisiert mit ID {{ param }}",
+      "deleted": "Outgoings gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Outgoings {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Outgoings"
+      },
+      "description": "Description",
+      "date": "Date",
+      "value": "Value",
+      "idea": "Idea"
+    }
+  }
+}

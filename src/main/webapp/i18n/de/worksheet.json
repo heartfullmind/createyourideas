@@ -1,0 +1,29 @@
+{
+  "homeApp": {
+    "worksheet": {
+      "home": {
+        "title": "Worksheets",
+        "createLabel": "Worksheet erstellen",
+        "createOrEditLabel": "Worksheet erstellen oder bearbeiten",
+        "notFound": "No Worksheets found"
+      },
+      "created": "Worksheet erstellt mit ID {{ param }}",
+      "updated": "Worksheet aktualisiert mit ID {{ param }}",
+      "deleted": "Worksheet gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Worksheet {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Worksheet"
+      },
+      "jobtitle": "Jobtitle",
+      "jobdescription": "Jobdescription",
+      "date": "Date",
+      "costHour": "Cost Hour",
+      "hours": "Hours",
+      "total": "Total",
+      "user": "User",
+      "idea": "Idea"
+    }
+  }
+}

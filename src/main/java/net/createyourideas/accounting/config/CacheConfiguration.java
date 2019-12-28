@@ -45,6 +45,14 @@ public class CacheConfiguration {
             createCache(cm, net.createyourideas.accounting.domain.User.class.getName());
             createCache(cm, net.createyourideas.accounting.domain.Authority.class.getName());
             createCache(cm, net.createyourideas.accounting.domain.User.class.getName() + ".authorities");
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".worksheets");
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".parents");
+            createCache(cm, net.createyourideas.accounting.domain.Income.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.Outgoings.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.Worksheet.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".incomes");
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".outgoings");
             // jhipster-needle-ehcache-add-entry
         };
     }

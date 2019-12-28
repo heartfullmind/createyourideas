@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="outgoings">
+            <h2><span jhiTranslate="homeApp.outgoings.detail.title">Outgoings</span> {{outgoings.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="homeApp.outgoings.description">Description</span></dt>
+                <dd>
+                    <span>{{outgoings.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.outgoings.date">Date</span></dt>
+                <dd>
+                    <span>{{outgoings.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.outgoings.value">Value</span></dt>
+                <dd>
+                    <span>{{outgoings.value}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.outgoings.idea">Idea</span></dt>
+                <dd>
+                    <div *ngIf="outgoings.idea">
+                        <a [routerLink]="['/idea', outgoings.idea?.id, 'view']">{{outgoings.idea?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/outgoings', outgoings.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

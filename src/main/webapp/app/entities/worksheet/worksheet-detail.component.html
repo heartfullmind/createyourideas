@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="worksheet">
+            <h2><span jhiTranslate="homeApp.worksheet.detail.title">Worksheet</span> {{worksheet.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="homeApp.worksheet.jobtitle">Jobtitle</span></dt>
+                <dd>
+                    <span>{{worksheet.jobtitle}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.jobdescription">Jobdescription</span></dt>
+                <dd>
+                    <span>{{worksheet.jobdescription}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.date">Date</span></dt>
+                <dd>
+                    <span>{{worksheet.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.costHour">Cost Hour</span></dt>
+                <dd>
+                    <span>{{worksheet.costHour}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.hours">Hours</span></dt>
+                <dd>
+                    <span>{{worksheet.hours}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.total">Total</span></dt>
+                <dd>
+                    <span>{{worksheet.total}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.user">User</span></dt>
+                <dd>
+                    {{worksheet.user?.id}}
+                </dd>
+                <dt><span jhiTranslate="homeApp.worksheet.idea">Idea</span></dt>
+                <dd>
+                    <div *ngIf="worksheet.idea">
+                        <a [routerLink]="['/idea', worksheet.idea?.id, 'view']">{{worksheet.idea?.id}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/worksheet', worksheet.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

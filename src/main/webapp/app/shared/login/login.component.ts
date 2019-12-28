@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from 'app/core/login/login.service';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-login-modal',
@@ -13,6 +14,8 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 })
 export class JhiLoginModalComponent implements AfterViewInit {
   authenticationError: boolean;
+
+  
 
   loginForm = this.fb.group({
     username: [''],
@@ -28,7 +31,8 @@ export class JhiLoginModalComponent implements AfterViewInit {
     private renderer: Renderer,
     private router: Router,
     public activeModal: NgbActiveModal,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private accountService: AccountService
   ) {}
 
   ngAfterViewInit() {
@@ -67,7 +71,6 @@ export class JhiLoginModalComponent implements AfterViewInit {
             name: 'authenticationSuccess',
             content: 'Sending Authentication Success'
           });
-
           // previousState was set in the authExpiredInterceptor before being redirected to login modal.
           // since login is successful, go to stored previousState and clear previousState
           const redirect = this.stateStorageService.getUrl();
@@ -75,9 +78,11 @@ export class JhiLoginModalComponent implements AfterViewInit {
             this.stateStorageService.storeUrl(null);
             this.router.navigateByUrl(redirect);
           }
+          window.location.reload();
         },
-        () => (this.authenticationError = true)
-      );
+        () => { (this.authenticationError = true) }, 
+        );
+        
   }
 
   register() {

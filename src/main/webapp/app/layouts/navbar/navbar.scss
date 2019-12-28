@@ -17,12 +17,15 @@ Navbar
 }
 
 .navbar {
+  -webkit-box-shadow: -1px 7px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: -1px 7px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: -1px 7px 5px 0px rgba(0,0,0,0.75);
   padding: 0.2rem 1rem;
   .dropdown-item.active,
   .dropdown-item.active:focus,
   .dropdown-item.active:hover {
     background-color: $dark;
-  }
+}
 
   ul.navbar-nav {
     .nav-item {
@@ -32,6 +35,7 @@ Navbar
 
   a.nav-link {
     font-weight: 400;
+    color: white;
   }
 
   .navbar-toggler {

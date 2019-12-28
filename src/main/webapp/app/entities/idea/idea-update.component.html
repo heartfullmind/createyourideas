@@ -1,0 +1,48 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-idea-heading" jhiTranslate="homeApp.idea.home.createOrEditLabel">Create or edit a Idea</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.title" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                           formControlName="title"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.description" for="field_description">Description</label>
+                    <textarea class="form-control" name="description" id="field_description"
+                              formControlName="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.ideatype" for="field_ideatype">Ideatype</label>
+                    <select class="form-control" name="ideatype" formControlName="ideatype" id="field_ideatype">
+                        <option value="PRODUCTION">{{'homeApp.Ideatype.PRODUCTION' | translate}}</option>
+                        <option value="SERVICE">{{'homeApp.Ideatype.SERVICE' | translate}}</option>
+                        <option value="PURCHASE">{{'homeApp.Ideatype.PURCHASE' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.interest" for="field_interest">Interest</label>
+                    <input type="number" class="form-control" name="interest" id="field_interest"
+                           formControlName="interest"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.idea" for="field_idea">Idea</label>
+                    <select class="form-control" id="field_idea" name="idea" formControlName="idea">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.title}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

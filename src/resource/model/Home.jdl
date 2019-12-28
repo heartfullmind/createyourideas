@@ -11,17 +11,15 @@ entity Idea {
     active Boolean
 }
 
-entity Balancesheet {
-	name String
-}
-
 entity Income {
 	description String
+	date LocalDate
 	value Float
 }
 
 entity Outgoings {
 	description String
+	date LocalDate
 	value Float
 }
 
@@ -45,16 +43,10 @@ enum Ideatype {
 
 // defining multiple OneToMany relationships with comments
 relationship OneToMany {
-    Balancesheet{incomes} to Income
-    Balancesheet{outgoings} to Outgoings
+    Idea{incomes} to Income
+    Idea{outgoings} to Outgoings
     Idea{worksheet} to Worksheet
     Idea{parent} to Idea
-}
- 
-
-// defining multiple oneToOne relationships
-relationship OneToOne {
-    Idea{balancesheet} to Balancesheet{idea}
 }
 
 relationship ManyToOne {
@@ -70,5 +62,6 @@ paginate Income, Outgoings with pagination
 
 // Set service options to all 
 service all with serviceImpl 
+
 
 

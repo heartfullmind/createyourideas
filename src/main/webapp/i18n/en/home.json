@@ -1,19 +1,21 @@
 {
   "home": {
-    "title": "Welcome, Java Hipster!",
-    "subtitle": "This is your homepage",
+    "title": "Welcome, Ideas Hipster!",
+    "subtitle": "Welcome in the world of ideas",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
     "question": "If you have any question on JHipster:",
     "link": {
-      "homepage": "JHipster homepage",
+      "homepage": "Heartfull-Mind homepage",
       "stackoverflow": "JHipster on Stack Overflow",
       "bugtracker": "JHipster bug tracker",
       "chat": "JHipster public chat room",
       "follow": "follow @jhipster on Twitter"
     },
-    "like": "If you like JHipster, don't forget to give us a star on",
-    "github": "GitHub"
+    "like": "If you like Create Your Ideas, don't forget to give us a star on",
+    "github": "GitHub",
+    "description": "Welcome on the official page of \"Create Your Ideas\". Create your ideas is a plattform where users could share theyr ideas and where they have the possibilities to find an invester which support this idea. The whole project is created like a big virtual online business game. And its free for all.",
+    "unit": "\"Create Your Ideas\" is a unit of the \"Heartfull-Mind\" online company"    
   }
 }

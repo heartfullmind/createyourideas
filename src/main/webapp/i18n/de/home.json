@@ -7,13 +7,15 @@
     },
     "question": "Wenn Sie Fragen zu JHipster haben:",
     "link": {
-      "homepage": "JHipster Hauptseite",
+      "homepage": "Heartfull-Mind Hauptseite",
       "stackoverflow": "JHipster auf Stack Overflow",
       "bugtracker": "JHipster Fehlereinträge",
       "chat": "JHipster Chat",
       "follow": "kontaktieren Sie uns mit @jhipster auf Twitter"
     },
-    "like": "Wenn Sie JHipster mögen, vergessen Sie nicht uns einen Stern zu geben auf",
-    "github": "GitHub"
+    "like": "Wenn Sie Create Your Ideas mögen, vergessen Sie nicht uns einen Stern zu geben auf",
+    "github": "GitHub",
+    "description": "Willkommen auf den offizielen Seiten von \"Create Your Ideas\". Dies ist eine Plattform wo unsere Familienmitglieder Ihre Ideen auf der ganzen Welt bekannt machen können und so vielleicht auch einige Investoren anlocken können. Das Projekt ist wie ein grosses virtuelles Online-Business-Spiel gestaltet. Und es ist frei zugänglich für alle, die gerne selber auch mal einen kleinen Daniel Düsentrieb werden möchten.",
+    "unit": "\"Create Your Ideas\" ist eine Einheit von der \"Heartfull-Mind\" online company."   
   }
 }

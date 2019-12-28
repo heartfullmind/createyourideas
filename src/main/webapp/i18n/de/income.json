@@ -1,0 +1,25 @@
+{
+  "homeApp": {
+    "income": {
+      "home": {
+        "title": "Incomes",
+        "createLabel": "Income erstellen",
+        "createOrEditLabel": "Income erstellen oder bearbeiten",
+        "notFound": "No Incomes found"
+      },
+      "created": "Income erstellt mit ID {{ param }}",
+      "updated": "Income aktualisiert mit ID {{ param }}",
+      "deleted": "Income gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Income {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Income"
+      },
+      "description": "Description",
+      "date": "Date",
+      "value": "Value",
+      "idea": "Idea"
+    }
+  }
+}
