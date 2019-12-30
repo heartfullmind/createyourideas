@@ -176,6 +176,96 @@ public class WorksheetResourceIT {
 
     @Test
     @Transactional
+    public void checkJobtitleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = worksheetRepository.findAll().size();
+        // set the field null
+        worksheet.setJobtitle(null);
+
+        // Create the Worksheet, which fails.
+
+        restWorksheetMockMvc.perform(post("/api/worksheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(worksheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Worksheet> worksheetList = worksheetRepository.findAll();
+        assertThat(worksheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = worksheetRepository.findAll().size();
+        // set the field null
+        worksheet.setDate(null);
+
+        // Create the Worksheet, which fails.
+
+        restWorksheetMockMvc.perform(post("/api/worksheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(worksheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Worksheet> worksheetList = worksheetRepository.findAll();
+        assertThat(worksheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCostHourIsRequired() throws Exception {
+        int databaseSizeBeforeTest = worksheetRepository.findAll().size();
+        // set the field null
+        worksheet.setCostHour(null);
+
+        // Create the Worksheet, which fails.
+
+        restWorksheetMockMvc.perform(post("/api/worksheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(worksheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Worksheet> worksheetList = worksheetRepository.findAll();
+        assertThat(worksheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkHoursIsRequired() throws Exception {
+        int databaseSizeBeforeTest = worksheetRepository.findAll().size();
+        // set the field null
+        worksheet.setHours(null);
+
+        // Create the Worksheet, which fails.
+
+        restWorksheetMockMvc.perform(post("/api/worksheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(worksheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Worksheet> worksheetList = worksheetRepository.findAll();
+        assertThat(worksheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkTotalIsRequired() throws Exception {
+        int databaseSizeBeforeTest = worksheetRepository.findAll().size();
+        // set the field null
+        worksheet.setTotal(null);
+
+        // Create the Worksheet, which fails.
+
+        restWorksheetMockMvc.perform(post("/api/worksheets")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(worksheet)))
+            .andExpect(status().isBadRequest());
+
+        List<Worksheet> worksheetList = worksheetRepository.findAll();
+        assertThat(worksheetList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllWorksheets() throws Exception {
         // Initialize the database
         worksheetRepository.saveAndFlush(worksheet);

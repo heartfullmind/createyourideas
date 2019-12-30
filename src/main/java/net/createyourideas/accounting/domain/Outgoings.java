@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,13 +23,16 @@ public class Outgoings implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "description")
+    @NotNull
+    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "date")
+    @NotNull
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "value")
+    @NotNull
+    @Column(name = "value", nullable = false)
     private Float value;
 
     @ManyToOne

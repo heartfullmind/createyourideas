@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -46,7 +47,7 @@ public class WorksheetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/worksheets")
-    public ResponseEntity<Worksheet> createWorksheet(@RequestBody Worksheet worksheet) throws URISyntaxException {
+    public ResponseEntity<Worksheet> createWorksheet(@Valid @RequestBody Worksheet worksheet) throws URISyntaxException {
         log.debug("REST request to save Worksheet : {}", worksheet);
         if (worksheet.getId() != null) {
             throw new BadRequestAlertException("A new worksheet cannot already have an ID", ENTITY_NAME, "idexists");
@@ -67,7 +68,7 @@ public class WorksheetResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/worksheets")
-    public ResponseEntity<Worksheet> updateWorksheet(@RequestBody Worksheet worksheet) throws URISyntaxException {
+    public ResponseEntity<Worksheet> updateWorksheet(@Valid @RequestBody Worksheet worksheet) throws URISyntaxException {
         log.debug("REST request to update Worksheet : {}", worksheet);
         if (worksheet.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

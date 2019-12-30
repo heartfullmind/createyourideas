@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(IdeaService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Idea(0, 'AAAAAAA', 'AAAAAAA', Ideatype.PRODUCTION, 0, false);
+      elemDefault = new Idea(0, 'AAAAAAA', 'image/png', 'AAAAAAA', 'AAAAAAA', Ideatype.PRODUCTION, 0, false);
     });
 
     describe('Service methods', () => {
@@ -58,6 +58,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             title: 'BBBBBB',
+            logo: 'BBBBBB',
             description: 'BBBBBB',
             ideatype: 'BBBBBB',
             interest: 1,
@@ -80,6 +81,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             title: 'BBBBBB',
+            logo: 'BBBBBB',
             description: 'BBBBBB',
             ideatype: 'BBBBBB',
             interest: 1,

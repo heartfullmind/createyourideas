@@ -4,32 +4,34 @@
  
 
 entity Idea {
-    title String
-    description TextBlob
-    ideatype Ideatype
-    interest Float
+    title String required
+    logo ImageBlob required
+	description TextBlob required
+    ideatype Ideatype required
+    interest Float required
     active Boolean
+	
 }
 
 entity Income {
-	description String
-	date LocalDate
-	value Float
+	description String required
+	date LocalDate required
+	value Float required
 }
 
 entity Outgoings {
-	description String
-	date LocalDate
-	value Float
+	description String required
+	date LocalDate required
+	value Float required
 }
 
 entity Worksheet {
-	jobtitle String
-	jobdescription TextBlob
-	date LocalDate
-	costHour Float
-	hours Duration
-	total Float
+	jobtitle String required
+	jobdescription TextBlob required
+	date LocalDate required
+	costHour Float required
+	hours Duration required
+	total Float required
 }
 
 

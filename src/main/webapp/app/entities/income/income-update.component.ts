@@ -5,6 +5,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 import { IIncome, Income } from 'app/shared/model/income.model';
 import { IncomeService } from './income.service';
@@ -22,9 +23,11 @@ export class IncomeUpdateComponent implements OnInit {
   dateDp: any;
 
   editForm = this.fb.group({
-    description: [],
-    date: [],
-    value: []
+    id: [],
+    description: [null, [Validators.required]],
+    date: [null, [Validators.required]],
+    value: [null, [Validators.required]],
+    idea: []
   });
 
   constructor(
@@ -47,9 +50,11 @@ export class IncomeUpdateComponent implements OnInit {
 
   updateForm(income: IIncome) {
     this.editForm.patchValue({
+      id: income.id,
       description: income.description,
       date: income.date,
       value: income.value,
+      idea: income.idea
     });
   }
 
@@ -70,9 +75,11 @@ export class IncomeUpdateComponent implements OnInit {
   private createFromForm(): IIncome {
     return {
       ...new Income(),
+      id: this.editForm.get(['id']).value,
       description: this.editForm.get(['description']).value,
       date: this.editForm.get(['date']).value,
-      value: this.editForm.get(['value']).value
+      value: this.editForm.get(['value']).value,
+      idea: this.editForm.get(['idea']).value
     };
   }
 

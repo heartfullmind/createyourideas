@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -27,18 +28,30 @@ public class Idea implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
+    @NotNull
+    @Column(name = "title", nullable = false)
     private String title;
 
+    
     @Lob
-    @Column(name = "description")
+    @Column(name = "logo", nullable = false)
+    private byte[] logo;
+
+    @Column(name = "logo_content_type", nullable = false)
+    private String logoContentType;
+
+    
+    @Lob
+    @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "ideatype")
+    @Column(name = "ideatype", nullable = false)
     private Ideatype ideatype;
 
-    @Column(name = "interest")
+    @NotNull
+    @Column(name = "interest", nullable = false)
     private Float interest;
 
     @Column(name = "active")
@@ -88,6 +101,32 @@ public class Idea implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public Idea logo(byte[] logo) {
+        this.logo = logo;
+        return this;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
+    }
+
+    public String getLogoContentType() {
+        return logoContentType;
+    }
+
+    public Idea logoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
+        return this;
+    }
+
+    public void setLogoContentType(String logoContentType) {
+        this.logoContentType = logoContentType;
     }
 
     public String getDescription() {
@@ -290,6 +329,8 @@ public class Idea implements Serializable {
         return "Idea{" +
             "id=" + getId() +
             ", title='" + getTitle() + "'" +
+            ", logo='" + getLogo() + "'" +
+            ", logoContentType='" + getLogoContentType() + "'" +
             ", description='" + getDescription() + "'" +
             ", ideatype='" + getIdeatype() + "'" +
             ", interest=" + getInterest() +

@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -51,7 +53,7 @@ public class IncomeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/incomes")
-    public ResponseEntity<Income> createIncome(@RequestBody Income income) throws URISyntaxException {
+    public ResponseEntity<Income> createIncome(@Valid @RequestBody Income income) throws URISyntaxException {
         log.debug("REST request to save Income : {}", income);
         if (income.getId() != null) {
             throw new BadRequestAlertException("A new income cannot already have an ID", ENTITY_NAME, "idexists");
@@ -72,7 +74,7 @@ public class IncomeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/incomes")
-    public ResponseEntity<Income> updateIncome(@RequestBody Income income) throws URISyntaxException {
+    public ResponseEntity<Income> updateIncome(@Valid @RequestBody Income income) throws URISyntaxException {
         log.debug("REST request to update Income : {}", income);
         if (income.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
@@ -95,14 +97,6 @@ public class IncomeResource {
     public ResponseEntity<List<Income>> getAllIncomes(Pageable pageable) {
         log.debug("REST request to get a page of Incomes");
         Page<Income> page = incomeService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    @GetMapping("/incomes/{id}/idea")
-    public ResponseEntity<List<Income>> getAllIncomesByIdea(@PathVariable Long id, Pageable pageable) {
-        log.debug("REST request to get a page of Incomes");
-        Page<Income> page = incomeService.findAllByIdeaId(id, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

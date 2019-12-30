@@ -8,6 +8,8 @@ import { Ideatype } from 'app/shared/model/enumerations/ideatype.model';
 export interface IIdea {
   id?: number;
   title?: string;
+  logoContentType?: string;
+  logo?: any;
   description?: any;
   ideatype?: Ideatype;
   interest?: number;
@@ -24,6 +26,8 @@ export class Idea implements IIdea {
   constructor(
     public id?: number,
     public title?: string,
+    public logoContentType?: string,
+    public logo?: any,
     public description?: any,
     public ideatype?: Ideatype,
     public interest?: number,

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -52,7 +53,7 @@ public class OutgoingsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/outgoings")
-    public ResponseEntity<Outgoings> createOutgoings(@RequestBody Outgoings outgoings) throws URISyntaxException {
+    public ResponseEntity<Outgoings> createOutgoings(@Valid @RequestBody Outgoings outgoings) throws URISyntaxException {
         log.debug("REST request to save Outgoings : {}", outgoings);
         if (outgoings.getId() != null) {
             throw new BadRequestAlertException("A new outgoings cannot already have an ID", ENTITY_NAME, "idexists");
@@ -73,7 +74,7 @@ public class OutgoingsResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/outgoings")
-    public ResponseEntity<Outgoings> updateOutgoings(@RequestBody Outgoings outgoings) throws URISyntaxException {
+    public ResponseEntity<Outgoings> updateOutgoings(@Valid @RequestBody Outgoings outgoings) throws URISyntaxException {
         log.debug("REST request to update Outgoings : {}", outgoings);
         if (outgoings.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

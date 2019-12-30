@@ -1,11 +1,11 @@
-id;title;description;ideatype;interest;active
-1;mobile Fish;../fake-data/blob/hipster.txt;PRODUCTION;45924;true
-2;Savings Account alarm;../fake-data/blob/hipster.txt;PURCHASE;21233;false
-3;Officer;../fake-data/blob/hipster.txt;SERVICE;2306;false
-4;Investment Account Steel;../fake-data/blob/hipster.txt;PRODUCTION;45606;false
-5;Savings Account syndicate Planner;../fake-data/blob/hipster.txt;PRODUCTION;1326;true
-6;Planner cross-platform access;../fake-data/blob/hipster.txt;PRODUCTION;44015;true
-7;Investment Account;../fake-data/blob/hipster.txt;SERVICE;75536;false
-8;Costa Rica Mayotte;../fake-data/blob/hipster.txt;PURCHASE;77513;false
-9;e-enable Communications capacitor;../fake-data/blob/hipster.txt;PRODUCTION;52083;false
-10;software scale interactive;../fake-data/blob/hipster.txt;PRODUCTION;14092;false
+id;title;logo;logo_content_type;description;ideatype;interest;active
+1;mobile Fish;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;45924;true
+2;Savings Account alarm;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PURCHASE;21233;false
+3;Officer;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;SERVICE;2306;false
+4;Investment Account Steel;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;45606;false
+5;Savings Account syndicate Planner;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;1326;true
+6;Planner cross-platform access;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;44015;true
+7;Investment Account;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;SERVICE;75536;false
+8;Costa Rica Mayotte;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PURCHASE;77513;false
+9;e-enable Communications capacitor;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;52083;false
+10;software scale interactive;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;14092;false

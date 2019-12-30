@@ -17,22 +17,22 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="jobtitle" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="jobdescription" type="${clobType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="date" type="date">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="cost_hour" type="${floatType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="hours" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="total" type="${floatType}">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />

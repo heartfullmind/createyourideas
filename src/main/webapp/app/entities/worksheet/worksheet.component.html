@@ -18,23 +18,30 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.jobtitle">Jobtitle</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.jobdescription">Jobdescription</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.date">Date</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.costHour">Cost Hour</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.hours">Hours</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.total">Total</span></th>
+            <th scope="col" ><span jhiTranslate="homeApp.worksheet.user">User</span></th>
+            <th scope="col" ><span jhiTranslate="homeApp.worksheet.idea">Idea</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let worksheet of worksheets ;trackBy: trackId">
+                <td><a [routerLink]="['/worksheet', worksheet.id, 'view' ]">{{worksheet.id}}</a></td>
                 <td>{{worksheet.jobtitle}}</td>
                 <td>{{worksheet.jobdescription}}</td>
                 <td>{{worksheet.date | date:'mediumDate'}}</td>
                 <td>{{worksheet.costHour}}</td>
                 <td>{{worksheet.hours}}</td>
                 <td>{{worksheet.total}}</td>
+                <td>
+                    {{worksheet.user?.id}}
+                </td>
                 <td>
                     <div *ngIf="worksheet.idea">
                         <a [routerLink]="['/idea', worksheet.idea?.id, 'view' ]" >{{worksheet.idea?.id}}</a>

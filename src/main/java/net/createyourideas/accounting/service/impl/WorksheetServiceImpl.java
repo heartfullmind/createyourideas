@@ -1,7 +1,6 @@
 package net.createyourideas.accounting.service.impl;
 
 import net.createyourideas.accounting.service.WorksheetService;
-import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.domain.Worksheet;
 import net.createyourideas.accounting.repository.WorksheetRepository;
 import org.slf4j.Logger;
@@ -76,10 +75,4 @@ public class WorksheetServiceImpl implements WorksheetService {
         log.debug("Request to delete Worksheet : {}", id);
         worksheetRepository.deleteById(id);
     }
-
-	@Override
-	public List<Worksheet> findByUserIsCurrentUser() {
-		// TODO Auto-generated method stub
-		return worksheetRepository.findByUserIsCurrentUser();
-	}
 }

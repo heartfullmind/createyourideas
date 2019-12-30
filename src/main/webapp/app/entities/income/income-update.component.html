@@ -4,10 +4,21 @@
             <h2 id="jhi-income-heading" jhiTranslate="homeApp.income.home.createOrEditLabel">Create or edit a Income</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.income.description" for="field_description">Description</label>
                     <input type="text" class="form-control" name="description" id="field_description"
                            formControlName="description"/>
+                    <div *ngIf="editForm.get('description').invalid && (editForm.get('description').dirty || editForm.get('description').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.income.date" for="field_date">Date</label>
@@ -17,12 +28,37 @@
                             <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
                         </span>
                     </div>
+                    <div *ngIf="editForm.get('date').invalid && (editForm.get('date').dirty || editForm.get('date').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('date').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.income.value" for="field_value">Value</label>
                     <input type="number" class="form-control" name="value" id="field_value"
                            formControlName="value"/>
+                    <div *ngIf="editForm.get('value').invalid && (editForm.get('value').dirty || editForm.get('value').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('value').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('value')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.income.idea" for="field_idea">Idea</label>
+                    <select class="form-control" id="field_idea" name="idea" formControlName="idea">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.id}}</option>
+                    </select>
+                </div>
+            </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>

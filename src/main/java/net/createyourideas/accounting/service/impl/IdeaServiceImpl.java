@@ -80,13 +80,6 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public Page<Idea> findByUserIsCurrentUser(Pageable pageable) {
-        log.debug("Find by current user");
         return ideaRepository.findByUserIsCurrentUser(pageable);
-    }
-
-    @Override
-    public List<Idea> findAll() {
-        log.debug("Find all as list");
-        return ideaRepository.findAll();
     }
 }

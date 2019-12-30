@@ -3,28 +3,46 @@
     "fields": [
         {
             "fieldName": "jobtitle",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "jobdescription",
             "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text"
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "date",
-            "fieldType": "LocalDate"
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "costHour",
-            "fieldType": "Float"
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "hours",
-            "fieldType": "Duration"
+            "fieldType": "Duration",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "total",
-            "fieldType": "Float"
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "relationships": [

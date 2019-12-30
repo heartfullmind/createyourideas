@@ -156,6 +156,60 @@ public class IncomeResourceIT {
 
     @Test
     @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = incomeRepository.findAll().size();
+        // set the field null
+        income.setDescription(null);
+
+        // Create the Income, which fails.
+
+        restIncomeMockMvc.perform(post("/api/incomes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(income)))
+            .andExpect(status().isBadRequest());
+
+        List<Income> incomeList = incomeRepository.findAll();
+        assertThat(incomeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = incomeRepository.findAll().size();
+        // set the field null
+        income.setDate(null);
+
+        // Create the Income, which fails.
+
+        restIncomeMockMvc.perform(post("/api/incomes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(income)))
+            .andExpect(status().isBadRequest());
+
+        List<Income> incomeList = incomeRepository.findAll();
+        assertThat(incomeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValueIsRequired() throws Exception {
+        int databaseSizeBeforeTest = incomeRepository.findAll().size();
+        // set the field null
+        income.setValue(null);
+
+        // Create the Income, which fails.
+
+        restIncomeMockMvc.perform(post("/api/incomes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(income)))
+            .andExpect(status().isBadRequest());
+
+        List<Income> incomeList = incomeRepository.findAll();
+        assertThat(incomeList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllIncomes() throws Exception {
         // Initialize the database
         incomeRepository.saveAndFlush(income);

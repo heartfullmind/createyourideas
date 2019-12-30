@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,13 +10,12 @@ import { IOutgoings } from 'app/shared/model/outgoings.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { OutgoingsService } from './outgoings.service';
 import { OutgoingsDeleteDialogComponent } from './outgoings-delete-dialog.component';
-import { IIdea } from 'app/shared/model/idea.model';
 
 @Component({
   selector: 'jhi-outgoings',
   templateUrl: './outgoings.component.html'
 })
-export class OutgoingsComponent implements OnInit, OnDestroy, OnChanges {
+export class OutgoingsComponent implements OnInit, OnDestroy {
   outgoings: IOutgoings[];
   error: any;
   success: any;
@@ -29,7 +28,6 @@ export class OutgoingsComponent implements OnInit, OnDestroy, OnChanges {
   predicate: any;
   previousPage: any;
   reverse: any;
-  @Input() selectedIdea: IIdea;
 
   constructor(
     protected outgoingsService: OutgoingsService,
@@ -95,10 +93,6 @@ export class OutgoingsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy() {
     this.eventManager.destroy(this.eventSubscriber);
-  }
-
-  ngOnChanges() {
-    this.ngOnInit();
   }
 
   trackId(index: number, item: IOutgoings) {

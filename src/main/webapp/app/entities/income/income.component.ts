@@ -1,21 +1,21 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IIncome } from 'app/shared/model/income.model';
+
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IncomeService } from './income.service';
 import { IncomeDeleteDialogComponent } from './income-delete-dialog.component';
-import { IIdea } from 'app/shared/model/idea.model';
 
 @Component({
   selector: 'jhi-income',
-  templateUrl: './income.component.html',
+  templateUrl: './income.component.html'
 })
-export class IncomeComponent implements OnInit, OnDestroy, OnChanges {
+export class IncomeComponent implements OnInit, OnDestroy {
   incomes: IIncome[];
   error: any;
   success: any;
@@ -28,7 +28,6 @@ export class IncomeComponent implements OnInit, OnDestroy, OnChanges {
   predicate: any;
   previousPage: any;
   reverse: any;
-  @Input() selectedIdea: IIdea;
 
   constructor(
     protected incomeService: IncomeService,
@@ -48,17 +47,13 @@ export class IncomeComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   loadAll() {
-    if(this.selectedIdea) {
     this.incomeService
-      .queryByIdea(
-      this.selectedIdea.id,  
-      {
+      .query({
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort()
       })
-      .subscribe((res: HttpResponse<IIncome[]>) => this.paginateIncome(res.body, res.headers));
-    }
+      .subscribe((res: HttpResponse<IIncome[]>) => this.paginateIncomes(res.body, res.headers));
   }
 
   loadPage(page: number) {
@@ -93,22 +88,18 @@ export class IncomeComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.loadAll();
-    this.registerChangeInIncome();
+    this.registerChangeInIncomes();
   }
 
   ngOnDestroy() {
     this.eventManager.destroy(this.eventSubscriber);
   }
 
-  ngOnChanges() {
-    this.ngOnInit();
-  }
-
   trackId(index: number, item: IIncome) {
     return item.id;
-  } 
+  }
 
-  registerChangeInIncome() {
+  registerChangeInIncomes() {
     this.eventSubscriber = this.eventManager.subscribe('incomeListModification', () => this.loadAll());
   }
 
@@ -125,7 +116,7 @@ export class IncomeComponent implements OnInit, OnDestroy, OnChanges {
     return result;
   }
 
-  protected paginateIncome(data: IIncome[], headers: HttpHeaders) {
+  protected paginateIncomes(data: IIncome[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     this.incomes = data;

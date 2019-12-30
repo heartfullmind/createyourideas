@@ -18,6 +18,7 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="description"><span jhiTranslate="homeApp.income.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="date"><span jhiTranslate="homeApp.income.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="value"><span jhiTranslate="homeApp.income.value">Value</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -27,9 +28,15 @@
             </thead>
             <tbody>
             <tr *ngFor="let income of incomes ;trackBy: trackId">
+                <td><a [routerLink]="['/income', income.id, 'view' ]">{{income.id}}</a></td>
                 <td>{{income.description}}</td>
                 <td>{{income.date | date:'mediumDate'}}</td>
                 <td>{{income.value}}</td>
+                <td>
+                    <div *ngIf="income.idea">
+                        <a [routerLink]="['/idea', income.idea?.id, 'view' ]" >{{income.idea?.id}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

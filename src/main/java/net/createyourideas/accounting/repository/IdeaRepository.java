@@ -18,4 +18,5 @@ public interface IdeaRepository extends JpaRepository<Idea, Long> {
 
     @Query("select idea from Idea idea where idea.user.login = ?#{principal.username}")
     Page<Idea> findByUserIsCurrentUser(Pageable pageable);
+    
 }

@@ -5,6 +5,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import * as moment from 'moment';
 import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { IWorksheet, Worksheet } from 'app/shared/model/worksheet.model';
 import { WorksheetService } from './worksheet.service';
@@ -26,12 +27,15 @@ export class WorksheetUpdateComponent implements OnInit {
   dateDp: any;
 
   editForm = this.fb.group({
-    jobtitle: [],
-    jobdescription: [],
-    date: [],
-    costHour: [],
-    hours: [],
-    total: []
+    id: [],
+    jobtitle: [null, [Validators.required]],
+    jobdescription: [null, [Validators.required]],
+    date: [null, [Validators.required]],
+    costHour: [null, [Validators.required]],
+    hours: [null, [Validators.required]],
+    total: [null, [Validators.required]],
+    user: [],
+    idea: []
   });
 
   constructor(
@@ -59,12 +63,15 @@ export class WorksheetUpdateComponent implements OnInit {
 
   updateForm(worksheet: IWorksheet) {
     this.editForm.patchValue({
+      id: worksheet.id,
       jobtitle: worksheet.jobtitle,
       jobdescription: worksheet.jobdescription,
       date: worksheet.date,
       costHour: worksheet.costHour,
       hours: worksheet.hours,
-      total: worksheet.total
+      total: worksheet.total,
+      user: worksheet.user,
+      idea: worksheet.idea
     });
   }
 

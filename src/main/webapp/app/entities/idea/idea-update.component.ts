@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -10,7 +10,6 @@ import { IIdea, Idea } from 'app/shared/model/idea.model';
 import { IdeaService } from './idea.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-
 
 @Component({
   selector: 'jhi-idea-update',
@@ -24,10 +23,15 @@ export class IdeaUpdateComponent implements OnInit {
   ideas: IIdea[];
 
   editForm = this.fb.group({
-    title: [],
-    description: [],
-    ideatype: [],
-    interest: [],
+    id: [],
+    title: [null, [Validators.required]],
+    logo: [null, [Validators.required]],
+    logoContentType: [],
+    description: [null, [Validators.required]],
+    ideatype: [null, [Validators.required]],
+    interest: [null, [Validators.required]],
+    active: [],
+    user: [],
     idea: []
   });
 
@@ -36,6 +40,7 @@ export class IdeaUpdateComponent implements OnInit {
     protected jhiAlertService: JhiAlertService,
     protected ideaService: IdeaService,
     protected userService: UserService,
+    protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -57,6 +62,8 @@ export class IdeaUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: idea.id,
       title: idea.title,
+      logo: idea.logo,
+      logoContentType: idea.logoContentType,
       description: idea.description,
       ideatype: idea.ideatype,
       interest: idea.interest,
@@ -99,6 +106,16 @@ export class IdeaUpdateComponent implements OnInit {
     );
   }
 
+  clearInputImage(field: string, fieldContentType: string, idInput: string) {
+    this.editForm.patchValue({
+      [field]: null,
+      [fieldContentType]: null
+    });
+    if (this.elementRef && idInput && this.elementRef.nativeElement.querySelector('#' + idInput)) {
+      this.elementRef.nativeElement.querySelector('#' + idInput).value = null;
+    }
+  }
+
   previousState() {
     window.history.back();
   }
@@ -116,10 +133,15 @@ export class IdeaUpdateComponent implements OnInit {
   private createFromForm(): IIdea {
     return {
       ...new Idea(),
+      id: this.editForm.get(['id']).value,
       title: this.editForm.get(['title']).value,
+      logoContentType: this.editForm.get(['logoContentType']).value,
+      logo: this.editForm.get(['logo']).value,
       description: this.editForm.get(['description']).value,
       ideatype: this.editForm.get(['ideatype']).value,
       interest: this.editForm.get(['interest']).value,
+      active: this.editForm.get(['active']).value,
+      user: this.editForm.get(['user']).value,
       idea: this.editForm.get(['idea']).value
     };
   }

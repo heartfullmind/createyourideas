@@ -1,36 +1,29 @@
 package net.createyourideas.accounting.web.rest;
 
 import net.createyourideas.accounting.domain.Idea;
-import net.createyourideas.accounting.domain.User;
 import net.createyourideas.accounting.service.IdeaService;
-import net.createyourideas.accounting.service.UserService;
-import net.createyourideas.accounting.tree.Pair;
 import net.createyourideas.accounting.tree.Node;
+import net.createyourideas.accounting.tree.TreeUtils;
 import net.createyourideas.accounting.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,11 +44,8 @@ public class IdeaResource {
 
     private final IdeaService ideaService;
 
-    private final UserService userService;
-
-    public IdeaResource(IdeaService ideaService, UserService userService) {
+    public IdeaResource(IdeaService ideaService) {
         this.ideaService = ideaService;
-        this.userService = userService;
     }
 
     /**
@@ -66,13 +56,11 @@ public class IdeaResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/ideas")
-    public ResponseEntity<Idea> createIdea(@RequestBody Idea idea) throws URISyntaxException {
+    public ResponseEntity<Idea> createIdea(@Valid @RequestBody Idea idea) throws URISyntaxException {
         log.debug("REST request to save Idea : {}", idea);
         if (idea.getId() != null) {
             throw new BadRequestAlertException("A new idea cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Optional<User> userOpt = userService.getUserWithAuthorities();
-        idea.setUser(userOpt.get());
         Idea result = ideaService.save(idea);
         return ResponseEntity.created(new URI("/api/ideas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -89,12 +77,11 @@ public class IdeaResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/ideas")
-    public ResponseEntity<Idea> updateIdea(@RequestBody Idea idea) throws URISyntaxException {
+    public ResponseEntity<Idea> updateIdea(@Valid @RequestBody Idea idea) throws URISyntaxException {
         log.debug("REST request to update Idea : {}", idea);
         if (idea.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-
         Idea result = ideaService.save(idea);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, idea.getId().toString()))
@@ -115,38 +102,6 @@ public class IdeaResource {
         Page<Idea> page = ideaService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    @GetMapping("/ideas/user")
-    public ResponseEntity<List<Idea>> getAllIdeasByCurrentUser(Pageable pageable) {
-        log.debug("REST request to get a page of Ideas");
-        Page<Idea> page = ideaService.findByUserIsCurrentUser(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    @GetMapping("/ideas/ideafunnel")
-    public ResponseEntity<String> getIdeafunnel() {
-        log.debug("REST get ideafunnel");
-        String json = "";
-        List<Idea> ideas = ideaService.findAll();
-        List<Node> nodes = new ArrayList<>();
-        try {
-            for(Idea idea : ideas) {
-                if(idea.getIdea() == null)
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), null));
-                else
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), idea.getIdea().getId().toString()));
-            }
-            json = "{\n" + 
-                        "\"format\":\"nodeTree\",\n" + 
-                        "\"data\": \n" +
-                            createTree(nodes) + "\n" + 
-                    "}";
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.ok(json);
     }
 
     /**
@@ -175,42 +130,36 @@ public class IdeaResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
-    //Private method to create the ideafunnel-tree (node-tree)
-    private static String createTree(List<Node> nodes) {
- 
-        Map<String, Node> mapTmp = new HashMap<>();
-        
-        //Save all nodes to a map
-        for (Node current : nodes) {
-            mapTmp.put(current.getId(), current);
-        }
- 
-        //loop and assign parent/child relationships
-        for (Node current : nodes) {
-            String parentId = current.getParentId();
- 
-            if (parentId != null) {
-                Node parent = mapTmp.get(parentId);
-                if (parent != null) {
-                    current.setParent(parent);
-                    parent.addChild(current);
-                    mapTmp.put(parentId, parent);
-                    mapTmp.put(current.getId(), current);
-                }
+    @GetMapping("/ideas/user")
+    public ResponseEntity<List<Idea>> getAllIdeasByCurrentUser(Pageable pageable) {
+        log.debug("REST request to get a page of Ideas");
+        Page<Idea> page = ideaService.findByUserIsCurrentUser(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/ideas/ideafunnel")
+    public ResponseEntity<String> getIdeafunnel(Pageable pageable) {
+        log.debug("REST get ideafunnel");
+        String json = "";
+        Page<Idea> ideasPage = ideaService.findAll(pageable);
+        List<Idea> ideas = ideasPage.getContent();
+        List<Node> nodes = new ArrayList<>();
+        try {
+            for(Idea idea : ideas) {
+                if(idea.getIdea() == null)
+                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), null));
+                else
+                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), idea.getIdea().getId().toString()));
             }
- 
+            json = "{\n" + 
+                        "\"format\":\"nodeTree\",\n" + 
+                        "\"data\": \n" +
+                        TreeUtils.createTree(nodes) + "\n" + 
+                    "}";
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
         }
- 
-    
-        //get the root
-        Node root = null;
-        for (Node node : mapTmp.values()) {
-            if(node.getParent() == null) {
-                root = node;
-                break;
-            }
-        }
- 
-        return root.toString();
+        return ResponseEntity.ok(json);
     }
 }

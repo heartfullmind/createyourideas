@@ -4,15 +4,32 @@
             <h2 id="jhi-worksheet-heading" jhiTranslate="homeApp.worksheet.home.createOrEditLabel">Create or edit a Worksheet</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.jobtitle" for="field_jobtitle">Jobtitle</label>
                     <input type="text" class="form-control" name="jobtitle" id="field_jobtitle"
                            formControlName="jobtitle"/>
+                    <div *ngIf="editForm.get('jobtitle').invalid && (editForm.get('jobtitle').dirty || editForm.get('jobtitle').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('jobtitle').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.jobdescription" for="field_jobdescription">Jobdescription</label>
                     <textarea class="form-control" name="jobdescription" id="field_jobdescription"
                               formControlName="jobdescription"></textarea>
+                    <div *ngIf="editForm.get('jobdescription').invalid && (editForm.get('jobdescription').dirty || editForm.get('jobdescription').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('jobdescription').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.date" for="field_date">Date</label>
@@ -22,23 +39,73 @@
                             <button type="button" class="btn btn-secondary" (click)="dateDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
                         </span>
                     </div>
+                    <div *ngIf="editForm.get('date').invalid && (editForm.get('date').dirty || editForm.get('date').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('date').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.costHour" for="field_costHour">Cost Hour</label>
                     <input type="number" class="form-control" name="costHour" id="field_costHour"
                            formControlName="costHour"/>
+                    <div *ngIf="editForm.get('costHour').invalid && (editForm.get('costHour').dirty || editForm.get('costHour').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('costHour').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('costHour')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.hours" for="field_hours">Hours</label>
                     <input type="number" class="form-control" name="hours" id="field_hours"
                            formControlName="hours"/>
+                    <div *ngIf="editForm.get('hours').invalid && (editForm.get('hours').dirty || editForm.get('hours').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('hours').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('hours')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.worksheet.total" for="field_total">Total</label>
                     <input type="number" class="form-control" name="total" id="field_total"
                            formControlName="total"/>
+                    <div *ngIf="editForm.get('total').invalid && (editForm.get('total').dirty || editForm.get('total').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('total').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('total')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.worksheet.user" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" formControlName="user">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.worksheet.idea" for="field_idea">Idea</label>
+                    <select class="form-control" id="field_idea" name="idea" formControlName="idea">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.id}}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

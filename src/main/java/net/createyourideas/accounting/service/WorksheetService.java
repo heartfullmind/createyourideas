@@ -1,6 +1,5 @@
 package net.createyourideas.accounting.service;
 
-import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.domain.Worksheet;
 
 import java.util.List;
@@ -41,6 +40,4 @@ public interface WorksheetService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-    
-    List<Worksheet> findByUserIsCurrentUser();
 }

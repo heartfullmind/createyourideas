@@ -3,21 +3,41 @@
     "fields": [
         {
             "fieldName": "title",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "logo",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "description",
             "fieldType": "byte[]",
-            "fieldTypeBlobContent": "text"
+            "fieldTypeBlobContent": "text",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "ideatype",
             "fieldType": "Ideatype",
-            "fieldValues": "PRODUCTION,SERVICE,PURCHASE"
+            "fieldValues": "PRODUCTION,SERVICE,PURCHASE",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "interest",
-            "fieldType": "Float"
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "active",

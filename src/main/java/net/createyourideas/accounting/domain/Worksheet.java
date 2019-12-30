@@ -4,6 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -23,23 +24,29 @@ public class Worksheet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "jobtitle")
+    @NotNull
+    @Column(name = "jobtitle", nullable = false)
     private String jobtitle;
 
+    
     @Lob
-    @Column(name = "jobdescription")
+    @Column(name = "jobdescription", nullable = false)
     private String jobdescription;
 
-    @Column(name = "date")
+    @NotNull
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "cost_hour")
+    @NotNull
+    @Column(name = "cost_hour", nullable = false)
     private Float costHour;
 
-    @Column(name = "hours")
+    @NotNull
+    @Column(name = "hours", nullable = false)
     private Duration hours;
 
-    @Column(name = "total")
+    @NotNull
+    @Column(name = "total", nullable = false)
     private Float total;
 
     @ManyToOne

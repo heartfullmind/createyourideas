@@ -4,7 +4,6 @@ import net.createyourideas.accounting.HomeApp;
 import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.repository.IdeaRepository;
 import net.createyourideas.accounting.service.IdeaService;
-import net.createyourideas.accounting.service.UserService;
 import net.createyourideas.accounting.web.rest.errors.ExceptionTranslator;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +39,11 @@ public class IdeaResourceIT {
     private static final String DEFAULT_TITLE = "AAAAAAAAAA";
     private static final String UPDATED_TITLE = "BBBBBBBBBB";
 
+    private static final byte[] DEFAULT_LOGO = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_LOGO = TestUtil.createByteArray(1, "1");
+    private static final String DEFAULT_LOGO_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_LOGO_CONTENT_TYPE = "image/png";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -57,9 +61,6 @@ public class IdeaResourceIT {
 
     @Autowired
     private IdeaService ideaService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -83,7 +84,7 @@ public class IdeaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IdeaResource ideaResource = new IdeaResource(ideaService, userService);
+        final IdeaResource ideaResource = new IdeaResource(ideaService);
         this.restIdeaMockMvc = MockMvcBuilders.standaloneSetup(ideaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -101,6 +102,8 @@ public class IdeaResourceIT {
     public static Idea createEntity(EntityManager em) {
         Idea idea = new Idea()
             .title(DEFAULT_TITLE)
+            .logo(DEFAULT_LOGO)
+            .logoContentType(DEFAULT_LOGO_CONTENT_TYPE)
             .description(DEFAULT_DESCRIPTION)
             .ideatype(DEFAULT_IDEATYPE)
             .interest(DEFAULT_INTEREST)
@@ -116,6 +119,8 @@ public class IdeaResourceIT {
     public static Idea createUpdatedEntity(EntityManager em) {
         Idea idea = new Idea()
             .title(UPDATED_TITLE)
+            .logo(UPDATED_LOGO)
+            .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .description(UPDATED_DESCRIPTION)
             .ideatype(UPDATED_IDEATYPE)
             .interest(UPDATED_INTEREST)
@@ -144,6 +149,8 @@ public class IdeaResourceIT {
         assertThat(ideaList).hasSize(databaseSizeBeforeCreate + 1);
         Idea testIdea = ideaList.get(ideaList.size() - 1);
         assertThat(testIdea.getTitle()).isEqualTo(DEFAULT_TITLE);
+        assertThat(testIdea.getLogo()).isEqualTo(DEFAULT_LOGO);
+        assertThat(testIdea.getLogoContentType()).isEqualTo(DEFAULT_LOGO_CONTENT_TYPE);
         assertThat(testIdea.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testIdea.getIdeatype()).isEqualTo(DEFAULT_IDEATYPE);
         assertThat(testIdea.getInterest()).isEqualTo(DEFAULT_INTEREST);
@@ -172,6 +179,60 @@ public class IdeaResourceIT {
 
     @Test
     @Transactional
+    public void checkTitleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ideaRepository.findAll().size();
+        // set the field null
+        idea.setTitle(null);
+
+        // Create the Idea, which fails.
+
+        restIdeaMockMvc.perform(post("/api/ideas")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(idea)))
+            .andExpect(status().isBadRequest());
+
+        List<Idea> ideaList = ideaRepository.findAll();
+        assertThat(ideaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkIdeatypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ideaRepository.findAll().size();
+        // set the field null
+        idea.setIdeatype(null);
+
+        // Create the Idea, which fails.
+
+        restIdeaMockMvc.perform(post("/api/ideas")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(idea)))
+            .andExpect(status().isBadRequest());
+
+        List<Idea> ideaList = ideaRepository.findAll();
+        assertThat(ideaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkInterestIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ideaRepository.findAll().size();
+        // set the field null
+        idea.setInterest(null);
+
+        // Create the Idea, which fails.
+
+        restIdeaMockMvc.perform(post("/api/ideas")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(idea)))
+            .andExpect(status().isBadRequest());
+
+        List<Idea> ideaList = ideaRepository.findAll();
+        assertThat(ideaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllIdeas() throws Exception {
         // Initialize the database
         ideaRepository.saveAndFlush(idea);
@@ -182,6 +243,8 @@ public class IdeaResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(idea.getId().intValue())))
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].logoContentType").value(hasItem(DEFAULT_LOGO_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].logo").value(hasItem(Base64Utils.encodeToString(DEFAULT_LOGO))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].ideatype").value(hasItem(DEFAULT_IDEATYPE.toString())))
             .andExpect(jsonPath("$.[*].interest").value(hasItem(DEFAULT_INTEREST.doubleValue())))
@@ -200,6 +263,8 @@ public class IdeaResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(idea.getId().intValue()))
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.logoContentType").value(DEFAULT_LOGO_CONTENT_TYPE))
+            .andExpect(jsonPath("$.logo").value(Base64Utils.encodeToString(DEFAULT_LOGO)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.ideatype").value(DEFAULT_IDEATYPE.toString()))
             .andExpect(jsonPath("$.interest").value(DEFAULT_INTEREST.doubleValue()))
@@ -228,6 +293,8 @@ public class IdeaResourceIT {
         em.detach(updatedIdea);
         updatedIdea
             .title(UPDATED_TITLE)
+            .logo(UPDATED_LOGO)
+            .logoContentType(UPDATED_LOGO_CONTENT_TYPE)
             .description(UPDATED_DESCRIPTION)
             .ideatype(UPDATED_IDEATYPE)
             .interest(UPDATED_INTEREST)
@@ -243,6 +310,8 @@ public class IdeaResourceIT {
         assertThat(ideaList).hasSize(databaseSizeBeforeUpdate);
         Idea testIdea = ideaList.get(ideaList.size() - 1);
         assertThat(testIdea.getTitle()).isEqualTo(UPDATED_TITLE);
+        assertThat(testIdea.getLogo()).isEqualTo(UPDATED_LOGO);
+        assertThat(testIdea.getLogoContentType()).isEqualTo(UPDATED_LOGO_CONTENT_TYPE);
         assertThat(testIdea.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testIdea.getIdeatype()).isEqualTo(UPDATED_IDEATYPE);
         assertThat(testIdea.getInterest()).isEqualTo(UPDATED_INTEREST);

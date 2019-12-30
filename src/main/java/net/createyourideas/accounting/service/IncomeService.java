@@ -43,6 +43,4 @@ public interface IncomeService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    Page<Income> findAllByIdeaId(Long id, Pageable pageable);
 }

@@ -156,6 +156,60 @@ public class OutgoingsResourceIT {
 
     @Test
     @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = outgoingsRepository.findAll().size();
+        // set the field null
+        outgoings.setDescription(null);
+
+        // Create the Outgoings, which fails.
+
+        restOutgoingsMockMvc.perform(post("/api/outgoings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(outgoings)))
+            .andExpect(status().isBadRequest());
+
+        List<Outgoings> outgoingsList = outgoingsRepository.findAll();
+        assertThat(outgoingsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = outgoingsRepository.findAll().size();
+        // set the field null
+        outgoings.setDate(null);
+
+        // Create the Outgoings, which fails.
+
+        restOutgoingsMockMvc.perform(post("/api/outgoings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(outgoings)))
+            .andExpect(status().isBadRequest());
+
+        List<Outgoings> outgoingsList = outgoingsRepository.findAll();
+        assertThat(outgoingsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkValueIsRequired() throws Exception {
+        int databaseSizeBeforeTest = outgoingsRepository.findAll().size();
+        // set the field null
+        outgoings.setValue(null);
+
+        // Create the Outgoings, which fails.
+
+        restOutgoingsMockMvc.perform(post("/api/outgoings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(outgoings)))
+            .andExpect(status().isBadRequest());
+
+        List<Outgoings> outgoingsList = outgoingsRepository.findAll();
+        assertThat(outgoingsList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllOutgoings() throws Exception {
         // Initialize the database
         outgoingsRepository.saveAndFlush(outgoings);

@@ -17,8 +17,7 @@ type EntityArrayResponseType = HttpResponse<IIncome[]>;
 export class IncomeService {
   public resourceUrl = SERVER_API_URL + 'api/incomes';
 
-  constructor(protected http: HttpClient
-  ) {}
+  constructor(protected http: HttpClient) {}
 
   create(income: IIncome): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(income);
@@ -44,13 +43,6 @@ export class IncomeService {
     const options = createRequestOption(req);
     return this.http
       .get<IIncome[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  queryByIdea(id: number, req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<IIncome[]>(`${this.resourceUrl}/${id}/idea`, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
