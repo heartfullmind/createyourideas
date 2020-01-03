@@ -77,4 +77,9 @@ public class IncomeServiceImpl implements IncomeService {
         log.debug("Request to delete Income : {}", id);
         incomeRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Income> findAllByIdeaId(Long ideaId, Pageable pageable) {
+        return incomeRepository.findAllByIdeaId(ideaId, pageable);
+    }
 }

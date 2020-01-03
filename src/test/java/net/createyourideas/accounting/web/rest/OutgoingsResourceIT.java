@@ -36,6 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HomeApp.class)
 public class OutgoingsResourceIT {
 
+    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    private static final String UPDATED_TITLE = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -90,6 +93,7 @@ public class OutgoingsResourceIT {
      */
     public static Outgoings createEntity(EntityManager em) {
         Outgoings outgoings = new Outgoings()
+            .title(DEFAULT_TITLE)
             .description(DEFAULT_DESCRIPTION)
             .date(DEFAULT_DATE)
             .value(DEFAULT_VALUE);
@@ -103,6 +107,7 @@ public class OutgoingsResourceIT {
      */
     public static Outgoings createUpdatedEntity(EntityManager em) {
         Outgoings outgoings = new Outgoings()
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .date(UPDATED_DATE)
             .value(UPDATED_VALUE);
@@ -129,6 +134,7 @@ public class OutgoingsResourceIT {
         List<Outgoings> outgoingsList = outgoingsRepository.findAll();
         assertThat(outgoingsList).hasSize(databaseSizeBeforeCreate + 1);
         Outgoings testOutgoings = outgoingsList.get(outgoingsList.size() - 1);
+        assertThat(testOutgoings.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testOutgoings.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testOutgoings.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testOutgoings.getValue()).isEqualTo(DEFAULT_VALUE);
@@ -153,6 +159,24 @@ public class OutgoingsResourceIT {
         assertThat(outgoingsList).hasSize(databaseSizeBeforeCreate);
     }
 
+
+    @Test
+    @Transactional
+    public void checkTitleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = outgoingsRepository.findAll().size();
+        // set the field null
+        outgoings.setTitle(null);
+
+        // Create the Outgoings, which fails.
+
+        restOutgoingsMockMvc.perform(post("/api/outgoings")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(outgoings)))
+            .andExpect(status().isBadRequest());
+
+        List<Outgoings> outgoingsList = outgoingsRepository.findAll();
+        assertThat(outgoingsList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -219,6 +243,7 @@ public class OutgoingsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(outgoings.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.doubleValue())));
@@ -235,6 +260,7 @@ public class OutgoingsResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(outgoings.getId().intValue()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.doubleValue()));
@@ -261,6 +287,7 @@ public class OutgoingsResourceIT {
         // Disconnect from session so that the updates on updatedOutgoings are not directly saved in db
         em.detach(updatedOutgoings);
         updatedOutgoings
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .date(UPDATED_DATE)
             .value(UPDATED_VALUE);
@@ -274,6 +301,7 @@ public class OutgoingsResourceIT {
         List<Outgoings> outgoingsList = outgoingsRepository.findAll();
         assertThat(outgoingsList).hasSize(databaseSizeBeforeUpdate);
         Outgoings testOutgoings = outgoingsList.get(outgoingsList.size() - 1);
+        assertThat(testOutgoings.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testOutgoings.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testOutgoings.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testOutgoings.getValue()).isEqualTo(UPDATED_VALUE);

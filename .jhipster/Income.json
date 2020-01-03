@@ -2,6 +2,13 @@
     "name": "Income",
     "fields": [
         {
+            "fieldName": "title",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "description",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -35,7 +42,7 @@
     "changelogDate": "20191216151545",
     "entityTableName": "income",
     "dto": "no",
-    "pagination": "pagination",
+    "pagination": "infinite-scroll",
     "service": "serviceImpl",
     "jpaMetamodelFiltering": false,
     "fluentMethods": true,

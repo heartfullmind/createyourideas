@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -54,6 +53,7 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findAll(pageable);
     }
 
+
     /**
      * Get one idea by id.
      *
@@ -78,8 +78,5 @@ public class IdeaServiceImpl implements IdeaService {
         ideaRepository.deleteById(id);
     }
 
-    @Override
-    public Page<Idea> findByUserIsCurrentUser(Pageable pageable) {
-        return ideaRepository.findByUserIsCurrentUser(pageable);
-    }
+
 }

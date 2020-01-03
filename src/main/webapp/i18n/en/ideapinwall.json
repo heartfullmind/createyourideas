@@ -1,0 +1,21 @@
+{
+  "homeApp": {
+    "ideapinwall": {
+      "home": {
+        "title": "Ideapinwalls",
+        "createLabel": "Create a new Ideapinwall",
+        "createOrEditLabel": "Create or edit a Ideapinwall",
+        "notFound": "No Ideapinwalls found"
+      },
+      "created": "A new Ideapinwall is created with identifier {{ param }}",
+      "updated": "A Ideapinwall is updated with identifier {{ param }}",
+      "deleted": "A Ideapinwall is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Ideapinwall {{ id }}?"
+      },
+      "detail": {
+        "title": "Ideapinwall"
+      }
+    }
+  }
+}

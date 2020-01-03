@@ -1,13 +1,31 @@
 <div>
-    <h2 id="page-heading">
-        <span jhiTranslate="homeApp.worksheet.home.title">Worksheets</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-worksheet" [routerLink]="['/worksheet/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="homeApp.worksheet.home.createLabel">
-            Create a new Worksheet
-            </span>
-        </button>
-    </h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="container-select-idea">
+                    <div class="selected-idea-alert alert alert-success" *ngIf="selectedIdea">
+                        <span jhiTranslate="homeapp.selectIdea.main.selectedIdea">Selected idea</span> <span>{{selectedIdea.title}}</span>
+                    </div>
+                    <div id="select-idea">     
+                    <form [formGroup]="selectIdeaForm" >
+                        <label for="changeIdea" jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</label>
+                        <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()">
+                        <option value="" disabled>Choose your idea</option>
+                        <option *ngFor="let idea of ideas" [ngValue]="idea.id">{{idea.title}}</option>
+                        </select>
+                    </form>	
+                    </div>
+                </div>             
+            </div>
+            <div class="col-xs-12 col-md-8">
+                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-worksheet" [routerLink]="['/worksheet/new']">
+                    <fa-icon [icon]="'plus'"></fa-icon>
+                    <span  jhiTranslate="homeApp.worksheet.home.createLabel">
+                    Create a new Worksheet
+                    </span>
+                </button>            
+            </div>
+    </div>
+
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>

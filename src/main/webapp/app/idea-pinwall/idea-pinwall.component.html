@@ -1,0 +1,46 @@
+
+<div class="row ideaSelect">
+    <div class="col-xs-12">
+        <form [formGroup]="selectIdeaForm" >
+                <h1 jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</h1>
+                <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()">
+                    <option value="" disabled>Choose your idea</option>
+                    <option *ngFor="let idea of ideas" [ngValue]="idea.id">{{idea.title}}</option>
+                </select>
+            </form>	      
+    </div>
+</div>
+  
+<div id="pinwall" *ngIf="selectedIdea">
+  <div class="row title">
+    <div class="col-xs-12 titlecolumn">
+        <h2>{{selectedIdea.title}}</h2>
+    </div>
+  </div>
+  <div class="row" *ngIf="selectedIdea.logo">
+    <div class="col-xs-12">
+        <div>
+            <a (click)="openFile(selectedIdea.logoContentType, selectedIdea.logo)">
+                <img [src]="'data:' + selectedIdea.logoContentType + ';base64,' + selectedIdea.logo" style="max-width: 500px;" alt="idea image"/>
+            </a>
+        </div>
+    </div>
+  </div>            
+  <div class="row">
+    <div class="col-xs-12">
+        <h3><span jhiTranslate="homeApp.idea.description">Description</span></h3>
+        <span>{{selectedIdea.description}}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3><span jhiTranslate="homeApp.idea.investment">Investment</span></h3>
+      <span>{{selectedIdea.investment}}</span>
+    </div>
+    <div class="col-xs-12 col-md-6">
+      <h3><span jhiTranslate="homeApp.idea.interest">Interest</span></h3>
+      <span>{{selectedIdea.interest}}</span>
+    </div>
+   </div>
+  </div>
+</div>

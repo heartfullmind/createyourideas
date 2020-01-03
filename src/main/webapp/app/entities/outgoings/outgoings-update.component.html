@@ -10,6 +10,17 @@
                         readonly />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.outgoings.title" for="field_title">Title</label>
+                    <input type="text" class="form-control" name="title" id="field_title"
+                           formControlName="title"/>
+                    <div *ngIf="editForm.get('title').invalid && (editForm.get('title').dirty || editForm.get('title').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('title').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.outgoings.description" for="field_description">Description</label>
                     <input type="text" class="form-control" name="description" id="field_description"
                            formControlName="description"/>

@@ -1,0 +1,21 @@
+{
+  "homeApp": {
+    "ideapinwall": {
+      "home": {
+        "title": "Ideapinwalls",
+        "createLabel": "Ideapinwall erstellen",
+        "createOrEditLabel": "Ideapinwall erstellen oder bearbeiten",
+        "notFound": "No Ideapinwalls found"
+      },
+      "created": "Ideapinwall erstellt mit ID {{ param }}",
+      "updated": "Ideapinwall aktualisiert mit ID {{ param }}",
+      "deleted": "Ideapinwall gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Ideapinwall {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Ideapinwall"
+      }
+    }
+  }
+}

@@ -24,6 +24,7 @@ export class IncomeUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    title: [null, [Validators.required]],
     description: [null, [Validators.required]],
     date: [null, [Validators.required]],
     value: [null, [Validators.required]],
@@ -51,6 +52,7 @@ export class IncomeUpdateComponent implements OnInit {
   updateForm(income: IIncome) {
     this.editForm.patchValue({
       id: income.id,
+      title: income.title,
       description: income.description,
       date: income.date,
       value: income.value,
@@ -76,6 +78,7 @@ export class IncomeUpdateComponent implements OnInit {
     return {
       ...new Income(),
       id: this.editForm.get(['id']).value,
+      title: this.editForm.get(['title']).value,
       description: this.editForm.get(['description']).value,
       date: this.editForm.get(['date']).value,
       value: this.editForm.get(['value']).value,

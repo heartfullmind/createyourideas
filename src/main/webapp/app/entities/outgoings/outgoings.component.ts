@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +9,9 @@ import { IOutgoings } from 'app/shared/model/outgoings.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { OutgoingsService } from './outgoings.service';
 import { OutgoingsDeleteDialogComponent } from './outgoings-delete-dialog.component';
+import { FormBuilder } from '@angular/forms';
+import { IdeaService } from '../idea/idea.service';
+import { IIdea } from 'app/shared/model/idea.model';
 
 @Component({
   selector: 'jhi-outgoings',
@@ -17,78 +19,63 @@ import { OutgoingsDeleteDialogComponent } from './outgoings-delete-dialog.compon
 })
 export class OutgoingsComponent implements OnInit, OnDestroy {
   outgoings: IOutgoings[];
-  error: any;
-  success: any;
   eventSubscriber: Subscription;
-  routeData: any;
+  itemsPerPage: number;
   links: any;
-  totalItems: any;
-  itemsPerPage: any;
   page: any;
   predicate: any;
-  previousPage: any;
   reverse: any;
+  totalItems: number;
+  ideas: IIdea[];
+  selectedIdea: IIdea;
+
+  selectIdeaForm = this.fb.group({
+    ideaName: ['']	
+  });
 
   constructor(
     protected outgoingsService: OutgoingsService,
-    protected parseLinks: JhiParseLinks,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected parseLinks: JhiParseLinks,
+    protected ideaService: IdeaService,
+    public fb: FormBuilder
   ) {
+    this.outgoings = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
-    this.routeData = this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.previousPage = data.pagingParams.page;
-      this.reverse = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-    });
+    this.page = 0;
+    this.links = {
+      last: 0
+    };
+    this.predicate = 'id';
+    this.reverse = true;
   }
 
   loadAll() {
     this.outgoingsService
       .query({
-        page: this.page - 1,
+        page: this.page,
         size: this.itemsPerPage,
         sort: this.sort()
       })
       .subscribe((res: HttpResponse<IOutgoings[]>) => this.paginateOutgoings(res.body, res.headers));
   }
 
-  loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
-  }
-
-  transition() {
-    this.router.navigate(['/outgoings'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    });
+  reset() {
+    this.page = 0;
+    this.outgoings = [];
     this.loadAll();
   }
 
-  clear() {
-    this.page = 0;
-    this.router.navigate([
-      '/outgoings',
-      {
-        page: this.page,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    ]);
+  loadPage(page) {
+    this.page = page;
     this.loadAll();
   }
 
   ngOnInit() {
     this.loadAll();
     this.registerChangeInOutgoings();
+    this.loadSelect();
   }
 
   ngOnDestroy() {
@@ -100,13 +87,26 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInOutgoings() {
-    this.eventSubscriber = this.eventManager.subscribe('outgoingsListModification', () => this.loadAll());
+    this.eventSubscriber = this.eventManager.subscribe('outgoingsListModification', () => this.reset());
   }
 
   delete(outgoings: IOutgoings) {
     const modalRef = this.modalService.open(OutgoingsDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.outgoings = outgoings;
   }
+
+  changeIdea() {
+    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
+      { this.selectedIdea = res.body;
+      })
+  }
+
+  loadSelect() {
+	  this.ideaService.queryByUser().subscribe((res: HttpResponse<IIdea[]>) => {
+          this.ideas = res.body
+    
+    }); 
+  }	
 
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
@@ -119,6 +119,8 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
   protected paginateOutgoings(data: IOutgoings[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    this.outgoings = data;
+    for (let i = 0; i < data.length; i++) {
+      this.outgoings.push(data[i]);
+    }
   }
 }

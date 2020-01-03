@@ -30,6 +30,7 @@ export class IdeaUpdateComponent implements OnInit {
     description: [null, [Validators.required]],
     ideatype: [null, [Validators.required]],
     interest: [null, [Validators.required]],
+    investment: [null, [Validators.required]],
     active: [],
     user: [],
     idea: []
@@ -67,6 +68,7 @@ export class IdeaUpdateComponent implements OnInit {
       description: idea.description,
       ideatype: idea.ideatype,
       interest: idea.interest,
+      investment: idea.investment,
       active: idea.active,
       user: idea.user,
       idea: idea.idea
@@ -140,6 +142,7 @@ export class IdeaUpdateComponent implements OnInit {
       description: this.editForm.get(['description']).value,
       ideatype: this.editForm.get(['ideatype']).value,
       interest: this.editForm.get(['interest']).value,
+      investment: this.editForm.get(['investment']).value,
       active: this.editForm.get(['active']).value,
       user: this.editForm.get(['user']).value,
       idea: this.editForm.get(['idea']).value

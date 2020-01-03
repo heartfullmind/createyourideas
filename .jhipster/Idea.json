@@ -40,6 +40,13 @@
             ]
         },
         {
+            "fieldName": "investment",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "active",
             "fieldType": "Boolean"
         }

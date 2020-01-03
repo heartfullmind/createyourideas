@@ -84,6 +84,21 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.investment" for="field_investment">Investment</label>
+                    <input type="number" class="form-control" name="investment" id="field_investment"
+                           formControlName="investment"/>
+                    <div *ngIf="editForm.get('investment').invalid && (editForm.get('investment').dirty || editForm.get('investment').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('investment').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('investment')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.idea.active" for="field_active">Active</label>
                     <input type="checkbox" class="form-control" name="active" id="field_active"
                            formControlName="active"/>

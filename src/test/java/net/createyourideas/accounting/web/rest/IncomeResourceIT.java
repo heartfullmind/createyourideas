@@ -36,6 +36,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HomeApp.class)
 public class IncomeResourceIT {
 
+    private static final String DEFAULT_TITLE = "AAAAAAAAAA";
+    private static final String UPDATED_TITLE = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -90,6 +93,7 @@ public class IncomeResourceIT {
      */
     public static Income createEntity(EntityManager em) {
         Income income = new Income()
+            .title(DEFAULT_TITLE)
             .description(DEFAULT_DESCRIPTION)
             .date(DEFAULT_DATE)
             .value(DEFAULT_VALUE);
@@ -103,6 +107,7 @@ public class IncomeResourceIT {
      */
     public static Income createUpdatedEntity(EntityManager em) {
         Income income = new Income()
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .date(UPDATED_DATE)
             .value(UPDATED_VALUE);
@@ -129,6 +134,7 @@ public class IncomeResourceIT {
         List<Income> incomeList = incomeRepository.findAll();
         assertThat(incomeList).hasSize(databaseSizeBeforeCreate + 1);
         Income testIncome = incomeList.get(incomeList.size() - 1);
+        assertThat(testIncome.getTitle()).isEqualTo(DEFAULT_TITLE);
         assertThat(testIncome.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testIncome.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testIncome.getValue()).isEqualTo(DEFAULT_VALUE);
@@ -153,6 +159,24 @@ public class IncomeResourceIT {
         assertThat(incomeList).hasSize(databaseSizeBeforeCreate);
     }
 
+
+    @Test
+    @Transactional
+    public void checkTitleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = incomeRepository.findAll().size();
+        // set the field null
+        income.setTitle(null);
+
+        // Create the Income, which fails.
+
+        restIncomeMockMvc.perform(post("/api/incomes")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(income)))
+            .andExpect(status().isBadRequest());
+
+        List<Income> incomeList = incomeRepository.findAll();
+        assertThat(incomeList).hasSize(databaseSizeBeforeTest);
+    }
 
     @Test
     @Transactional
@@ -219,6 +243,7 @@ public class IncomeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(income.getId().intValue())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.doubleValue())));
@@ -235,6 +260,7 @@ public class IncomeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(income.getId().intValue()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.doubleValue()));
@@ -261,6 +287,7 @@ public class IncomeResourceIT {
         // Disconnect from session so that the updates on updatedIncome are not directly saved in db
         em.detach(updatedIncome);
         updatedIncome
+            .title(UPDATED_TITLE)
             .description(UPDATED_DESCRIPTION)
             .date(UPDATED_DATE)
             .value(UPDATED_VALUE);
@@ -274,6 +301,7 @@ public class IncomeResourceIT {
         List<Income> incomeList = incomeRepository.findAll();
         assertThat(incomeList).hasSize(databaseSizeBeforeUpdate);
         Income testIncome = incomeList.get(incomeList.size() - 1);
+        assertThat(testIncome.getTitle()).isEqualTo(UPDATED_TITLE);
         assertThat(testIncome.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testIncome.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testIncome.getValue()).isEqualTo(UPDATED_VALUE);

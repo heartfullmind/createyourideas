@@ -54,6 +54,10 @@ public class Idea implements Serializable {
     @Column(name = "interest", nullable = false)
     private Float interest;
 
+    @NotNull
+    @Column(name = "investment", nullable = false)
+    private Float investment;
+
     @Column(name = "active")
     private Boolean active;
 
@@ -166,6 +170,19 @@ public class Idea implements Serializable {
 
     public void setInterest(Float interest) {
         this.interest = interest;
+    }
+
+    public Float getInvestment() {
+        return investment;
+    }
+
+    public Idea investment(Float investment) {
+        this.investment = investment;
+        return this;
+    }
+
+    public void setInvestment(Float investment) {
+        this.investment = investment;
     }
 
     public Boolean isActive() {
@@ -334,6 +351,7 @@ public class Idea implements Serializable {
             ", description='" + getDescription() + "'" +
             ", ideatype='" + getIdeatype() + "'" +
             ", interest=" + getInterest() +
+            ", investment=" + getInvestment() +
             ", active='" + isActive() + "'" +
             "}";
     }

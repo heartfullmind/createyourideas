@@ -16,12 +16,12 @@
                     </span>
                 </a>
             </li>
-            
+
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="ownIdea" (click)="collapseNavbar()">
+                <a class="nav-link" routerLink="idea-pinwall" (click)="collapseNavbar()">
                     <span>
-                        <fa-icon icon="heart"></fa-icon>
-                        <span jhiTranslate="global.menu.idea">All Ideas</span>
+                        <fa-icon icon="star"></fa-icon>
+                        <span jhiTranslate="global.menu.idea-pinwall">Idea Pinwall</span>
                     </span>
                 </a>
             </li>
@@ -34,33 +34,27 @@
                     </span>
                 </a>
             </li>
-            
+
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="about-us" (click)="collapseNavbar()">
-                  <span>
-                    <fa-icon icon="tag"></fa-icon>
-                    <span jhiTranslate="global.menu.about-us">About us</span>
-                  </span>  
-                </a>
-            </li>
+                    <a class="nav-link" routerLink="idea" (click)="collapseNavbar()">
+                        <span>
+                            <fa-icon icon="heart"></fa-icon>
+                            <span jhiTranslate="global.menu.idea">Own Idea</span>
+                        </span>
+                    </a>
+                </li>
             <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
 
             <li *ngSwitchCase="true" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
                         <fa-icon icon="th-list"></fa-icon>
-                        <span jhiTranslate="global.menu.entities.main">
-                            Entities
+                        <span jhiTranslate="global.menu.accounting">
+                            Accounting
                         </span>
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
-                    <li>
-                        <a class="dropdown-item" routerLink="idea" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.idea">Idea</span>
-                        </a>
-                    </li>
                     <li>
                         <a class="dropdown-item" routerLink="income" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
@@ -82,6 +76,15 @@
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
+
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link" routerLink="about-us" (click)="collapseNavbar()">
+                      <span>
+                        <fa-icon icon="tag"></fa-icon>
+                        <span jhiTranslate="global.menu.about-us">About us</span>
+                      </span>  
+                    </a>
+                </li>
 
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
@@ -162,12 +165,6 @@
                   </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="account-menu">
-                        <li *ngSwitchCase="true">
-                                <a class="dropdown-item" routerLink="accounting" routerLinkActive="active" (click)="collapseNavbar()">
-                                    <fa-icon icon="th"></fa-icon>
-                                    <span jhiTranslate="global.menu.accounting">Accounting</span>
-                                </a>
-                            </li>
                     <li *ngSwitchCase="true">
                         <a class="dropdown-item" routerLink="account/settings" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="wrench" fixedWidth="true"></fa-icon>

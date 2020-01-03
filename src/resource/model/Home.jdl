@@ -9,17 +9,20 @@ entity Idea {
 	description TextBlob required
     ideatype Ideatype required
     interest Float required
+	investment Float required
     active Boolean
 	
 }
 
 entity Income {
+	title String required
 	description String required
 	date LocalDate required
 	value Float required
 }
 
 entity Outgoings {
+	title String required
 	description String required
 	date LocalDate required
 	value Float required
@@ -32,11 +35,6 @@ entity Worksheet {
 	costHour Float required
 	hours Duration required
 	total Float required
-}
-
-
-enum Language {
-    ENGLISH, GERMAN
 }
 
 enum Ideatype {
@@ -58,7 +56,7 @@ relationship ManyToOne {
 
 // Set pagination options
 paginate Idea with pagination
-paginate Income, Outgoings with pagination
+paginate Income, Outgoings with infinite-scroll
 
 //dto * with mapstruct
 

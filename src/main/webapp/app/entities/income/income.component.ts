@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,6 +9,9 @@ import { IIncome } from 'app/shared/model/income.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IncomeService } from './income.service';
 import { IncomeDeleteDialogComponent } from './income-delete-dialog.component';
+import { IIdea } from 'app/shared/model/idea.model';
+import { IdeaService } from '../idea/idea.service';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'jhi-income',
@@ -17,78 +19,65 @@ import { IncomeDeleteDialogComponent } from './income-delete-dialog.component';
 })
 export class IncomeComponent implements OnInit, OnDestroy {
   incomes: IIncome[];
-  error: any;
-  success: any;
   eventSubscriber: Subscription;
-  routeData: any;
+  itemsPerPage: number;
   links: any;
-  totalItems: any;
-  itemsPerPage: any;
   page: any;
   predicate: any;
-  previousPage: any;
   reverse: any;
+  totalItems: number;
+  ideas: IIdea[];
+  selectedIdea: IIdea;
+
+  selectIdeaForm = this.fb.group({
+    ideaName: ['']	
+  });
 
   constructor(
     protected incomeService: IncomeService,
-    protected parseLinks: JhiParseLinks,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected ideaService: IdeaService, 
+    protected parseLinks: JhiParseLinks,
+    public fb: FormBuilder
   ) {
+    this.incomes = [];
     this.itemsPerPage = ITEMS_PER_PAGE;
-    this.routeData = this.activatedRoute.data.subscribe(data => {
-      this.page = data.pagingParams.page;
-      this.previousPage = data.pagingParams.page;
-      this.reverse = data.pagingParams.ascending;
-      this.predicate = data.pagingParams.predicate;
-    });
+    this.page = 0;
+    this.links = {
+      last: 0
+    };
+    this.predicate = 'id';
+    this.reverse = true;
   }
 
   loadAll() {
-    this.incomeService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<IIncome[]>) => this.paginateIncomes(res.body, res.headers));
+      this.incomeService
+        .queryByIdeaId(
+          this.selectedIdea.idea.id,  
+        {
+          page: this.page,
+          size: this.itemsPerPage,
+          sort: this.sort()
+        })
+        .subscribe((res: HttpResponse<IIncome[]>) => this.paginateIncomes(res.body, res.headers));
   }
 
-  loadPage(page: number) {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
-  }
-
-  transition() {
-    this.router.navigate(['/income'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    });
+  reset() {
+    this.page = 0;
+    this.incomes = [];
     this.loadAll();
   }
 
-  clear() {
-    this.page = 0;
-    this.router.navigate([
-      '/income',
-      {
-        page: this.page,
-        sort: this.predicate + ',' + (this.reverse ? 'asc' : 'desc')
-      }
-    ]);
+  loadPage(page) {
+    this.page = page;
     this.loadAll();
   }
 
   ngOnInit() {
     this.loadAll();
     this.registerChangeInIncomes();
+    this.loadSelect();
   }
 
   ngOnDestroy() {
@@ -100,7 +89,7 @@ export class IncomeComponent implements OnInit, OnDestroy {
   }
 
   registerChangeInIncomes() {
-    this.eventSubscriber = this.eventManager.subscribe('incomeListModification', () => this.loadAll());
+    this.eventSubscriber = this.eventManager.subscribe('incomeListModification', () => this.reset());
   }
 
   delete(income: IIncome) {
@@ -116,9 +105,25 @@ export class IncomeComponent implements OnInit, OnDestroy {
     return result;
   }
 
+  changeIdea() {
+    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
+      { this.selectedIdea = res.body;
+      })
+      this.ngOnInit();
+  }
+
+  loadSelect() {
+	  this.ideaService.queryByUser().subscribe((res: HttpResponse<IIdea[]>) => {
+          this.ideas = res.body
+    
+    }); 
+  }	
+
   protected paginateIncomes(data: IIncome[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    this.incomes = data;
+    for (let i = 0; i < data.length; i++) {
+      this.incomes.push(data[i]);
+    }
   }
 }

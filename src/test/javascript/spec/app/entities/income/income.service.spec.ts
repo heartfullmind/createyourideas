@@ -24,7 +24,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Income(0, 'AAAAAAA', currentDate, 0);
+      elemDefault = new Income(0, 'AAAAAAA', 'AAAAAAA', currentDate, 0);
     });
 
     describe('Service methods', () => {
@@ -71,6 +71,7 @@ describe('Service Tests', () => {
       it('should update a Income', () => {
         const returnedFromService = Object.assign(
           {
+            title: 'BBBBBB',
             description: 'BBBBBB',
             date: currentDate.format(DATE_FORMAT),
             value: 1
@@ -96,6 +97,7 @@ describe('Service Tests', () => {
       it('should return a list of Income', () => {
         const returnedFromService = Object.assign(
           {
+            title: 'BBBBBB',
             description: 'BBBBBB',
             date: currentDate.format(DATE_FORMAT),
             value: 1

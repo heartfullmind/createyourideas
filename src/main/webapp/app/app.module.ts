@@ -23,6 +23,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IdeaFunnelModule } from './idea-funnel/idea-funnel.module';
 import { FooterModule } from './layouts/footer/footer.module';
 import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
+import { HomeIdeaPinwallModule } from './idea-pinwall/idea-pinwall.module';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
 	  HomeOutgoingsModule,
 	  HomeIncomeModule,
     IdeaFunnelModule,
+    HomeIdeaPinwallModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     HomeEntityModule,
     HomeAppRoutingModule,

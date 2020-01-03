@@ -21,6 +21,7 @@
       "description": "Description",
       "ideatype": "Ideatype",
       "interest": "Interest",
+      "investment": "Investment",
       "active": "Active",
       "incomes": "Incomes",
       "outgoings": "Outgoings",

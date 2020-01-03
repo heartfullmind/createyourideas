@@ -2,8 +2,6 @@ package net.createyourideas.accounting.web.rest;
 
 import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.service.IdeaService;
-import net.createyourideas.accounting.tree.Node;
-import net.createyourideas.accounting.tree.TreeUtils;
 import net.createyourideas.accounting.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -128,38 +125,5 @@ public class IdeaResource {
         log.debug("REST request to delete Idea : {}", id);
         ideaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-
-    @GetMapping("/ideas/user")
-    public ResponseEntity<List<Idea>> getAllIdeasByCurrentUser(Pageable pageable) {
-        log.debug("REST request to get a page of Ideas");
-        Page<Idea> page = ideaService.findByUserIsCurrentUser(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    @GetMapping("/ideas/ideafunnel")
-    public ResponseEntity<String> getIdeafunnel(Pageable pageable) {
-        log.debug("REST get ideafunnel");
-        String json = "";
-        Page<Idea> ideasPage = ideaService.findAll(pageable);
-        List<Idea> ideas = ideasPage.getContent();
-        List<Node> nodes = new ArrayList<>();
-        try {
-            for(Idea idea : ideas) {
-                if(idea.getIdea() == null)
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), null));
-                else
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), idea.getIdea().getId().toString()));
-            }
-            json = "{\n" + 
-                        "\"format\":\"nodeTree\",\n" + 
-                        "\"data\": \n" +
-                        TreeUtils.createTree(nodes) + "\n" + 
-                    "}";
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.ok(json);
     }
 }

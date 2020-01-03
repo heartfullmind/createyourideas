@@ -126,4 +126,13 @@ public class IncomeResource {
         incomeService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/incomes/{id}/allByIdeaId")
+    public ResponseEntity<List<Income>> getAllIncomesByIdeaId(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of Incomes by ideaId");
+        Page<Income> page = incomeService.findAllByIdeaId(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
 }

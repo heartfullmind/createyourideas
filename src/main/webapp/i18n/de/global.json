@@ -4,7 +4,8 @@
     "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
     "menu": {
       "home": "Startseite",
-      "idea": "Alle Ideen",
+      "idea": "Eigene Ideen",
+      "idea-pinwall": "Ideen Pinwand",
       "accounting": "Buchhaltung",
       "about-us": "über uns",
       "idea-funnel": "Ideentrichter",
@@ -16,6 +17,7 @@
         "income": "Income",
         "outgoings": "Outgoings",
         "worksheet": "Worksheet",
+        "ideapinwall": "Ideapinwall",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

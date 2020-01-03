@@ -38,7 +38,12 @@
     </tab>
     
     <tab heading="Worksheet">
-        <jhi-worksheet></jhi-worksheet>
+        <div *ngIf="!selectedIdea">
+            <span class="selectIdeaTitle" jhiTranslate="accounting.selectIdea">Please select an idea</span>
+      </div> 
+      <div *ngIf="selectedIdea"></div>  
+        <jhi-worksheet [selectedIdea]="selectedIdea"></jhi-worksheet>
+    </div>
     </tab>
 
   </tabset>

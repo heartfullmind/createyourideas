@@ -24,6 +24,10 @@ public class Income implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "title", nullable = false)
+    private String title;
+
+    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -46,6 +50,19 @@ public class Income implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Income title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -121,6 +138,7 @@ public class Income implements Serializable {
     public String toString() {
         return "Income{" +
             "id=" + getId() +
+            ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", date='" + getDate() + "'" +
             ", value=" + getValue() +

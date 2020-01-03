@@ -16,6 +16,7 @@
       "detail": {
         "title": "Outgoings"
       },
+      "title": "Title",
       "description": "Description",
       "date": "Date",
       "value": "Value",

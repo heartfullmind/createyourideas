@@ -53,6 +53,9 @@ public class IdeaResourceIT {
     private static final Float DEFAULT_INTEREST = 1F;
     private static final Float UPDATED_INTEREST = 2F;
 
+    private static final Float DEFAULT_INVESTMENT = 1F;
+    private static final Float UPDATED_INVESTMENT = 2F;
+
     private static final Boolean DEFAULT_ACTIVE = false;
     private static final Boolean UPDATED_ACTIVE = true;
 
@@ -107,6 +110,7 @@ public class IdeaResourceIT {
             .description(DEFAULT_DESCRIPTION)
             .ideatype(DEFAULT_IDEATYPE)
             .interest(DEFAULT_INTEREST)
+            .investment(DEFAULT_INVESTMENT)
             .active(DEFAULT_ACTIVE);
         return idea;
     }
@@ -124,6 +128,7 @@ public class IdeaResourceIT {
             .description(UPDATED_DESCRIPTION)
             .ideatype(UPDATED_IDEATYPE)
             .interest(UPDATED_INTEREST)
+            .investment(UPDATED_INVESTMENT)
             .active(UPDATED_ACTIVE);
         return idea;
     }
@@ -154,6 +159,7 @@ public class IdeaResourceIT {
         assertThat(testIdea.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testIdea.getIdeatype()).isEqualTo(DEFAULT_IDEATYPE);
         assertThat(testIdea.getInterest()).isEqualTo(DEFAULT_INTEREST);
+        assertThat(testIdea.getInvestment()).isEqualTo(DEFAULT_INVESTMENT);
         assertThat(testIdea.isActive()).isEqualTo(DEFAULT_ACTIVE);
     }
 
@@ -233,6 +239,24 @@ public class IdeaResourceIT {
 
     @Test
     @Transactional
+    public void checkInvestmentIsRequired() throws Exception {
+        int databaseSizeBeforeTest = ideaRepository.findAll().size();
+        // set the field null
+        idea.setInvestment(null);
+
+        // Create the Idea, which fails.
+
+        restIdeaMockMvc.perform(post("/api/ideas")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(idea)))
+            .andExpect(status().isBadRequest());
+
+        List<Idea> ideaList = ideaRepository.findAll();
+        assertThat(ideaList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllIdeas() throws Exception {
         // Initialize the database
         ideaRepository.saveAndFlush(idea);
@@ -248,6 +272,7 @@ public class IdeaResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
             .andExpect(jsonPath("$.[*].ideatype").value(hasItem(DEFAULT_IDEATYPE.toString())))
             .andExpect(jsonPath("$.[*].interest").value(hasItem(DEFAULT_INTEREST.doubleValue())))
+            .andExpect(jsonPath("$.[*].investment").value(hasItem(DEFAULT_INVESTMENT.doubleValue())))
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
     }
     
@@ -268,6 +293,7 @@ public class IdeaResourceIT {
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
             .andExpect(jsonPath("$.ideatype").value(DEFAULT_IDEATYPE.toString()))
             .andExpect(jsonPath("$.interest").value(DEFAULT_INTEREST.doubleValue()))
+            .andExpect(jsonPath("$.investment").value(DEFAULT_INVESTMENT.doubleValue()))
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
     }
 
@@ -298,6 +324,7 @@ public class IdeaResourceIT {
             .description(UPDATED_DESCRIPTION)
             .ideatype(UPDATED_IDEATYPE)
             .interest(UPDATED_INTEREST)
+            .investment(UPDATED_INVESTMENT)
             .active(UPDATED_ACTIVE);
 
         restIdeaMockMvc.perform(put("/api/ideas")
@@ -315,6 +342,7 @@ public class IdeaResourceIT {
         assertThat(testIdea.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testIdea.getIdeatype()).isEqualTo(UPDATED_IDEATYPE);
         assertThat(testIdea.getInterest()).isEqualTo(UPDATED_INTEREST);
+        assertThat(testIdea.getInvestment()).isEqualTo(UPDATED_INVESTMENT);
         assertThat(testIdea.isActive()).isEqualTo(UPDATED_ACTIVE);
     }
 
