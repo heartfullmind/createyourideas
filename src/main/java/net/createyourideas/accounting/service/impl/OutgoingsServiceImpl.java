@@ -77,4 +77,9 @@ public class OutgoingsServiceImpl implements OutgoingsService {
         log.debug("Request to delete Outgoings : {}", id);
         outgoingsRepository.deleteById(id);
     }
+
+    @Override
+    public Page<Outgoings> findAllByIdeaId(Long ideaId, Pageable pageable) {
+        return outgoingsRepository.findAllByIdeaId(ideaId, pageable);
+    }
 }

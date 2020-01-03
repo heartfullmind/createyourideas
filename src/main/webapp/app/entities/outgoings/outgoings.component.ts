@@ -49,16 +49,21 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
     };
     this.predicate = 'id';
     this.reverse = true;
+    this.loadSelect();
   }
 
   loadAll() {
+    if(this.selectedIdea) {
     this.outgoingsService
-      .query({
+      .queryByIdeaId(
+      this.selectedIdea.id, 
+      {
         page: this.page,
         size: this.itemsPerPage,
         sort: this.sort()
       })
       .subscribe((res: HttpResponse<IOutgoings[]>) => this.paginateOutgoings(res.body, res.headers));
+    }
   }
 
   reset() {
@@ -97,7 +102,9 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
 
   changeIdea() {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
-      { this.selectedIdea = res.body;
+      { 
+        this.selectedIdea = res.body;
+        this.ngOnInit();
       })
   }
 

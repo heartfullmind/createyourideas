@@ -2,9 +2,6 @@
     <div class="row">
             <div class="col-md-4">
               <div class="container-select-idea">
-                    <div class="selected-idea-alert alert alert-success" *ngIf="selectedIdea">
-                        <span jhiTranslate="homeapp.selectIdea.main.selectedIdea">Selected idea</span> <span>{{selectedIdea.title}}</span>
-                    </div>
                     <div id="select-idea">     
                     <form [formGroup]="selectIdeaForm" >
                         <label for="changeIdea" jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</label>

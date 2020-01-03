@@ -32,12 +32,16 @@ export class WorksheetComponent implements OnInit, OnDestroy {
     protected modalService: NgbModal,
     protected ideaService: IdeaService,
     public fb: FormBuilder
-  ) {}
+  ) {
+    this.loadSelect();
+  }
 
   loadAll() {
-    this.worksheetService.query().subscribe((res: HttpResponse<IWorksheet[]>) => {
-      this.worksheets = res.body;
-    });
+    if(this.selectedIdea) {
+      this.worksheetService.queryByIdeaId(this.selectedIdea.id).subscribe((res: HttpResponse<IWorksheet[]>) => {
+        this.worksheets = res.body;
+      });
+    }
   }
 
   ngOnInit() {
@@ -73,7 +77,9 @@ export class WorksheetComponent implements OnInit, OnDestroy {
 
   changeIdea() {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
-      { this.selectedIdea = res.body;
+      { 
+        this.selectedIdea = res.body;
+        this.ngOnInit();
       })
   }
 

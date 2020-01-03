@@ -49,18 +49,21 @@ export class IncomeComponent implements OnInit, OnDestroy {
     };
     this.predicate = 'id';
     this.reverse = true;
+    this.loadSelect();
   }
 
   loadAll() {
+    if(this.selectedIdea) {
       this.incomeService
         .queryByIdeaId(
-          this.selectedIdea.idea.id,  
+          this.selectedIdea.id,  
         {
           page: this.page,
           size: this.itemsPerPage,
           sort: this.sort()
         })
         .subscribe((res: HttpResponse<IIncome[]>) => this.paginateIncomes(res.body, res.headers));
+    }
   }
 
   reset() {
@@ -77,7 +80,6 @@ export class IncomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadAll();
     this.registerChangeInIncomes();
-    this.loadSelect();
   }
 
   ngOnDestroy() {
@@ -108,14 +110,14 @@ export class IncomeComponent implements OnInit, OnDestroy {
   changeIdea() {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
       { this.selectedIdea = res.body;
+        this.ngOnInit();
       })
-      this.ngOnInit();
+      
   }
 
   loadSelect() {
 	  this.ideaService.queryByUser().subscribe((res: HttpResponse<IIdea[]>) => {
-          this.ideas = res.body
-    
+          this.ideas = res.body;
     }); 
   }	
 

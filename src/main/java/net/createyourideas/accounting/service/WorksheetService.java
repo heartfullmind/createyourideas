@@ -5,6 +5,9 @@ import net.createyourideas.accounting.domain.Worksheet;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Service Interface for managing {@link Worksheet}.
  */
@@ -40,4 +43,6 @@ public interface WorksheetService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<Worksheet> findAllByIdeaId(Long ideaId, Pageable pageable);
 }

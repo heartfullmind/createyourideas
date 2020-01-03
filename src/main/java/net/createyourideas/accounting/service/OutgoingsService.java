@@ -43,4 +43,7 @@ public interface OutgoingsService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+
+    Page<Outgoings> findAllByIdeaId(Long ideaId, Pageable pageable);
 }

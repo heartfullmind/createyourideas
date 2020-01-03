@@ -1,5 +1,9 @@
 package net.createyourideas.accounting.repository;
+
 import net.createyourideas.accounting.domain.Outgoings;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OutgoingsRepository extends JpaRepository<Outgoings, Long> {
 
+    Page<Outgoings> findAllByIdeaId(Long ideaId, Pageable pageable);
 }

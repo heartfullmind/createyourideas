@@ -5,7 +5,8 @@ import net.createyourideas.accounting.domain.Worksheet;
 import net.createyourideas.accounting.repository.WorksheetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,6 @@ public class WorksheetServiceImpl implements WorksheetService {
         return worksheetRepository.findAll();
     }
 
-
     /**
      * Get one worksheet by id.
      *
@@ -74,5 +74,10 @@ public class WorksheetServiceImpl implements WorksheetService {
     public void delete(Long id) {
         log.debug("Request to delete Worksheet : {}", id);
         worksheetRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<Worksheet> findAllByIdeaId(Long ideaId, Pageable pageable) {
+        return worksheetRepository.findAllByIdeaId(ideaId, pageable);
     }
 }

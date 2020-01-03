@@ -126,4 +126,12 @@ public class OutgoingsResource {
         outgoingsService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/outgoings/{id}/allByIdeaId")
+    public ResponseEntity<List<Outgoings>> getAllOutgoingsByIdeaId(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of Outgoings by ideaId");
+        Page<Outgoings> page = outgoingsService.findAllByIdeaId(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
 }

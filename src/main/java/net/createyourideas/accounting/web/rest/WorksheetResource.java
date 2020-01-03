@@ -5,12 +5,17 @@ import net.createyourideas.accounting.service.WorksheetService;
 import net.createyourideas.accounting.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -115,5 +120,14 @@ public class WorksheetResource {
         log.debug("REST request to delete Worksheet : {}", id);
         worksheetService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+
+    @GetMapping("/worksheets/{id}/allByIdeaId")
+    public ResponseEntity<List<Worksheet>> getAllOutgoingsByIdeaId(@PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of Outgoings by ideaId");
+        Page<Worksheet> page = worksheetService.findAllByIdeaId(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }
