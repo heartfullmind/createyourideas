@@ -5,6 +5,7 @@ import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.repository.IdeaRepository;
 import net.createyourideas.accounting.service.IdeaService;
 import net.createyourideas.accounting.web.rest.errors.ExceptionTranslator;
+import net.createyourideas.accounting.service.UserService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,6 +67,9 @@ public class IdeaResourceIT {
     private IdeaService ideaService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -87,7 +91,7 @@ public class IdeaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IdeaResource ideaResource = new IdeaResource(ideaService);
+        final IdeaResource ideaResource = new IdeaResource(ideaService, userService);
         this.restIdeaMockMvc = MockMvcBuilders.standaloneSetup(ideaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
