@@ -1,7 +1,9 @@
 package net.createyourideas.accounting.web.rest;
 
 import net.createyourideas.accounting.domain.Idea;
+import net.createyourideas.accounting.domain.User;
 import net.createyourideas.accounting.service.IdeaService;
+import net.createyourideas.accounting.service.UserService;
 import net.createyourideas.accounting.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -41,8 +43,11 @@ public class IdeaResource {
 
     private final IdeaService ideaService;
 
-    public IdeaResource(IdeaService ideaService) {
+    private final UserService userService;
+
+    public IdeaResource(IdeaService ideaService, UserService userService) {
         this.ideaService = ideaService;
+        this.userService = userService;
     }
 
     /**
@@ -58,6 +63,8 @@ public class IdeaResource {
         if (idea.getId() != null) {
             throw new BadRequestAlertException("A new idea cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        User user = userService.getUserWithAuthorities().get();
+        idea.setUser(user);
         Idea result = ideaService.save(idea);
         return ResponseEntity.created(new URI("/api/ideas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))

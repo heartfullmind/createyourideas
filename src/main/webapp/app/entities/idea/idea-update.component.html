@@ -4,11 +4,7 @@
             <h2 id="jhi-idea-heading" jhiTranslate="homeApp.idea.home.createOrEditLabel">Create or edit a Idea</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!editForm.get('id').value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
-                        readonly />
-                </div>
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.idea.title" for="field_title">Title</label>
                     <input type="text" class="form-control" name="title" id="field_title"
@@ -98,24 +94,12 @@
                         </small>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.active" for="field_active">Active</label>
-                    <input type="checkbox" class="form-control" name="active" id="field_active"
-                           formControlName="active"/>
-                </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.user" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" formControlName="user">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
-                    </select>
-                </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.idea.idea" for="field_idea">Idea</label>
                     <select class="form-control" id="field_idea" name="idea" formControlName="idea">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.id}}</option>
+                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.title}}</option>
                     </select>
                 </div>
             </div>

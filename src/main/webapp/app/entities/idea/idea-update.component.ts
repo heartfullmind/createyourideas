@@ -23,7 +23,6 @@ export class IdeaUpdateComponent implements OnInit {
   ideas: IIdea[];
 
   editForm = this.fb.group({
-    id: [],
     title: [null, [Validators.required]],
     logo: [null, [Validators.required]],
     logoContentType: [],
@@ -31,8 +30,6 @@ export class IdeaUpdateComponent implements OnInit {
     ideatype: [null, [Validators.required]],
     interest: [null, [Validators.required]],
     investment: [null, [Validators.required]],
-    active: [],
-    user: [],
     idea: []
   });
 
@@ -61,7 +58,6 @@ export class IdeaUpdateComponent implements OnInit {
 
   updateForm(idea: IIdea) {
     this.editForm.patchValue({
-      id: idea.id,
       title: idea.title,
       logo: idea.logo,
       logoContentType: idea.logoContentType,
@@ -69,8 +65,6 @@ export class IdeaUpdateComponent implements OnInit {
       ideatype: idea.ideatype,
       interest: idea.interest,
       investment: idea.investment,
-      active: idea.active,
-      user: idea.user,
       idea: idea.idea
     });
   }
@@ -135,7 +129,6 @@ export class IdeaUpdateComponent implements OnInit {
   private createFromForm(): IIdea {
     return {
       ...new Idea(),
-      id: this.editForm.get(['id']).value,
       title: this.editForm.get(['title']).value,
       logoContentType: this.editForm.get(['logoContentType']).value,
       logo: this.editForm.get(['logo']).value,
@@ -143,8 +136,6 @@ export class IdeaUpdateComponent implements OnInit {
       ideatype: this.editForm.get(['ideatype']).value,
       interest: this.editForm.get(['interest']).value,
       investment: this.editForm.get(['investment']).value,
-      active: this.editForm.get(['active']).value,
-      user: this.editForm.get(['user']).value,
       idea: this.editForm.get(['idea']).value
     };
   }

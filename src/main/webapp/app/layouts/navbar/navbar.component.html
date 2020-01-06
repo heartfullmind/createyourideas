@@ -57,20 +57,26 @@
                 <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
                     <li>
                         <a class="dropdown-item" routerLink="income" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa-icon icon="ok" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.income">Income</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="outgoings" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa-icon icon="remove" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.outgoings">Outgoings</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="worksheet" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <fa-icon icon="file" fixedWidth="true"></fa-icon>
                             <span jhiTranslate="global.menu.entities.worksheet">Worksheet</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="total" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="home" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="total.main">Total</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

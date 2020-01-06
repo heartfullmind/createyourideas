@@ -18,22 +18,18 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="title"><span jhiTranslate="homeApp.idea.title">Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="logo"><span jhiTranslate="homeApp.idea.logo">Logo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="description"><span jhiTranslate="homeApp.idea.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="ideatype"><span jhiTranslate="homeApp.idea.ideatype">Ideatype</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="interest"><span jhiTranslate="homeApp.idea.interest">Interest</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="investment"><span jhiTranslate="homeApp.idea.investment">Investment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="active"><span jhiTranslate="homeApp.idea.active">Active</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="user.id"><span jhiTranslate="homeApp.idea.user">User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="idea.id"><span jhiTranslate="homeApp.idea.idea">Idea</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let idea of ideas ;trackBy: trackId">
-                <td><a [routerLink]="['/idea', idea.id, 'view' ]">{{idea.id}}</a></td>
                 <td>{{idea.title}}</td>
                 <td>
                     <a *ngIf="idea.logo" (click)="openFile(idea.logoContentType, idea.logo)">
@@ -45,13 +41,9 @@
                 <td jhiTranslate="{{'homeApp.Ideatype.' + idea.ideatype}}">{{idea.ideatype}}</td>
                 <td>{{idea.interest}}</td>
                 <td>{{idea.investment}}</td>
-                <td>{{idea.active}}</td>
-                <td>
-                    {{idea.user?.id}}
-                </td>
                 <td>
                     <div *ngIf="idea.idea">
-                        <a [routerLink]="['/idea', idea.idea?.id, 'view' ]" >{{idea.idea?.id}}</a>
+                        <a [routerLink]="['/idea', idea.idea?.id, 'view' ]" >{{idea.idea?.title}}</a>
                     </div>
                 </td>
                 <td class="text-right">
