@@ -13,8 +13,8 @@
                     </div>
                 </div>             
             </div>
-            <div class="col-xs-12 col-md-8">
-                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-worksheet" [routerLink]="['/worksheet/new']">
+            <div class="col-xs-12 col-md-8" *ngIf="selectedIdea">
+                <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-worksheet" [routerLink]="['/worksheet', selectedIdea.id, 'new']">
                     <fa-icon [icon]="'plus'"></fa-icon>
                     <span  jhiTranslate="homeApp.worksheet.home.createLabel">
                     Create a new Worksheet
@@ -41,7 +41,6 @@
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.hours">Hours</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.total">Total</span></th>
             <th scope="col" ><span jhiTranslate="homeApp.worksheet.user">User</span></th>
-            <th scope="col" ><span jhiTranslate="homeApp.worksheet.idea">Idea</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -56,11 +55,6 @@
                 <td>{{worksheet.total}}</td>
                 <td>
                     {{worksheet.user?.id}}
-                </td>
-                <td>
-                    <div *ngIf="worksheet.idea">
-                        <a [routerLink]="['/idea', worksheet.idea?.id, 'view' ]" >{{worksheet.idea?.id}}</a>
-                    </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group">

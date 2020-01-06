@@ -86,6 +86,8 @@ public class IdeaResource {
         if (idea.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        User user = userService.getUserWithAuthorities().get();
+        idea.setUser(user);
         Idea result = ideaService.save(idea);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, idea.getId().toString()))

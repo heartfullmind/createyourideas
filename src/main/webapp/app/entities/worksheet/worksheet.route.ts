@@ -47,7 +47,7 @@ export const worksheetRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: ':ideaId/new',
     component: WorksheetUpdateComponent,
     resolve: {
       worksheet: WorksheetResolve

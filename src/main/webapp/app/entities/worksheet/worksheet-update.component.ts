@@ -5,7 +5,6 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
 import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { IWorksheet, Worksheet } from 'app/shared/model/worksheet.model';
 import { WorksheetService } from './worksheet.service';
@@ -20,11 +19,13 @@ import { IdeaService } from 'app/entities/idea/idea.service';
 })
 export class WorksheetUpdateComponent implements OnInit {
   isSaving: boolean;
-
+  ideaId: number;
+  private sub: any;
   users: IUser[];
 
   ideas: IIdea[];
   dateDp: any;
+  selectedIdea: IIdea;
 
   editForm = this.fb.group({
     id: [],
@@ -62,6 +63,10 @@ export class WorksheetUpdateComponent implements OnInit {
   }
 
   updateForm(worksheet: IWorksheet) {
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      this.ideaId = +params['ideaId'];
+      this.ideaService.find(this.ideaId).subscribe((res: HttpResponse<IIdea>) => this.selectedIdea = res.body);
+   });
     this.editForm.patchValue({
       id: worksheet.id,
       jobtitle: worksheet.jobtitle,
@@ -71,7 +76,7 @@ export class WorksheetUpdateComponent implements OnInit {
       hours: worksheet.hours,
       total: worksheet.total,
       user: worksheet.user,
-      idea: worksheet.idea
+      idea: this.selectedIdea
     });
   }
 
@@ -123,6 +128,10 @@ export class WorksheetUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IWorksheet {
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      this.ideaId = +params['ideaId'];
+      this.ideaService.find(this.ideaId).subscribe((res: HttpResponse<IIdea>) => this.selectedIdea = res.body);
+   });
     return {
       ...new Worksheet(),
       id: this.editForm.get(['id']).value,
@@ -133,7 +142,7 @@ export class WorksheetUpdateComponent implements OnInit {
       hours: this.editForm.get(['hours']).value,
       total: this.editForm.get(['total']).value,
       user: this.editForm.get(['user']).value,
-      idea: this.editForm.get(['idea']).value
+      idea: this.selectedIdea
     };
   }
 

@@ -110,7 +110,7 @@ export class IncomeComponent implements OnInit, OnDestroy {
   changeIdea() {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
       { this.selectedIdea = res.body;
-        this.ngOnInit();
+        this.reset();
       })
       
   }

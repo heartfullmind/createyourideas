@@ -13,9 +13,9 @@
                     </div>
                 </div>                  
             </div>
-            <div class="col-xs-12 col-md-8">
+            <div class="col-xs-12 col-md-8" *ngIf="selectedIdea">
                     <h2 id="page-heading">
-                            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-outgoings" [routerLink]="['/outgoings/new']">
+                            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-outgoings" [routerLink]="['/outgoings', selectedIdea.id, 'new']">
                                 <fa-icon [icon]="'plus'"></fa-icon>
                                 <span  jhiTranslate="homeApp.outgoings.home.createLabel">
                                 Create a new Outgoings
@@ -47,7 +47,6 @@
             <th scope="col"  jhiSortBy="description"><span jhiTranslate="homeApp.outgoings.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="date"><span jhiTranslate="homeApp.outgoings.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="value"><span jhiTranslate="homeApp.outgoings.value">Value</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="idea.id"><span jhiTranslate="homeApp.outgoings.idea">Idea</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -58,11 +57,7 @@
                 <td>{{outgoings.description}}</td>
                 <td>{{outgoings.date | date:'mediumDate'}}</td>
                 <td>{{outgoings.value}}</td>
-                <td>
-                    <div *ngIf="outgoings.idea">
-                        <a [routerLink]="['/idea', outgoings.idea?.id, 'view' ]" >{{outgoings.idea?.id}}</a>
-                    </div>
-                </td>
+
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

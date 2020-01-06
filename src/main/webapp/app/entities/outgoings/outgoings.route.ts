@@ -47,7 +47,7 @@ export const outgoingsRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: ':ideaId/new',
     component: OutgoingsUpdateComponent,
     resolve: {
       outgoings: OutgoingsResolve

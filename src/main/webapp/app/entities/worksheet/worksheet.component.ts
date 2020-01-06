@@ -47,7 +47,6 @@ export class WorksheetComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadAll();
     this.registerChangeInWorksheets();
-    this.loadSelect();
   }
 
   ngOnDestroy() {
@@ -56,6 +55,11 @@ export class WorksheetComponent implements OnInit, OnDestroy {
 
   trackId(index: number, item: IWorksheet) {
     return item.id;
+  }
+
+  reset() {
+    this.worksheets = [];
+    this.loadAll();
   }
 
   byteSize(field) {
@@ -79,7 +83,7 @@ export class WorksheetComponent implements OnInit, OnDestroy {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
       { 
         this.selectedIdea = res.body;
-        this.ngOnInit();
+        this.reset();
       })
   }
 

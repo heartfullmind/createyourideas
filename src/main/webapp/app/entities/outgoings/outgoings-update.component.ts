@@ -5,7 +5,6 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 import { IOutgoings, Outgoings } from 'app/shared/model/outgoings.model';
 import { OutgoingsService } from './outgoings.service';
@@ -18,9 +17,11 @@ import { IdeaService } from 'app/entities/idea/idea.service';
 })
 export class OutgoingsUpdateComponent implements OnInit {
   isSaving: boolean;
-
+  ideaId: number;
+  private sub: any;
   ideas: IIdea[];
   dateDp: any;
+  selectedIdea: IIdea;
 
   editForm = this.fb.group({
     id: [],
@@ -50,13 +51,17 @@ export class OutgoingsUpdateComponent implements OnInit {
   }
 
   updateForm(outgoings: IOutgoings) {
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      this.ideaId = +params['ideaId'];
+      this.ideaService.find(this.ideaId).subscribe((res: HttpResponse<IIdea>) => this.selectedIdea = res.body);
+   });
     this.editForm.patchValue({
       id: outgoings.id,
       title: outgoings.title,
       description: outgoings.description,
       date: outgoings.date,
       value: outgoings.value,
-      idea: outgoings.idea
+      idea: this.selectedIdea
     });
   }
 
@@ -75,6 +80,10 @@ export class OutgoingsUpdateComponent implements OnInit {
   }
 
   private createFromForm(): IOutgoings {
+    this.sub = this.activatedRoute.params.subscribe(params => {
+      this.ideaId = +params['ideaId'];
+      this.ideaService.find(this.ideaId).subscribe((res: HttpResponse<IIdea>) => {this.selectedIdea = res.body});
+   });
     return {
       ...new Outgoings(),
       id: this.editForm.get(['id']).value,
@@ -82,7 +91,7 @@ export class OutgoingsUpdateComponent implements OnInit {
       description: this.editForm.get(['description']).value,
       date: this.editForm.get(['date']).value,
       value: this.editForm.get(['value']).value,
-      idea: this.editForm.get(['idea']).value
+      idea: this.selectedIdea
     };
   }
 

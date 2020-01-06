@@ -13,8 +13,8 @@
                     </div>
                 </div>          
     </div>
-    <div class="col-xs-12 col-md-8">
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-income" [routerLink]="['/income/new']">
+    <div class="col-xs-12 col-md-8" *ngIf="selectedIdea">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-income" [routerLink]="['/income', selectedIdea.id, 'new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span  jhiTranslate="homeApp.income.home.createLabel">
             Create a new Income
@@ -37,7 +37,6 @@
             <th scope="col"  jhiSortBy="description"><span jhiTranslate="homeApp.income.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="date"><span jhiTranslate="homeApp.income.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="value"><span jhiTranslate="homeApp.income.value">Value</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="idea.id"><span jhiTranslate="homeApp.income.idea">Idea</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -48,11 +47,7 @@
                 <td>{{income.description}}</td>
                 <td>{{income.date | date:'mediumDate'}}</td>
                 <td>{{income.value}}</td>
-                <td>
-                    <div *ngIf="income.idea">
-                        <a [routerLink]="['/idea', income.idea?.id, 'view' ]" >{{income.idea?.id}}</a>
-                    </div>
-                </td>
+
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

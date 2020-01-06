@@ -23,6 +23,7 @@ export class IdeaUpdateComponent implements OnInit {
   ideas: IIdea[];
 
   editForm = this.fb.group({
+    id: [null, [Validators.required]],
     title: [null, [Validators.required]],
     logo: [null, [Validators.required]],
     logoContentType: [],
@@ -58,6 +59,7 @@ export class IdeaUpdateComponent implements OnInit {
 
   updateForm(idea: IIdea) {
     this.editForm.patchValue({
+      id: idea.id,
       title: idea.title,
       logo: idea.logo,
       logoContentType: idea.logoContentType,
@@ -129,6 +131,7 @@ export class IdeaUpdateComponent implements OnInit {
   private createFromForm(): IIdea {
     return {
       ...new Idea(),
+      id: this.editForm.get(['id']).value,
       title: this.editForm.get(['title']).value,
       logoContentType: this.editForm.get(['logoContentType']).value,
       logo: this.editForm.get(['logo']).value,

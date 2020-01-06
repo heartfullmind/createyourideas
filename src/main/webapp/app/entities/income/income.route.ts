@@ -47,7 +47,7 @@ export const incomeRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: ':ideaId/new',
     component: IncomeUpdateComponent,
     resolve: {
       income: IncomeResolve

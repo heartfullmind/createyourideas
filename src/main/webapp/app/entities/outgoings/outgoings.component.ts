@@ -80,7 +80,6 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadAll();
     this.registerChangeInOutgoings();
-    this.loadSelect();
   }
 
   ngOnDestroy() {
@@ -104,7 +103,7 @@ export class OutgoingsComponent implements OnInit, OnDestroy {
     this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
       { 
         this.selectedIdea = res.body;
-        this.ngOnInit();
+        this.reset();
       })
   }
 
