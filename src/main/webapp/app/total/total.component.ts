@@ -10,7 +10,10 @@ import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
 import { WorksheetService } from 'app/entities/worksheet/worksheet.service';
 import { IWorksheet } from 'app/shared/model/worksheet.model';
 import * as FusionCharts from 'fusioncharts';
-
+const dataUrl =
+'https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/line-chart-with-time-axis-data.json';
+const schemaUrl =
+'https://s3.eu-central-1.amazonaws.com/fusion.store/ft/schema/line-chart-with-time-axis-schema.json';
 
 @Component({
   selector: 'jhi-total',
@@ -49,27 +52,27 @@ export class TotalComponent implements OnInit, OnDestroy {
     public fb: FormBuilder
   ) {
     this.loadSelect();
-
     this.type = 'timeseries';
-    this.width = '100%';
+    this.width = '700';
     this.height = '400';
-    // This is the dataSource of the chart
     this.dataSource = {
-      // Initially data is set as null
       data: null,
-      chart: {
-        showLegend: 0
-      },
       caption: {
-        text: 'Daily Visitors Count of a Website'
+        text: 'Sales Analysis'
+      },
+      subcaption: {
+        text: 'Grocery'
       },
       yAxis: [
         {
           plot: {
-            value: 'Daily Visitors',
-            type: 'area'
+            value: 'Grocery Sales Value',
+            type: 'line'
           },
-          title: 'Daily Visitors (in thousand)'
+          format: {
+            prefix: '$'
+          },
+          title: 'Sale Value'
         }
       ]
     };
@@ -84,22 +87,15 @@ export class TotalComponent implements OnInit, OnDestroy {
 
   fetchData() {
     const jsonify = res => res.json();
-    const dataFetch = fetch(
-      'https://s3.eu-central-1.amazonaws.com/fusion.store/ft/data/area-chart-with-time-axis-data.json'
-    ).then(jsonify);
-    const schemaFetch = fetch(
-      'https://s3.eu-central-1.amazonaws.com/fusion.store/ft/schema/area-chart-with-time-axis-schema.json'
-    ).then(jsonify);
-
+    const dataFetch = fetch(dataUrl).then(jsonify);
+    const schemaFetch = fetch(schemaUrl).then(jsonify);
     Promise.all([dataFetch, schemaFetch]).then(res => {
       const data = res[0];
       const schema = res[1];
-      // First we are creating a DataStore
-      const fusionDataStore = new FusionCharts.DataStore();
-      // After that we are creating a DataTable by passing our data and schema as arguments
-      const fusionTable = fusionDataStore.createDataTable(data, schema);
-      // Afet that we simply mutated our timeseries datasource by attaching the above
-      // DataTable into its data property.
+      const fusionTable = new FusionCharts.DataStore().createDataTable(
+        data,
+        schema
+      ); // Instance of DataTable to be passed as data in dataSource
       this.dataSource.data = fusionTable;
     });
   }

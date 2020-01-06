@@ -26,7 +26,7 @@
                 </a>
             </li>
             
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="idea-funnel" (click)="collapseNavbar()">
                     <span>
                         <fa-icon icon="filter"></fa-icon>
@@ -35,7 +35,7 @@
                 </a>
             </li>
 
-            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_USER'" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                     <a class="nav-link" routerLink="idea" (click)="collapseNavbar()">
                         <span>
                             <fa-icon icon="heart"></fa-icon>

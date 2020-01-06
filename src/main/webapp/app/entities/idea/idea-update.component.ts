@@ -23,7 +23,7 @@ export class IdeaUpdateComponent implements OnInit {
   ideas: IIdea[];
 
   editForm = this.fb.group({
-    id: [null, [Validators.required]],
+    id: [],
     title: [null, [Validators.required]],
     logo: [null, [Validators.required]],
     logoContentType: [],

@@ -25,8 +25,13 @@ import { FooterModule } from './layouts/footer/footer.module';
 import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
 import { HomeIdeaPinwallModule } from './idea-pinwall/idea-pinwall.module';
 import { HomeTotalModule } from './total/total.module';
+// Import angular-fusioncharts
+import { FusionChartsModule } from 'angular-fusioncharts';
+// Import FusionCharts library and chart modules
+import * as FusionCharts from 'fusioncharts';
+import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
 
-
+FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
 
 @NgModule({
   imports: [
@@ -42,6 +47,7 @@ import { HomeTotalModule } from './total/total.module';
     IdeaFunnelModule,
     HomeIdeaPinwallModule,
     HomeTotalModule,
+    FusionChartsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     HomeEntityModule,
     HomeAppRoutingModule,

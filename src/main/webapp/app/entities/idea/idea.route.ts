@@ -52,7 +52,7 @@ export const ideaRoute: Routes = [
     canActivate: [UserRouteAccessService]
   },
   {
-    path: 'new',
+    path: 'newIdea',
     component: IdeaUpdateComponent,
     resolve: {
       idea: IdeaResolve

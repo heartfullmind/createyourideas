@@ -17,8 +17,8 @@
         <h2>{{selectedIdea.title}}</h2>
     </div>
   </div>
-  <div class="row" *ngIf="selectedIdea.logo">
-    <div class="col-xs-12">
+  <div class="row outter" *ngIf="selectedIdea.logo">
+    <div class="col-xs-12 inner">
         <div>
             <a (click)="openFile(selectedIdea.logoContentType, selectedIdea.logo)">
                 <img [src]="'data:' + selectedIdea.logoContentType + ';base64,' + selectedIdea.logo" style="max-width: 500px;" alt="idea image"/>
@@ -27,19 +27,23 @@
     </div>
   </div>            
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-12 box">
         <h3><span jhiTranslate="homeApp.idea.description">Description</span></h3>
         <span>{{selectedIdea.description}}</span>
     </div>
   </div>
   <div class="row">
     <div class="col-md-6">
+     <div class="box">
       <h3><span jhiTranslate="homeApp.idea.investment">Investment</span></h3>
-      <span>{{selectedIdea.investment}}</span>
+      <span>{{selectedIdea.investment | currency}}</span>
+    </div>  
     </div>
     <div class="col-xs-12 col-md-6">
+     <div class="box"> 
       <h3><span jhiTranslate="homeApp.idea.interest">Interest</span></h3>
-      <span>{{selectedIdea.interest}}</span>
+      <span>{{selectedIdea.interest | percent}}</span>
+     </div> 
     </div>
    </div>
   </div>
