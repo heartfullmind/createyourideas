@@ -1,6 +1,7 @@
 import { Route } from '@angular/router';
 
 import { IdeaPinwallComponent } from './idea-pinwall.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
 
 export const IDEA_PINWALL_ROUTE: Route = {
   path: 'idea-pinwall',
@@ -8,5 +9,6 @@ export const IDEA_PINWALL_ROUTE: Route = {
   data: {
     authorities: [],
     pageTitle: 'ideapinwall.title'
-  }
+  },
+  canActivate: [UserRouteAccessService]
 };
