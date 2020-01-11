@@ -1,6 +1,8 @@
-<table>
-    <tr >
-        <td *ngFor="let idea of ideasCalculated">{{idea}}</td>
-        <td *ngFor="let total of ideasTotal">{{total | currency}}</td>
-    </tr>
-</table>
+<div class="row">
+    <div class="col-lg-6">
+        <div *ngFor="let idea of ideasCalculated">{{idea}}</div>
+    </div>
+    <div class="col-xs-12 col-lg-6">
+        <div *ngFor="let total of ideasTotal">{{total | currency}}</div>
+    </div>
+  </div>

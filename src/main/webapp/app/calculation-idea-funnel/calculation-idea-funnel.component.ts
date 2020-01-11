@@ -14,7 +14,7 @@ import { CalculationIdeaFunnelService } from './calculation-idea-funnel.service'
 export class CalculationIdeaFunnelComponent implements OnInit, OnDestroy {
 
   ideas: IIdea[];
-  ideasCalculated: any[] = [];
+  ideasCalculated: any[]= [];
   ideasTotal: any[] = [];
   all: number;
 
@@ -35,8 +35,12 @@ export class CalculationIdeaFunnelComponent implements OnInit, OnDestroy {
   calculateAll() { 
     this.ideas.forEach(idea => {
       let total = 0;
-      this.calculationIdeaFunnelService.calculateProfit(idea.id).subscribe((res: HttpResponse<number>) => {total = res.body;this.ideasCalculated.push([idea.title]);this.ideasTotal.push([total]);});
       
+      this.calculationIdeaFunnelService.calculateProfit(idea.id).subscribe((res: HttpResponse<number>) => {
+        total = res.body;
+        this.ideasCalculated.push(idea.title);
+        this.ideasTotal.push(total);
+      });
    });
  }
 }

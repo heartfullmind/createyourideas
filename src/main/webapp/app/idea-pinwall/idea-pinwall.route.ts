@@ -8,7 +8,7 @@ export const IDEA_PINWALL_ROUTE: Route = {
   component: IdeaPinwallComponent,
   data: {
     authorities: [],
-    pageTitle: 'ideapinwall.title'
+    pageTitle: 'homeApp.ideapinwall.title'
   },
   canActivate: [UserRouteAccessService]
 };
