@@ -30,6 +30,7 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 // Import FusionCharts library and chart modules
 import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
+import { CalculationIdeaFunnelModule } from './calculation-idea-funnel/calculation-idea-funnel.module';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
 
@@ -48,12 +49,14 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     HomeIdeaPinwallModule,
     HomeTotalModule,
     FusionChartsModule,
+    CalculationIdeaFunnelModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     HomeEntityModule,
     HomeAppRoutingModule,
     BrowserAnimationsModule,
     FooterModule,
-    HomeWorksheetModule
+    HomeWorksheetModule,
+    
     
   ],
   providers: [],
