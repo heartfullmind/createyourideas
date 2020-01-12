@@ -62,7 +62,6 @@ public class CalculationsManager {
         for(Outgoings outgoings : outgoingsAll) {
             sumOutgoings += outgoings.getValue();
         }
-        
         return (idea.getInvestment() + sumIncome - sumOutgoings);
     }
 
@@ -82,10 +81,11 @@ public class CalculationsManager {
         List<Idea> ideas = this.ideaService.findAll(pageable).getContent();
         Float sum = 0.0f;
         for(Idea i: ideas) {
-            if(i.getId() == id) {
-                sum += idea.getInterest() * this.calculateTotalProfit(i.getId(), pageable);
-            
+            if(i.getIdea() != null && i.getIdea().getId() == id) {
+                sum = idea.getInterest() * this.calculateTotalProfit(i.getIdea().getId(), pageable);
+
             }
+            
         }
 
         return sum;
