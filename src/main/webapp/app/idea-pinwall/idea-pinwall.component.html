@@ -7,10 +7,10 @@
                     <option value="" disabled>Choose your idea</option>
                     <option *ngFor="let idea of ideas" [ngValue]="idea.id">{{idea.title}}</option>
                 </select>
-            </form>	      
+            </form>
     </div>
 </div>
-  
+
 <div id="pinwall" *ngIf="selectedIdea">
   <div class="row title">
     <div class="col-xs-12 titlecolumn">
@@ -25,11 +25,11 @@
             </a>
         </div>
     </div>
-  </div>            
+  </div>
   <div class="row">
     <div class="col-xs-12 box">
         <h3><span jhiTranslate="homeApp.idea.description">Description</span></h3>
-        <span>{{selectedIdea.description}}</span>
+        <div [innerHTML]="selectedIdea.description"></div>
     </div>
   </div>
   <div class="row">
@@ -37,14 +37,13 @@
      <div class="box">
       <h3><span jhiTranslate="homeApp.idea.investment">Investment</span></h3>
       <span>{{selectedIdea.investment | currency}}</span>
-    </div>  
+    </div>
     </div>
     <div class="col-xs-12 col-md-6">
-     <div class="box"> 
+     <div class="box">
       <h3><span jhiTranslate="homeApp.idea.interest">Interest</span></h3>
       <span>{{selectedIdea.interest | percent}}</span>
-     </div> 
+     </div>
     </div>
    </div>
   </div>
-</div>

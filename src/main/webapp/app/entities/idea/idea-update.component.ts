@@ -10,6 +10,7 @@ import { IIdea, Idea } from 'app/shared/model/idea.model';
 import { IdeaService } from './idea.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'jhi-idea-update',
@@ -17,11 +18,13 @@ import { UserService } from 'app/core/user/user.service';
 })
 export class IdeaUpdateComponent implements OnInit {
   isSaving: boolean;
-
+  
   users: IUser[];
 
   ideas: IIdea[];
 
+  public Editor = ClassicEditor;
+  
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],

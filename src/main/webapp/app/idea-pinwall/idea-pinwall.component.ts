@@ -3,6 +3,7 @@ import { IIdea } from 'app/shared/model/idea.model';
 import { IdeaService } from 'app/entities/idea/idea.service';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
+import { JhiDataUtils } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-idea-pinwall',
@@ -15,11 +16,12 @@ export class IdeaPinwallComponent implements OnInit {
   selectedIdea: IIdea;
 
   selectIdeaForm = this.fb.group({
-    ideaName: ['']	
+    ideaName: ['']
   });
 
   constructor(
     protected ideaService: IdeaService,
+    protected dataUtils: JhiDataUtils,
     public fb: FormBuilder) {}
 
   ngOnInit() {
@@ -33,8 +35,12 @@ export class IdeaPinwallComponent implements OnInit {
   }
 
   changeIdea() {
-    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
+    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) =>
       { this.selectedIdea = res.body; })
+  }
+
+  openFile(contentType, field) {
+    return this.dataUtils.openFile(contentType, field);
   }
 
 }

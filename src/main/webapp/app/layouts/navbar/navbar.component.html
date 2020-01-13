@@ -17,6 +17,16 @@
                 </a>
             </li>
 
+
+            <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="pledge" (click)="collapseNavbar()">
+                  <span>
+                    <fa-icon icon="heart"></fa-icon>
+                    <span jhiTranslate="global.menu.pledge">Pledge</span>
+                  </span>
+                </a>
+            </li>
+
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="idea-pinwall" (click)="collapseNavbar()">
                     <span>
@@ -25,7 +35,7 @@
                     </span>
                 </a>
             </li>
-            
+
             <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="idea-funnel" (click)="collapseNavbar()">
                     <span>
@@ -97,7 +107,7 @@
                       <span>
                         <fa-icon icon="tag"></fa-icon>
                         <span jhiTranslate="global.menu.about-us">About us</span>
-                      </span>  
+                      </span>
                     </a>
                 </li>
 

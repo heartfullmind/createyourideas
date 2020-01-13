@@ -40,7 +40,6 @@ export class CalculationIdeaFunnelComponent implements OnInit, OnDestroy {
         total = res.body;
         this.ideasCalculated.push(idea.title);
         this.ideasTotal.push(total);
-        alert(idea.title + " " + total);
       });
    });
  }

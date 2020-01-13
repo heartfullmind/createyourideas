@@ -36,7 +36,7 @@
                         <img [src]="'data:' + idea.logoContentType + ';base64,' + idea.logo" style="max-height: 30px;" alt="idea image"/>
                     </a>
                 </td>
-                <td>{{idea.description}}</td>
+                <td><div [innerHTML]="idea.description"></div></td>
                 <td jhiTranslate="{{'homeApp.Ideatype.' + idea.ideatype}}">{{idea.ideatype}}</td>
                 <td>{{idea.interest | percent}}</td>
                 <td>{{idea.investment | currency}}</td>

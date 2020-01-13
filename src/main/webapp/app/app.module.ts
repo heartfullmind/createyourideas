@@ -31,6 +31,7 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
 import { CalculationIdeaFunnelModule } from './calculation-idea-funnel/calculation-idea-funnel.module';
+import { PledgeModule } from './pledge/pledge.module';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
 
@@ -42,7 +43,7 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     HomeHomeModule,
 	  HomeIdeaListModule,
     HomeAppAboutUsModule,
-	  HomeAccountingModule, 
+	  HomeAccountingModule,
 	  HomeOutgoingsModule,
 	  HomeIncomeModule,
     IdeaFunnelModule,
@@ -50,14 +51,15 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     HomeTotalModule,
     FusionChartsModule,
     CalculationIdeaFunnelModule,
+    PledgeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     HomeEntityModule,
     HomeAppRoutingModule,
     BrowserAnimationsModule,
     FooterModule,
-    HomeWorksheetModule,
-    
-    
+    HomeWorksheetModule
+
+
   ],
   providers: [],
   declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, IdeaListComponent],
