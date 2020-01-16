@@ -2,7 +2,8 @@
   "pledge": {
     "title": "Spenden",
     "form": {
-      "info": "Um dieses komplette Projekt zu realisieren und weitere Ideen zu realisieren sind wir sehr auf Ihre Hilfe angewiesen. Wir bauen diese Plattform komplett ohne Werbe- und Fremdfinanzierung auf. Aus diesem Grund sind wir wirklich um jede kleine Hilfe sehr froh. Jedenfalls bedanke wir uns schon im voraus für Ihre Unterstützung und wünschen Ihnen viel Erfolg."
+      "info": "Um dieses komplette Projekt zu realisieren und weitere Ideen zu realisieren sind wir sehr auf Ihre Hilfe angewiesen. Wir bauen diese Plattform komplett ohne Werbe- und Fremdfinanzierung auf. Aus diesem Grund sind wir wirklich um jede kleine Hilfe sehr froh. Jedenfalls bedanke wir uns schon im voraus für Ihre Unterstützung und wünschen Ihnen viel Erfolg.",
+      "title": "Bitte helfen Sie uns"
     }
   }
 }
