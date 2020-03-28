@@ -40,6 +40,13 @@
             ]
         },
         {
+            "fieldName": "distribution",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "investment",
             "fieldType": "Float",
             "fieldValidateRules": [
@@ -49,6 +56,10 @@
         {
             "fieldName": "active",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "nodeId",
+            "fieldType": "Integer"
         }
     ],
     "relationships": [

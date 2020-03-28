@@ -10,7 +10,6 @@ import { IIdea, Idea } from 'app/shared/model/idea.model';
 import { IdeaService } from './idea.service';
 import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'jhi-idea-update',
@@ -18,13 +17,11 @@ import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 })
 export class IdeaUpdateComponent implements OnInit {
   isSaving: boolean;
-  
+
   users: IUser[];
 
   ideas: IIdea[];
 
-  public Editor = ClassicEditor;
-  
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],
@@ -33,7 +30,11 @@ export class IdeaUpdateComponent implements OnInit {
     description: [null, [Validators.required]],
     ideatype: [null, [Validators.required]],
     interest: [null, [Validators.required]],
+    distribution: [null, [Validators.required]],
     investment: [null, [Validators.required]],
+    active: [],
+    nodeId: [],
+    user: [],
     idea: []
   });
 
@@ -69,7 +70,11 @@ export class IdeaUpdateComponent implements OnInit {
       description: idea.description,
       ideatype: idea.ideatype,
       interest: idea.interest,
+      distribution: idea.distribution,
       investment: idea.investment,
+      active: idea.active,
+      nodeId: idea.nodeId,
+      user: idea.user,
       idea: idea.idea
     });
   }
@@ -141,7 +146,11 @@ export class IdeaUpdateComponent implements OnInit {
       description: this.editForm.get(['description']).value,
       ideatype: this.editForm.get(['ideatype']).value,
       interest: this.editForm.get(['interest']).value,
+      distribution: this.editForm.get(['distribution']).value,
       investment: this.editForm.get(['investment']).value,
+      active: this.editForm.get(['active']).value,
+      nodeId: this.editForm.get(['nodeId']).value,
+      user: this.editForm.get(['user']).value,
       idea: this.editForm.get(['idea']).value
     };
   }

@@ -43,4 +43,6 @@ public interface IdeaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Optional<Idea> findOneByNodeId(Long nodeId);
 }

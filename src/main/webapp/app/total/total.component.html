@@ -2,23 +2,23 @@
   <div class="row">
     <div class="col-xs-12">
             <div class="container-select-idea">
-                    <div id="select-idea">     
+                    <div id="select-idea">
                     <form [formGroup]="selectIdeaForm" >
                         <label for="changeIdea" jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</label>
                         <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()">
                         <option value="" disabled>Choose your idea</option>
                         <option *ngFor="let idea of ideas" [ngValue]="idea.id">{{idea.title}}</option>
                         </select>
-                    </form>	
+                    </form>
                     </div>
-                </div>          
+                </div>
     </div>
 </div>
 
 <div class="outter">
   <div class="inner">
-    <h2 jhiTranslate="total.main">Total</h2> 
-  </div>            
+    <h2 jhiTranslate="total.main">Total</h2>
+  </div>
 </div>
 
 <div class="row outter titlebar">
@@ -30,14 +30,14 @@
     <div class="col-xs-12 col-md-6">
       <div class="box">
         <p class="titel-box">Investment</p>
-        {{investPerIdea}}
+        {{investPerIdea | currency}}
       </div>
     </div>
-    <div class="col-md-6">
-      <div class="box">
-        <p class="titel-box">All incomes</p>
-        {{allIncomesPerIdea}}
-      </div>    
+    <div class="col-xs-12 col-md-6">
+        <div class="box">
+          <p class="titel-box">All costs for workinghours</p>
+          {{allWorksheetsPerIdea | currency}}
+        </div>
     </div>
   </div>
 
@@ -50,13 +50,20 @@
     <div class="col-md-6">
       <div class="box">
         <p class="titel-box">All outgoings</p>
-        {{allOutgoingsPerIdea}}
-      </div>  
+        {{allOutgoingsPerIdea | currency}}
+      </div>
     </div>
-    <div class="col-xs-12 col-md-6">
-      <div class="box">
-        <p class="titel-box">All costs for workinghours</p>
-        {{allWorksheetsPerIdea}}
-      </div>  
+    <div class="col-md-6">
+        <div class="box">
+          <p class="titel-box">All incomes</p>
+          {{allIncomesPerIdea | currency}}
+        </div>
     </div>
   </div>
+
+<div class="col-md-12">
+    <div class="box">
+      <p class="titel-box">Dailybalance</p>
+      {{dailyBalance | currency}}
+    </div>
+</div>

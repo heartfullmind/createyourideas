@@ -67,6 +67,10 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findById(id);
     }
 
+    public Optional<Idea> findOneByNodeId(Long nodeId) {
+        return ideaRepository.findOneByNodeId(nodeId);
+    }
+
     /**
      * Delete the idea by id.
      *
@@ -77,6 +81,4 @@ public class IdeaServiceImpl implements IdeaService {
         log.debug("Request to delete Idea : {}", id);
         ideaRepository.deleteById(id);
     }
-
-
 }

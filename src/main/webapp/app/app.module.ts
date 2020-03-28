@@ -25,12 +25,12 @@ import { FooterModule } from './layouts/footer/footer.module';
 import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
 import { HomeIdeaPinwallModule } from './idea-pinwall/idea-pinwall.module';
 import { HomeTotalModule } from './total/total.module';
+import { ContextMenuComponent } from './context-menu/context-menu.component';
 // Import angular-fusioncharts
 import { FusionChartsModule } from 'angular-fusioncharts';
 // Import FusionCharts library and chart modules
 import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
-import { CalculationIdeaFunnelModule } from './calculation-idea-funnel/calculation-idea-funnel.module';
 import { PledgeModule } from './pledge/pledge.module';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
@@ -41,16 +41,15 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     HomeSharedModule,
     HomeCoreModule,
     HomeHomeModule,
-	  HomeIdeaListModule,
+    HomeIdeaListModule,
     HomeAppAboutUsModule,
-	  HomeAccountingModule,
-	  HomeOutgoingsModule,
-	  HomeIncomeModule,
+    HomeAccountingModule,
+    HomeOutgoingsModule,
+    HomeIncomeModule,
     IdeaFunnelModule,
     HomeIdeaPinwallModule,
     HomeTotalModule,
     FusionChartsModule,
-    CalculationIdeaFunnelModule,
     PledgeModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     HomeEntityModule,
@@ -58,11 +57,17 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     BrowserAnimationsModule,
     FooterModule,
     HomeWorksheetModule
-
-
   ],
   providers: [],
-  declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, IdeaListComponent],
+  declarations: [
+    JhiMainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    IdeaListComponent,
+    ContextMenuComponent
+  ],
   bootstrap: [JhiMainComponent]
 })
 export class HomeAppModule {}

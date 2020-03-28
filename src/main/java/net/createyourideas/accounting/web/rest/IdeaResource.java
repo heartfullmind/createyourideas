@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -120,6 +119,19 @@ public class IdeaResource {
     public ResponseEntity<Idea> getIdea(@PathVariable Long id) {
         log.debug("REST request to get Idea : {}", id);
         Optional<Idea> idea = ideaService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(idea);
+    }
+
+        /**
+     * {@code GET  /ideas/:nodeid} : get the idea with nodeid.
+     *
+     * @param nodeid the id of the idea to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the idea, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/ideas/{nodeId}/allByNodeId")
+    public ResponseEntity<Idea> getIdeaByNode(@PathVariable Long nodeId) {
+        log.debug("REST request to get Idea with nodeId : {}", nodeId);
+        Optional<Idea> idea = ideaService.findOne(nodeId);
         return ResponseUtil.wrapOrNotFound(idea);
     }
 

@@ -13,8 +13,10 @@ export interface IIdea {
   description?: any;
   ideatype?: Ideatype;
   interest?: number;
+  distribution?: number;
   investment?: number;
   active?: boolean;
+  nodeId?: number;
   incomes?: IIncome[];
   outgoings?: IOutgoings[];
   worksheets?: IWorksheet[];
@@ -32,8 +34,10 @@ export class Idea implements IIdea {
     public description?: any,
     public ideatype?: Ideatype,
     public interest?: number,
+    public distribution?: number,
     public investment?: number,
     public active?: boolean,
+    public nodeId?: number,
     public incomes?: IIncome[],
     public outgoings?: IOutgoings[],
     public worksheets?: IWorksheet[],

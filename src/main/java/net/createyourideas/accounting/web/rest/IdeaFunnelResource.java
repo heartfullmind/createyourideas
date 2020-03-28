@@ -59,14 +59,14 @@ public class IdeaFunnelResource {
         try {
             for(Idea idea : ideas) {
                 if(idea.getIdea() == null)
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), null));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getId().toString(), null));
                 else
-                    nodes.add(new Node(idea.getTitle(), idea.getId().toString(), idea.getIdea().getId().toString()));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getId().toString(), idea.getIdea().getId().toString()));
             }
-            json = "{\n" + 
-                        "\"format\":\"nodeTree\",\n" + 
+            json = "{\n" +
+                        "\"format\":\"nodeTree\",\n" +
                         "\"data\": \n" +
-                        TreeUtils.createTree(nodes) + "\n" + 
+                        TreeUtils.createTree(nodes) + "\n" +
                     "}";
         } catch(Exception e) {
             System.out.println(e.getMessage());

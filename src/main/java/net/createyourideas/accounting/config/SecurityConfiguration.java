@@ -3,8 +3,6 @@ package net.createyourideas.accounting.config;
 import net.createyourideas.accounting.security.*;
 import net.createyourideas.accounting.security.jwt.*;
 
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -50,7 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/i18n/**")
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+            .antMatchers("/test/**")
+            .antMatchers("/ideafunnel");
     }
 
     @Override
@@ -84,6 +83,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/ideas/**").permitAll()
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
+            .antMatchers("/ideafunnel").permitAll()
+            .antMatchers("/api/ideas/ideafunnel").permitAll()
+            .antMatchers("/ideafunnel/**").permitAll()
+            .antMatchers("/api/ideas/ideafunnel/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()

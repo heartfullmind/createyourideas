@@ -7,10 +7,9 @@ import { IdeaDetailComponent } from './idea-detail.component';
 import { IdeaUpdateComponent } from './idea-update.component';
 import { IdeaDeleteDialogComponent } from './idea-delete-dialog.component';
 import { ideaRoute } from './idea.route';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
-  imports: [HomeSharedModule, RouterModule.forChild(ideaRoute), CKEditorModule],
+  imports: [HomeSharedModule, RouterModule.forChild(ideaRoute)],
   declarations: [IdeaComponent, IdeaDetailComponent, IdeaUpdateComponent, IdeaDeleteDialogComponent],
   entryComponents: [IdeaDeleteDialogComponent]
 })

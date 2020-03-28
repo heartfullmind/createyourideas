@@ -6,6 +6,7 @@
   },
   "rules": {
     "no-console": 0,
+    "camelcase": "off",
     "@typescript-eslint/tslint/config": [
       "error",
       {

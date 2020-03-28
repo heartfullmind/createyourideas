@@ -45,9 +45,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://onnjomlc4vqc55fw.chr7pe7iynqr.eu-west-1.rds.amazonaws.com:3306/uyqm2mu6n429hfpz?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: dq4pfxsz2t0j3kn9
-    password: ccgy67oeiin5msnc
+    url: jdbc:mysql://localhost:3306/createyourideas?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: createyourideas
+    password: ihMMuka8243
     hikari:
       poolName: Hikari
       auto-commit: false

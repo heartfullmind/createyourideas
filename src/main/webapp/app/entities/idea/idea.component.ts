@@ -49,7 +49,7 @@ export class IdeaComponent implements OnInit, OnDestroy {
 
   loadAll() {
     this.ideaService
-      .queryByUser({
+      .query({
         page: this.page - 1,
         size: this.itemsPerPage,
         sort: this.sort()

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Spring Data  repository for the Idea entity.
@@ -17,7 +18,13 @@ import java.util.List;
 public interface IdeaRepository extends JpaRepository<Idea, Long> {
 
     @Query("select idea from Idea idea where idea.user.login = ?#{principal.username}")
+    List<Idea> findByUserIsCurrentUser();
+
+    @Query("select idea from Idea idea where idea.user.login = ?#{principal.username}")
     Page<Idea> findByUserIsCurrentUser(Pageable pageable);
 
     Page<Idea> findAllById(Long id, Pageable pageable);
+
+    Optional<Idea> findOneByNodeId(Long nodeId);
+
 }

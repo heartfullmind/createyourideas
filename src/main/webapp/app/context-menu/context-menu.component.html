@@ -1,0 +1,58 @@
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+
+
+      $('jmnode').contextMenu('myMenu1', {
+
+        bindings: {
+
+          'open': function(t) {
+
+            alert('Trigger was '+t.id+'\nAction was Open');
+
+          },
+
+          'email': function(t) {
+
+            alert('Trigger was '+t.id+'\nAction was Email');
+
+          },
+
+          'save': function(t) {
+
+            alert('Trigger was '+t.id+'\nAction was Save');
+
+          },
+
+          'delete': function(t) {
+
+            alert('Trigger was '+t.id+'\nAction was Delete');
+
+          }
+
+        }
+
+      });
+
+
+
+
+
+
+
+
+    });
+
+  </script>
+
+<div class="contextMenu" id="myMenu1">
+<ul>
+<li id="open"><img src="folder.png" /> Open</li>
+<li id="email"><img src="email.png" /> Email</li>
+<li id="save"><img src="disk.png" /> Save</li>
+<li id="delete"><img src="cross.png" /> Delete</li>
+</ul>
+</div>

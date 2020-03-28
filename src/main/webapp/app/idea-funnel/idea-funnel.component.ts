@@ -1,6 +1,8 @@
- 
+import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
+import { IncomeService } from './../entities/income/income.service';
+
 import { Component, OnInit } from '@angular/core';
-import { customizeUtil, MindMapMain } from 'mind-map';
+import { customizeUtil, MindMapMain } from '../mind-map-funnel';
 import { IdeaService } from 'app/entities/idea/idea.service';
 import { HttpResponse } from '@angular/common/http';
 import { IdeaFunnelService } from './idea-funnel.service';
@@ -9,28 +11,19 @@ const HIERARCHY_RULES = {
   ROOT: {
     name: 'root',
     backgroundColor: '#7EC6E1',
-    getChildren: () => [
-      HIERARCHY_RULES.SALES_MANAGER,
-      HIERARCHY_RULES.SHOW_ROOM,
-      HIERARCHY_RULES.SALES_TEAM
-    ]
+    getChildren: () => [HIERARCHY_RULES.SALES_MANAGER, HIERARCHY_RULES.SHOW_ROOM, HIERARCHY_RULES.SALES_TEAM]
   },
   SALES_MANAGER: {
     name: 'sales_manager',
     color: '#fff',
     backgroundColor: '#616161',
-    getChildren: () => [
-      HIERARCHY_RULES.SHOW_ROOM,
-      HIERARCHY_RULES.SALES_TEAM
-    ]
+    getChildren: () => [HIERARCHY_RULES.SHOW_ROOM, HIERARCHY_RULES.SALES_TEAM]
   },
   SHOW_ROOM: {
     name: 'show_room',
     color: '#fff',
     backgroundColor: '#989898',
-    getChildren: () => [
-      HIERARCHY_RULES.SALES_TEAM
-    ]
+    getChildren: () => [HIERARCHY_RULES.SALES_TEAM]
   },
   SALES_TEAM: {
     name: 'sales_team',
@@ -44,11 +37,10 @@ const option = {
   container: 'jsmind_container',
   theme: 'primary',
   editable: true,
-  depth: 4,
+  depth: 9999,
   hierarchyRule: HIERARCHY_RULES,
-  enableDraggable: false,
+  enableDraggable: true
 };
-  
 
 @Component({
   selector: 'jhi-idea-funnel',
@@ -56,12 +48,16 @@ const option = {
   styleUrls: ['./idea-funnel.component.scss']
 })
 export class IdeaFunnelComponent implements OnInit {
-
   title = 'Idea Funnel';
   mindMap;
   mind2: string;
 
-  constructor (protected ideaService: IdeaService, protected ideaFunnelService: IdeaFunnelService) {}
+  constructor(
+    protected ideaService: IdeaService,
+    protected ideaFunnelService: IdeaFunnelService,
+    protected incomeService: IncomeService,
+    protected outgoingsService: OutgoingsService
+  ) {}
 
   ngOnInit() {
     this.loadIdeaFunnel();
@@ -70,9 +66,11 @@ export class IdeaFunnelComponent implements OnInit {
   loadIdeaFunnel() {
     this.ideaFunnelService.getIdeaFunnel().subscribe((res: HttpResponse<any>) => {
       this.mind2 = res.body;
-      this.mindMap = MindMapMain.show(option, this.mind2);
+      //this.mindMap = MindMapMain.show(option, this.mind2, this.incomeService, this.outgoingsService, this.ideaService);
+
+      let _jm = new MindMapMain(option, this.ideaService, this.incomeService, this.outgoingsService);
+      this.mindMap = _jm.show(this.mind2, this.ideaService, this.incomeService, this.outgoingsService);
     });
-    
   }
 
   removeNode() {
@@ -99,5 +97,4 @@ export class IdeaFunnelComponent implements OnInit {
     const data = this.mindMap.getData().data;
     console.log('data: ', data);
   }
-
 }

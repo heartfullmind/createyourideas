@@ -1,7 +1,7 @@
 /**
  * JHipster JDL model for Accounting
  */
- 
+
 
 entity Idea {
     title String required
@@ -9,9 +9,12 @@ entity Idea {
 	description TextBlob required
     ideatype Ideatype required
     interest Float required
+    distribution Float required
 	investment Float required
     active Boolean
-	
+    nodeId Integer
+    type String
+
 }
 
 entity Income {
@@ -60,8 +63,8 @@ paginate Income, Outgoings with infinite-scroll
 
 //dto * with mapstruct
 
-// Set service options to all 
-service all with serviceImpl 
+// Set service options to all
+service all with serviceImpl
 
 
 

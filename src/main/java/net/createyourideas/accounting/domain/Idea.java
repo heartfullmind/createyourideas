@@ -55,11 +55,18 @@ public class Idea implements Serializable {
     private Float interest;
 
     @NotNull
+    @Column(name = "distribution", nullable = false)
+    private Float distribution;
+
+    @NotNull
     @Column(name = "investment", nullable = false)
     private Float investment;
 
     @Column(name = "active")
     private Boolean active;
+
+    @Column(name = "node_id")
+    private Integer nodeId;
 
     @OneToMany(mappedBy = "idea")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -172,6 +179,19 @@ public class Idea implements Serializable {
         this.interest = interest;
     }
 
+    public Float getDistribution() {
+        return distribution;
+    }
+
+    public Idea distribution(Float distribution) {
+        this.distribution = distribution;
+        return this;
+    }
+
+    public void setDistribution(Float distribution) {
+        this.distribution = distribution;
+    }
+
     public Float getInvestment() {
         return investment;
     }
@@ -196,6 +216,19 @@ public class Idea implements Serializable {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public Integer getNodeId() {
+        return nodeId;
+    }
+
+    public Idea nodeId(Integer nodeId) {
+        this.nodeId = nodeId;
+        return this;
+    }
+
+    public void setNodeId(Integer nodeId) {
+        this.nodeId = nodeId;
     }
 
     public Set<Income> getIncomes() {
@@ -351,8 +384,10 @@ public class Idea implements Serializable {
             ", description='" + getDescription() + "'" +
             ", ideatype='" + getIdeatype() + "'" +
             ", interest=" + getInterest() +
+            ", distribution=" + getDistribution() +
             ", investment=" + getInvestment() +
             ", active='" + isActive() + "'" +
+            ", nodeId=" + getNodeId() +
             "}";
     }
 }
