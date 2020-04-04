@@ -72,10 +72,10 @@ const HIERARCHY_RULES = {
 const option = {
   container: 'jsmind_container',
   theme: 'primary',
-  editable: false,
+  editable: true,
   depth: 10,
   hierarchyRule: HIERARCHY_RULES,
-  enableDraggable: false
+  enableDraggable: true
 };
 
 @Component({

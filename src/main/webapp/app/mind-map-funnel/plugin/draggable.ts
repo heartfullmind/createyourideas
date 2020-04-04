@@ -6,7 +6,7 @@ import { MindMapNode } from '../mind-map-node';
 const jcanvas = customizeUtil.canvas;
 const jdom = customizeUtil.dom;
 
-const clear_selection =
+const clearSelection =
   'getSelection' in $win
     ? function() {
         $win.getSelection().removeAllRanges();
@@ -16,73 +16,73 @@ const clear_selection =
       };
 
 const options = {
-  line_width: 5,
-  lookup_delay: 500,
-  lookup_interval: 80
+  lineWidth: 5,
+  lookupDelay: 500,
+  lookupInterval: 80
 };
 
 export class Draggable {
   jm: MindMapMain;
-  e_canvas: any;
-  canvas_ctx: any;
+  eCanvas: any;
+  canvasCtx: any;
   shadow: any;
-  shadow_w: number;
-  shadow_h: number;
-  active_node: any;
-  target_node: any;
-  target_direct: any;
-  client_w: number;
-  client_h: number;
-  offset_x: number;
-  offset_y: number;
-  hlookup_delay: number;
-  hlookup_timer: number;
+  shadowWidth: number;
+  shadowHeight: number;
+  activeNode: any;
+  targetNode: any;
+  targetDirect: any;
+  clientWidth: number;
+  clientHeight: number;
+  offsetX: number;
+  offsetY: number;
+  hlookupDelay: number;
+  hlookupTimer: number;
   capture: boolean;
   moved: boolean;
-  client_hw: number;
-  client_hh: number;
+  clientHW: number;
+  clientHH: number;
 
   constructor(jm) {
     this.jm = jm;
-    this.e_canvas = null;
-    this.canvas_ctx = null;
+    this.eCanvas = null;
+    this.canvasCtx = null;
     this.shadow = null;
-    this.shadow_w = 0;
-    this.shadow_h = 0;
-    this.active_node = null;
-    this.target_node = null;
-    this.target_direct = null;
-    this.client_w = 0;
-    this.client_h = 0;
-    this.offset_x = 0;
-    this.offset_y = 0;
-    this.hlookup_delay = 0;
-    this.hlookup_timer = 0;
+    this.shadowWidth = 0;
+    this.shadowHeight = 0;
+    this.activeNode = null;
+    this.targetNode = null;
+    this.targetDirect = null;
+    this.clientWidth = 0;
+    this.clientHeight = 0;
+    this.offsetX = 0;
+    this.offsetY = 0;
+    this.hlookupDelay = 0;
+    this.hlookupTimer = 0;
     this.capture = false;
     this.moved = false;
   }
 
   init() {
-    this._create_canvas();
-    this._create_shadow();
-    this._event_bind();
+    this._createCanvas();
+    this._createShadow();
+    this._eventBind();
   }
 
   resize() {
     this.jm.view.eNodes.appendChild(this.shadow);
-    this.e_canvas.width = this.jm.view.size.w;
-    this.e_canvas.height = this.jm.view.size.h;
+    this.eCanvas.width = this.jm.view.size.w;
+    this.eCanvas.height = this.jm.view.size.h;
   }
 
-  _create_canvas() {
+  _createCanvas() {
     const c = $document.createElement('canvas');
     this.jm.view.ePanel.appendChild(c);
     const ctx = c.getContext('2d');
-    this.e_canvas = c;
-    this.canvas_ctx = ctx;
+    this.eCanvas = c;
+    this.canvasCtx = ctx;
   }
 
-  _create_shadow() {
+  _createShadow() {
     const s = $document.createElement('jmnode');
     s.style.visibility = 'hidden';
     s.style.zIndex = '3';
@@ -91,7 +91,7 @@ export class Draggable {
     this.shadow = s;
   }
 
-  reset_shadow(el) {
+  resetShadow(el) {
     const s = this.shadow.style;
     this.shadow.innerHTML = el.innerHTML;
     s.left = el.style.left;
@@ -101,134 +101,136 @@ export class Draggable {
     s.backgroundImage = el.style.backgroundImage;
     s.backgroundSize = el.style.backgroundSize;
     s.transform = el.style.transform;
-    this.shadow_w = this.shadow.clientWidth;
-    this.shadow_h = this.shadow.clientHeight;
+    this.shadowWidth = this.shadow.clientWidth;
+    this.shadowHeight = this.shadow.clientHeight;
   }
 
-  show_shadow() {
+  showShadow() {
     if (!this.moved) {
       this.shadow.style.visibility = 'visible';
     }
   }
 
-  hide_shadow() {
+  hideShadow() {
     this.shadow.style.visibility = 'hidden';
   }
 
-  clear_lines() {
-    jcanvas.clear(this.canvas_ctx, 0, 0, this.jm.view.size.w, this.jm.view.size.h);
+  clearLines() {
+    jcanvas.clear(this.canvasCtx, 0, 0, this.jm.view.size.w, this.jm.view.size.h);
   }
 
-  _magnet_shadow(node) {
-    if (!!node) {
-      this.canvas_ctx.lineWidth = options.line_width;
-      this.canvas_ctx.strokeStyle = 'rgba(0,0,0,0.3)';
-      this.canvas_ctx.lineCap = 'round';
-      this.clear_lines();
-      jcanvas.lineto(this.canvas_ctx, node.sp.x, node.sp.y, node.np.x, node.np.y);
+  _magnetShadow(node) {
+    if (node) {
+      this.canvasCtx.lineWidth = options.lineWidth;
+      this.canvasCtx.strokeStyle = 'rgba(0,0,0,0.3)';
+      this.canvasCtx.lineCap = 'round';
+      this.clearLines();
+      jcanvas.lineto(this.canvasCtx, node.sp.x, node.sp.y, node.np.x, node.np.y);
     }
   }
 
-  _lookup_close_node() {
-    const root = this.jm.getRoot();
-    const root_location = root.getLocation();
-    const root_size = root.getSize();
-    const root_x = root_location.x + root_size.w / 2;
+  _lookupCloseNode() {
+    const root = this.jm.mind.root;
+    const rootLocation = root.getLocation();
+    const rootSize = root.getSize();
+    const rootX = rootLocation.x + rootSize.w / 2;
 
-    const sw = this.shadow_w;
-    const sh = this.shadow_h;
+    const sw = this.shadowWidth;
+    const sh = this.shadowHeight;
     const sx = this.shadow.offsetLeft;
     const sy = this.shadow.offsetTop;
 
     let ns, nl;
 
-    const direct = sx + sw / 2 >= root_x ? MindMapMain.direction.right : MindMapMain.direction.left;
+    const direct = sx + sw / 2 >= rootX ? MindMapMain.direction.right : MindMapMain.direction.left;
     const nodes = this.jm.mind.nodes;
     let node = null;
-    let min_distance = Number.MAX_VALUE;
+    let minDistance = Number.MAX_VALUE;
     let distance = 0;
-    let closest_node = null;
-    let closest_p = null;
-    let shadow_p = null;
+    let closestNode = null;
+    let closestP = null;
+    let shadowP = null;
     for (const nodeid in nodes) {
+      if(nodeid) {
+
       let np, sp;
       node = nodes[nodeid];
-      if (node.isroot || node.direction == direct) {
-        if (node.id == this.active_node.id) {
+      if (node.isroot || node.direction === direct) {
+        if (node.id === this.activeNode.id) {
           continue;
         }
         ns = node.getSize();
         nl = node.getLocation();
-        if (direct == MindMapMain.direction.right) {
+        if (direct === MindMapMain.direction.right) {
           if (sx - nl.x - ns.w <= 0) {
             continue;
           }
           distance = Math.abs(sx - nl.x - ns.w) + Math.abs(sy + sh / 2 - nl.y - ns.h / 2);
-          np = { x: nl.x + ns.w - options.line_width, y: nl.y + ns.h / 2 };
-          sp = { x: sx + options.line_width, y: sy + sh / 2 };
+          np = { x: nl.x + ns.w - options.lineWidth, y: nl.y + ns.h / 2 };
+          sp = { x: sx + options.lineWidth, y: sy + sh / 2 };
         } else {
           if (nl.x - sx - sw <= 0) {
             continue;
           }
           distance = Math.abs(sx + sw - nl.x) + Math.abs(sy + sh / 2 - nl.y - ns.h / 2);
-          np = { x: nl.x + options.line_width, y: nl.y + ns.h / 2 };
-          sp = { x: sx + sw - options.line_width, y: sy + sh / 2 };
+          np = { x: nl.x + options.lineWidth, y: nl.y + ns.h / 2 };
+          sp = { x: sx + sw - options.lineWidth, y: sy + sh / 2 };
         }
-        if (distance < min_distance) {
-          closest_node = node;
-          closest_p = np;
-          shadow_p = sp;
-          min_distance = distance;
+        if (distance < minDistance) {
+          closestNode = node;
+          closestP = np;
+          shadowP = sp;
+          minDistance = distance;
         }
       }
+      }
     }
-    let result_node = null;
-    if (!!closest_node) {
-      result_node = {
-        node: closest_node,
+    let resultNode = null;
+    if (closestNode) {
+      resultNode = {
+        node: closestNode,
         direction: direct,
-        sp: shadow_p,
-        np: closest_p
+        sp: shadowP,
+        np: closestP
       };
     }
-    return result_node;
+    return resultNode;
   }
 
-  lookup_close_node() {
-    const node_data = this._lookup_close_node();
-    if (!!node_data) {
-      this._magnet_shadow(node_data);
-      this.target_node = node_data.node;
-      this.target_direct = node_data.direction;
+  lookupCloseNode() {
+    const nodeData = this._lookupCloseNode();
+    if (nodeData) {
+      this._magnetShadow(nodeData);
+      this.targetNode = nodeData.node;
+      this.targetDirect = nodeData.direction;
     }
   }
 
-  _event_bind() {
-    const jd = this;
+  _eventBind() {
     const container = this.jm.view.container;
     jdom.addEvent(container, 'mousedown', function(e) {
       const evt = e || event;
-      jd.dragstart.call(jd, evt);
+      this.dragstart.call(this, evt);
     });
     jdom.addEvent(container, 'mousemove', function(e) {
       const evt = e || event;
-      jd.drag.call(jd, evt);
+      this.drag.call(this, evt);
     });
     jdom.addEvent(container, 'mouseup', function(e) {
       const evt = e || event;
-      jd.dragend.call(jd, evt);
+      this.dragend.call(this, evt);
     });
     jdom.addEvent(container, 'touchstart', function(e) {
       const evt = e || event;
-      jd.dragstart.call(jd, evt);
+      this.dragstart.call(this, evt);
     });
     jdom.addEvent(container, 'touchmove', function(e) {
       const evt = e || event;
-      jd.drag.call(jd, evt);
+      this.drag.call(this, evt);
     });
     jdom.addEvent(container, 'touchend', function(e) {
       const evt = e || event;
-      jd.dragend.call(jd, evt);
+      this.dragend.call(this, evt);
     });
   }
 
@@ -239,36 +241,36 @@ export class Draggable {
     if (this.capture) {
       return;
     }
-    this.active_node = null;
+    this.activeNode = null;
 
     const jview = this.jm.view;
     const el = e.target || event.srcElement;
-    if (el.tagName.toLowerCase() != 'jmnode') {
+    if (el.tagName.toLowerCase() !== 'jmnode') {
       return;
     }
     const nodeid = jview.getBindedNodeId(el);
-    if (!!nodeid) {
+    if (nodeid) {
       const node = this.jm.getNode(nodeid);
       if (!node.isroot) {
-        this.reset_shadow(el);
-        this.active_node = node;
-        this.offset_x = (e.clientX || e.touches[0].clientX) - el.offsetLeft;
-        this.offset_y = (e.clientY || e.touches[0].clientY) - el.offsetTop;
-        this.client_hw = Math.floor(el.clientWidth / 2);
-        this.client_hh = Math.floor(el.clientHeight / 2);
-        if (this.hlookup_delay != 0) {
-          $win.clearTimeout(this.hlookup_delay);
+        this.resetShadow(el);
+        this.activeNode = node;
+        this.offsetX = (e.clientX || e.touches[0].clientX) - el.offsetLeft;
+        this.offsetY = (e.clientY || e.touches[0].clientY) - el.offsetTop;
+        this.clientHW = Math.floor(el.clientWidth / 2);
+        this.clientHH = Math.floor(el.clientHeight / 2);
+        if (this.hlookupDelay !== 0) {
+          $win.clearTimeout(this.hlookupDelay);
         }
-        if (this.hlookup_timer != 0) {
-          $win.clearInterval(this.hlookup_timer);
+        if (this.hlookupTimer !== 0) {
+          $win.clearInterval(this.hlookupTimer);
         }
-        const jd = this;
-        this.hlookup_delay = $win.setTimeout(function() {
-          jd.hlookup_delay = 0;
-          jd.hlookup_timer = $win.setInterval(function() {
-            jd.lookup_close_node.call(jd);
-          }, options.lookup_interval);
-        }, options.lookup_delay);
+
+        this.hlookupDelay = $win.setTimeout(function() {
+          this.hlookupDelay = 0;
+          this.hlookupTimer = $win.setInterval(function() {
+            this.lookupCloseNode.call(this);
+          }, options.lookupInterval);
+        }, options.lookupDelay);
         this.capture = true;
       }
     }
@@ -280,78 +282,76 @@ export class Draggable {
     }
     if (this.capture) {
       e.preventDefault();
-      this.show_shadow();
+      this.showShadow();
       this.moved = true;
-      clear_selection();
-      const px = (e.clientX || e.touches[0].clientX) - this.offset_x;
-      const py = (e.clientY || e.touches[0].clientY) - this.offset_y;
-      const cx = px + this.client_hw;
-      const cy = py + this.client_hh;
+      clearSelection();
+      const px = (e.clientX || e.touches[0].clientX) - this.offsetX;
+      const py = (e.clientY || e.touches[0].clientY) - this.offsetY;
       this.shadow.style.left = px + 'px';
       this.shadow.style.top = py + 'px';
-      clear_selection();
+      clearSelection();
     }
   }
 
-  dragend(e) {
+  dragend() {
     if (!this.jm.getEditable()) {
       return;
     }
     if (this.capture) {
-      if (this.hlookup_delay != 0) {
-        $win.clearTimeout(this.hlookup_delay);
-        this.hlookup_delay = 0;
-        this.clear_lines();
+      if (this.hlookupDelay !== 0) {
+        $win.clearTimeout(this.hlookupDelay);
+        this.hlookupDelay = 0;
+        this.clearLines();
       }
-      if (this.hlookup_timer != 0) {
-        $win.clearInterval(this.hlookup_timer);
-        this.hlookup_timer = 0;
-        this.clear_lines();
+      if (this.hlookupTimer !== 0) {
+        $win.clearInterval(this.hlookupTimer);
+        this.hlookupTimer = 0;
+        this.clearLines();
       }
       if (this.moved) {
-        const src_node = this.active_node;
-        const target_node = this.target_node;
-        const target_direct = this.target_direct;
-        this.move_node(src_node, target_node, target_direct);
+        const srcNode = this.activeNode;
+        const targetNode = this.targetNode;
+        const targetDirect = this.targetDirect;
+        this.moveNode(srcNode, targetNode, targetDirect);
       }
-      this.hide_shadow();
+      this.hideShadow();
     }
     this.moved = false;
     this.capture = false;
   }
 
-  move_node(src_node, target_node, target_direct) {
-    const shadow_h = this.shadow.offsetTop;
-    if (!!target_node && !!src_node && !MindMapNode.inherited(src_node, target_node)) {
+  moveNode(srcNode, targetNode, targetDirect) {
+    const shadowH = this.shadow.offsetTop;
+    if (!!targetNode && !!srcNode && !MindMapNode.inherited(srcNode, targetNode)) {
       // lookup before_node
-      const sibling_nodes = target_node.children;
-      let sc = sibling_nodes.length;
+      const siblingNodes = targetNode.children;
+      let sc = siblingNodes.length;
       let node = null;
-      let delta_y = Number.MAX_VALUE;
-      let node_before = null;
+      let deltaY = Number.MAX_VALUE;
+      let nodeBefore = null;
       let beforeid = '_last_';
       while (sc--) {
-        node = sibling_nodes[sc];
-        if (node.direction == target_direct && node.id != src_node.id) {
-          const dy = node.getLocation().y - shadow_h;
-          if (dy > 0 && dy < delta_y) {
-            delta_y = dy;
-            node_before = node;
+        node = siblingNodes[sc];
+        if (node.direction === targetDirect && node.id !== srcNode.id) {
+          const dy = node.getLocation().y - shadowH;
+          if (dy > 0 && dy < deltaY) {
+            deltaY = dy;
+            nodeBefore = node;
             beforeid = '_first_';
           }
         }
       }
-      if (!!node_before) {
-        beforeid = node_before.id;
+      if (nodeBefore) {
+        beforeid = nodeBefore.id;
       }
-      this.jm.moveNode(src_node.id, beforeid, target_node.id, target_direct);
+      this.jm.moveNode(srcNode.id, beforeid, targetNode.id, targetDirect);
     }
-    this.active_node = null;
-    this.target_node = null;
-    this.target_direct = null;
+    this.activeNode = null;
+    this.targetNode = null;
+    this.targetDirect = null;
   }
 
-  jm_event_handle(type, data) {
+  jmEventHandle(type) {
     if (type === MindMapMain.eventType.resize) {
       this.resize();
     }

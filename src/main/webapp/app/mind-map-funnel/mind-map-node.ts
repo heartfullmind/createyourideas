@@ -6,13 +6,16 @@ interface NodeData {
 }
 
 export interface NodeView {
-  abs_x: string;
-  abs_y: string;
+  absX: string;
+  absY: string;
   height: string;
   width: string;
 }
 
 export class MindMapNode {
+  static compare;
+  static inherited;
+
   id: string;
   index: any;
   topic: string;
@@ -33,10 +36,6 @@ export class MindMapNode {
   selectable: boolean;
   private _data: NodeData;
   financeService: FinanceService;
-
-
-  static compare;
-  static inherited;
 
   constructor(
     sId,
@@ -168,8 +167,8 @@ export class MindMapNode {
   getLocation() {
     const vd = this._data.view;
     return {
-      x: vd.abs_x,
-      y: vd.abs_y
+      x: vd.absX,
+      y: vd.absY
     };
   }
 

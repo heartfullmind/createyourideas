@@ -1,4 +1,3 @@
-import { outgoingsRoute } from './../entities/outgoings/outgoings.route';
 import * as _ from 'lodash';
 import { customizeUtil } from './util';
 import { ShortcutProvider } from './shortcut-provider';
@@ -47,14 +46,22 @@ export interface MindMapModuleOpts {
 }
 
 export class MindMapMain {
+  static direction;
+  static eventType;
+
+  static plugin;
+  static plugins;
+  static registerPlugin;
+  static initPluginsNextTick;
+  static initPlugins;
+  static show;
+
   version: string = VERSION;
   opts: MindMapModuleOpts = {};
   options = this.opts;
   inited = false;
   mind: MindMapMind;
   eventHandles = [];
-  static direction;
-  static eventType;
   data: MindMapDataProvider;
   layout: LayoutProvider;
   view: ViewProvider;
@@ -67,13 +74,6 @@ export class MindMapMain {
   ideaService: IdeaService;
   incomeService: IncomeService;
   outgoingsService: OutgoingsService;
-
-  static plugin;
-  static plugins;
-  static registerPlugin;
-  static initPluginsNextTick;
-  static initPlugins;
-  static show;
 
   constructor(options) {
     customizeUtil.json.merge(this.opts, DEFAULT_OPTIONS);
@@ -151,14 +151,14 @@ export class MindMapMain {
 
   // call enableEventHandle('dblclick')
   // options are 'mousedown', 'click', 'dblclick'
-  enableEventHandle(event_handle) {
-    this.options.defaultEventHandle['can' + event_handle + 'Handle'] = true;
+  enableEventHandle(eventHandle) {
+    this.options.defaultEventHandle['can' + eventHandle + 'Handle'] = true;
   }
 
   // call disableEventHandle('dblclick')
   // options are 'mousedown', 'click', 'dblclick'
-  disableEventHandle(event_handle) {
-    this.options.defaultEventHandle['can' + event_handle + 'Handle'] = false;
+  disableEventHandle(eventHandle) {
+    this.options.defaultEventHandle['can' + eventHandle + 'Handle'] = false;
   }
 
   getEditable() {
@@ -170,9 +170,9 @@ export class MindMapMain {
   }
 
   setTheme(theme) {
-    const theme_old = this.options.theme;
-    this.options.theme = !!theme ? theme : null;
-    if (theme_old !== this.options.theme) {
+    const themeOld = this.options.theme;
+    this.options.theme = theme ? !!theme : !!null;
+    if (themeOld !== this.options.theme) {
       this.view.resetTheme();
       this.view.resetCustomStyle();
     }
@@ -190,7 +190,7 @@ export class MindMapMain {
     }
     const element = e.target || event.srcElement;
     const nodeid = this.view.getBindedNodeId(element);
-    if (!!nodeid) {
+    if (nodeid) {
       this.selectNode(nodeid);
     } else {
       this.selectClear();
@@ -205,7 +205,7 @@ export class MindMapMain {
     const isexpander = this.view.isExpander(element);
     if (isexpander) {
       const nodeid = this.view.getBindedNodeId(element);
-      if (!!nodeid) {
+      if (nodeid) {
         this.toggleNode(nodeid);
       }
     }
@@ -230,12 +230,12 @@ export class MindMapMain {
     }
     const types = [];
     types.push(_.get(node, 'selectedType'));
-    const parent_select_type = _.get(node, 'parent.selectedType');
-    let current_rule = _.find(this.options.hierarchyRule, { name: parent_select_type });
-    if (!current_rule) {
-      current_rule = this.options.hierarchyRule.ROOT;
+    const parentSelectType = _.get(node, 'parent.selectedType');
+    let currentRule = _.find(this.options.hierarchyRule, { name: parentSelectType });
+    if (!currentRule) {
+      currentRule = this.options.hierarchyRule.ROOT;
     }
-    current_rule.getChildren().forEach(children => {
+    currentRule.getChildren().forEach(children => {
       types.push(children.name);
     });
     return _.compact(types);
@@ -270,7 +270,7 @@ export class MindMapMain {
       return this.beginEdit(this.getNode(node));
     }
     if (this.getEditable() && this.getNodeEditable(node)) {
-      if (!!node) {
+      if (node) {
         this.view.editNodeBegin(node, this.getSelectTypesByHierarchyRule(node));
       } else {
         logger.error('the node can not be found');
@@ -289,7 +289,7 @@ export class MindMapMain {
     if (!customizeUtil.is_node(node)) {
       return this.toggleNode(this.getNode(node));
     }
-    if (!!node) {
+    if (node) {
       if (node.isroot) {
         return;
       }
@@ -306,7 +306,7 @@ export class MindMapMain {
     if (!customizeUtil.is_node(node)) {
       return this.expandNode(this.getNode(node));
     }
-    if (!!node) {
+    if (node) {
       if (node.isroot) {
         return;
       }
@@ -319,13 +319,13 @@ export class MindMapMain {
     }
   }
 
-  collapseCalcInfo(node) {}
+
 
   collapseNode(node) {
     if (!customizeUtil.is_node(node)) {
       return this.collapseNode(this.getNode(node));
     }
-    if (!!node) {
+    if (node) {
       if (node.isroot) {
         return;
       }
@@ -395,15 +395,15 @@ export class MindMapMain {
     };
   }
 
-  getData(data_format?) {
-    const df = data_format || 'nodeTree';
+  getData(dataFormat?) {
+    const df = dataFormat || 'nodeTree';
     return this.data.getData(df);
   }
 
   getDepth() {
     const currentData = this.getData().data;
     const getDepth = data => {
-      let depth = 1;
+      const depth = 1;
       if (data.children && data.children[0]) {
         const childrenDepth = [];
         const childrenLength = data.children.length;
@@ -416,78 +416,65 @@ export class MindMapMain {
     };
     return getDepth(currentData);
   }
-  getRoot() {
-    const nodes = this.mind.nodes;
-    let node;
-    for (let nodeid in nodes) {
-      node = nodes[nodeid];
-      if (node.isroot) {
-        return node;
-      }
-    }
-  }
 
   getNode(nodeid) {
     return this.mind.getNode(nodeid);
   }
 
-  getCurrentHierarchyRule(parent_node) {
+  getCurrentHierarchyRule(parentNode) {
     if (!this.options.hierarchyRule) {
       return null;
     }
-    if (parent_node.isroot) {
+    if (parentNode.isroot) {
       return this.options.hierarchyRule.ROOT.getChildren()[0];
     }
-    return _.find(this.options.hierarchyRule, { name: parent_node.selectedType }).getChildren()[0];
+    return _.find(this.options.hierarchyRule, { name: parentNode.selectedType }).getChildren()[0];
   }
 
-  addNode(parent_node, nodeid, topic, data, interest?, investment?, distribution?, profit?) {
+  addNode(parentNode, nodeid, topic, data, interest?, investment?, distribution?) {
 
     data = data || {};
     data.isCreated = true;
-    if (this.options.depth && parent_node.level >= this.options.depth) {
+    if (this.options.depth && parentNode.level >= this.options.depth) {
       throw new Error('over depth');
     }
     if (this.getEditable()) {
-      const current_rule = this.getCurrentHierarchyRule(parent_node);
-      const selected_type = current_rule && current_rule.name;
-      if (!selected_type && this.options.hierarchyRule) {
+      const currentRule = this.getCurrentHierarchyRule(parentNode);
+      const selectedType = currentRule && currentRule.name;
+      if (!selectedType && this.options.hierarchyRule) {
         throw new Error('forbidden add');
       } else {
-        topic = topic || `${selected_type}select`;
-        interest = interest;
-        distribution = distribution;
-        investment = investment;
+        topic = topic || `${selectedType}select`;
       }
-      if (current_rule.backgroundColor) {
-        data['background-color'] = current_rule.backgroundColor;
+      if (currentRule.backgroundColor) {
+        data['background-color'] = currentRule.backgroundColor;
       }
-      if (current_rule.color) {
-        data['color'] = current_rule.color;
+      if (currentRule.color) {
+        data['color'] = currentRule.color;
       }
       const node = this.mind.addNode(
-        parent_node,
+        parentNode,
         nodeid,
         topic,
         data,
         null,
         null,
         null,
-        selected_type,
+        selectedType,
         this.options.selectable,
         interest,
         investment,
         distribution
       );
-      if (!!node) {
+      if (node) {
         this.view.addNode(node);
         this.layout.layout();
         this.view.show(false);
         this.view.resetNodeCustomStyle(node);
-        this.expandNode(parent_node);
+        this.expandNode(parentNode);
         this.invokeEventHandleNextTick(MindMapMain.eventType.edit, {
           evt: 'addNode',
-          data: [parent_node.id, nodeid, topic, data],
+          data: [parentNode.id, nodeid, topic, data],
           node: nodeid
         });
       }
@@ -498,11 +485,11 @@ export class MindMapMain {
     }
   }
 
-  insertNodeBefore(node_before, nodeid, topic, data) {
+  insertNodeBefore(nodeBefor, nodeid, topic, data) {
     if (this.getEditable()) {
-      const beforeid = customizeUtil.is_node(node_before) ? node_before.id : node_before;
-      const node = this.mind.insertNodeBefore(node_before, nodeid, topic, data);
-      if (!!node) {
+      const beforeid = customizeUtil.is_node(nodeBefor) ? nodeBefor.id : nodeBefor;
+      const node = this.mind.insertNodeBefore(nodeBefor, nodeid, topic, data);
+      if (node) {
         this.view.addNode(node);
         this.layout.layout();
         this.view.show(false);
@@ -519,16 +506,16 @@ export class MindMapMain {
     }
   }
 
-  insertNodeAfter(node_after, nodeid, topic, data) {
+  insertNodeAfter(nodeAfter, nodeid, topic, data) {
     if (this.getEditable()) {
-      const node = this.mind.insertNodeAfter(node_after, nodeid, topic, data);
-      if (!!node) {
+      const node = this.mind.insertNodeAfter(nodeAfter, nodeid, topic, data);
+      if (node) {
         this.view.addNode(node);
         this.layout.layout();
         this.view.show(false);
         this.invokeEventHandleNextTick(MindMapMain.eventType.edit, {
           evt: 'insertNodeAfter',
-          data: [node_after.id, nodeid, topic, data],
+          data: [nodeAfter.id, nodeid, topic, data],
           node: nodeid
         });
       }
@@ -544,20 +531,20 @@ export class MindMapMain {
       return this.removeNode(this.getNode(node));
     }
     if (this.getEditable()) {
-      if (!!node) {
+      if (node) {
         if (node.isroot) {
           logger.error('fail, can not remove root node');
           return false;
         }
         const nodeid = node.id;
         const parentid = node.parent.id;
-        const parent_node = this.getNode(parentid);
-        this.view.saveLocation(parent_node);
+        const parentNode = this.getNode(parentid);
+        this.view.saveLocation(parentNode);
         this.view.removeNode(node);
         this.mind.removeNode(node);
         this.layout.layout();
         this.view.show(false);
-        this.view.restoreLocation(parent_node);
+        this.view.restoreLocation(parentNode);
         this.invokeEventHandleNextTick(MindMapMain.eventType.edit, {
           evt: 'removeNode',
           data: [nodeid],
@@ -573,20 +560,20 @@ export class MindMapMain {
     }
   }
 
-  updateNode(nodeid, topic, selected_type, interest?, investment?, distribution?) {
+  updateNode(nodeid, topic, selectedType, interest?, investment?, distribution?) {
     if (this.getEditable()) {
       if (customizeUtil.text.isEmpty(topic)) {
         logger.warn('fail, topic can not be empty');
         return;
       }
       const node = this.getNode(nodeid);
-      if (!!node) {
+      if (node) {
         if (
           node.distribution === distribution &&
           node.interest === interest &&
           node.topic === topic &&
           node.investment === investment &&
-          node.selectedType === selected_type
+          node.selectedType === selectedType
         ) {
           logger.info('nothing changed');
           this.view.updateNode(node);
@@ -596,7 +583,7 @@ export class MindMapMain {
         node.interest = interest;
         node.distribution = distribution;
         node.investment = investment;
-        node.selectedType = selected_type;
+        node.selectedType = selectedType;
         this.view.updateNode(node);
         this.layout.layout();
         this.view.show(false);
@@ -615,7 +602,7 @@ export class MindMapMain {
   moveNode(nodeid, beforeid, parentid, direction) {
     if (this.getEditable()) {
       const node = this.mind.moveNode(nodeid, beforeid, parentid, direction);
-      if (!!node) {
+      if (node) {
         this.view.updateNode(node);
         this.layout.layout();
         this.view.show(false);
@@ -639,13 +626,13 @@ export class MindMapMain {
       return;
     }
     this.mind.selected = node;
-    if (!!node) {
+    if (node) {
       this.view.selectNode(node);
     }
   }
 
   getSelectedNode() {
-    if (!!this.mind) {
+    if (this.mind) {
       return this.mind.selected;
     } else {
       return null;
@@ -653,7 +640,7 @@ export class MindMapMain {
   }
 
   selectClear() {
-    if (!!this.mind) {
+    if (this.mind) {
       this.mind.selected = null;
       this.view.selectClear();
     }
@@ -723,11 +710,11 @@ export class MindMapMain {
   setNodeColor(nodeid, bgcolor, fgcolor) {
     if (this.getEditable()) {
       const node = this.mind.getNode(nodeid);
-      if (!!node) {
-        if (!!bgcolor) {
+      if (node) {
+        if (bgcolor) {
           node.data['background-color'] = bgcolor;
         }
-        if (!!fgcolor) {
+        if (fgcolor) {
           node.data['foreground-color'] = fgcolor;
         }
         this.view.resetNodeCustomStyle(node);
@@ -741,14 +728,14 @@ export class MindMapMain {
   setNodeFontStyle(nodeid, size, weight, style) {
     if (this.getEditable()) {
       const node = this.mind.getNode(nodeid);
-      if (!!node) {
-        if (!!size) {
+      if (node) {
+        if (size) {
           node.data['font-size'] = size;
         }
-        if (!!weight) {
+        if (weight) {
           node.data['font-weight'] = weight;
         }
-        if (!!style) {
+        if (style) {
           node.data['font-style'] = style;
         }
         this.view.resetNodeCustomStyle(node);
@@ -765,17 +752,17 @@ export class MindMapMain {
   setNodeBackgroundImage(nodeid, image, width, height, rotation) {
     if (this.getEditable()) {
       const node = this.mind.getNode(nodeid);
-      if (!!node) {
-        if (!!image) {
+      if (node) {
+        if (image) {
           node.data['background-image'] = image;
         }
-        if (!!width) {
+        if (width) {
           node.data['width'] = width;
         }
-        if (!!height) {
+        if (height) {
           node.data['height'] = height;
         }
-        if (!!rotation) {
+        if (rotation) {
           node.data['background-rotation'] = rotation;
         }
         this.view.resetNodeCustomStyle(node);
@@ -792,7 +779,7 @@ export class MindMapMain {
   setNodeBackgroundRotation(nodeid, rotation) {
     if (this.getEditable()) {
       const node = this.mind.getNode(nodeid);
-      if (!!node) {
+      if (node) {
         if (!node.data['background-image']) {
           logger.error('fail, only can change rotation angle of node with background image');
           return null;
@@ -821,9 +808,8 @@ export class MindMapMain {
   }
 
   invokeEventHandleNextTick(type, data) {
-    const j = this;
     $win.setTimeout(function() {
-      j.invokeEventHandle(type, data);
+      this.invokeEventHandle(type, data);
     }, 0);
   }
 
@@ -858,19 +844,19 @@ MindMapMain.initPluginsNextTick = function(sender) {
 };
 
 MindMapMain.initPlugins = function(sender) {
-  let l = MindMapMain.plugins.length;
-  let fn_init = null;
+  const l = MindMapMain.plugins.length;
+  let fnInit = null;
   for (let i = 0; i < l; i++) {
-    fn_init = MindMapMain.plugins[i].init;
-    if (typeof fn_init === 'function') {
-      fn_init(sender);
+    fnInit = MindMapMain.plugins[i].init;
+    if (typeof fnInit === 'function') {
+      fnInit(sender);
     }
   }
 };
 
 // quick way
 MindMapMain.show = function(options, mind) {
-  let _jm = new MindMapMain(options);
+  const _jm = new MindMapMain(options);
   _jm.show(mind);
   return _jm;
 };

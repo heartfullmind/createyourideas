@@ -1,6 +1,4 @@
-import { getTestBed } from '@angular/core/testing';
 import { IOutgoings } from './../shared/model/outgoings.model';
-import { HttpResponse } from '@angular/common/http';
 import { IIncome } from './../shared/model/income.model';
 import { MindMapMain } from './mind-map-main';
 import { IncomeService } from 'app/entities/income/income.service';
@@ -23,8 +21,7 @@ export class CalcProvider {
 
   fetchFinanceService(): Promise<FinanceService> {
     return new Promise<FinanceService>(function(resolve) {
-      let os;
-      os = ServiceLocator.injector.get(FinanceService);
+      const os: FinanceService = ServiceLocator.injector.get(FinanceService);
       resolve(os);
     });
   }
@@ -36,7 +33,7 @@ export class CalcProvider {
   }
 
   calculateProfit() {
-    let childrenRoot = this.getChildren(this.mindMap.mind.root);
+    const childrenRoot = this.getChildren(this.mindMap.mind.root);
     let totalDailyBalance = 0;
     childrenRoot.forEach(child => {
       totalDailyBalance += child.getDailyBalance();
@@ -46,7 +43,6 @@ export class CalcProvider {
   }
 
   calculateAllLevels() {
-    let level = 1;
     for (let level = 1; level < 10; level++){
       this.calculateProfitFromLevel(level);
     }
@@ -56,7 +52,7 @@ export class CalcProvider {
     let levelNodes = [];
     levelNodes = this.getAllChildrenWithLevel(level, this.getChildren(this.mindMap.mind.root));
     levelNodes.forEach(node => {
-      let children = this.getChildren(node);
+      const children = this.getChildren(node);
       let totalProfit = 0;
       children.forEach(child => {
         totalProfit += child.getDailyBalance();
@@ -71,7 +67,7 @@ export class CalcProvider {
       this.mindMap.mind.root.setDailyBalance(db.body);
       this.mindMap.view.updateNode(this.mindMap.mind.root);
     });
-    let nodes = this.getChildren(this.mindMap.mind.root);
+    const nodes = this.getChildren(this.mindMap.mind.root);
     nodes.forEach(node => {
       this.financeService.getDailyBalance(Number(node.id)).subscribe(db => {
         node.setDailyBalance(db.body);
@@ -81,7 +77,7 @@ export class CalcProvider {
   }
 
   calculateDistribution() {
-    let lastChildren = this.getLastChildren();
+    const lastChildren = this.getLastChildren();
     lastChildren.forEach(child => {
       child.profit += this.mindMap.mind.root.profit * this.mindMap.mind.root.distribution;
       this.mindMap.view.updateNode(child);
@@ -89,11 +85,11 @@ export class CalcProvider {
   }
 
   getLastChildren() {
-    const root = this.mindMap.getRoot();
+    const root = this.mindMap.mind.root;
     const childrenFromRoot = this.getChildren(root);
-    let lastChildren = [];
+    const lastChildren = [];
     childrenFromRoot.forEach(child => {
-      if (child.children.length == 0) {
+      if (child.children.length === 0) {
         lastChildren.push(child);
       }
     });
@@ -101,7 +97,7 @@ export class CalcProvider {
   }
 
   getAllChildrenWithLevel(level, children) {
-    let childrenWithLevel = [];
+    const childrenWithLevel = [];
     children.forEach(child => {
       if(child.level === level) {
         childrenWithLevel.push(child);
@@ -111,10 +107,10 @@ export class CalcProvider {
   }
 
   getAllParents(node) {
-    let parents = [];
+    const parents = [];
     if(parent != null) {
       do {
-        let parent = node.parent;
+        const parent = node.parent;
         parents.push(parent);
         node=parent;
         if(node.parent == null){
@@ -125,9 +121,9 @@ export class CalcProvider {
     return parents;
   }
 
-  getChildren(selected_node) {
-    let children = selected_node.children;
-    let nodes = [];
+  getChildren(selectedNode) {
+    const children = selectedNode.children;
+    const nodes = [];
     children.forEach(child => {
       nodes.push(child);
     });

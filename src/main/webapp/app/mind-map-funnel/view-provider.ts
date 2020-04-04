@@ -44,7 +44,7 @@ export class ViewProvider {
     });
   }
 
-  static get_select_option(value) {
+  static getSelectOption(value) {
     const eOption = $create('option');
     eOption.value = value;
     eOption.appendChild($document.createTextNode(value));
@@ -93,7 +93,7 @@ export class ViewProvider {
     this.eSelect.value = this.selectedOptions && this.selectedOptions[0];
     if (this.selectedOptions) {
       this.selectedOptions.forEach(ele => {
-        this.eSelect.appendChild(ViewProvider.get_select_option(ele));
+        this.eSelect.appendChild(ViewProvider.getSelectOption(ele));
       });
     }
 
@@ -266,10 +266,10 @@ export class ViewProvider {
     return this.jm.options.hasInteraction && value === _.last(this.selectedOptions);
   }
 
-  addEvent(obj, event_name, event_handle) {
-    customizeUtil.dom.addEvent(this.eNodes, event_name, function(e) {
+  addEvent(obj, eventName, eventHandle) {
+    customizeUtil.dom.addEvent(this.eNodes, eventName, function(e) {
       const evt = e || event;
-      event_handle.call(obj, evt);
+      eventHandle.call(obj, evt);
     });
   }
 
@@ -301,9 +301,9 @@ export class ViewProvider {
   }
 
   resetTheme() {
-    const theme_name = this.jm.options.theme;
-    if (!!theme_name) {
-      this.eNodes.className = 'theme-' + theme_name;
+    const themeName = this.jm.options.theme;
+    if (themeName) {
+      this.eNodes.className = 'theme-' + themeName;
     } else {
       this.eNodes.className = '';
     }
@@ -311,8 +311,9 @@ export class ViewProvider {
 
   resetCustomStyle() {
     const nodes = this.jm.mind.nodes;
-    for (let nodeid in nodes) {
-      this.resetNodeCustomStyle(nodes[nodeid]);
+    for (const nodeid in nodes) {
+      if(nodeid)
+        this.resetNodeCustomStyle(nodes[nodeid]);
     }
   }
 
@@ -322,36 +323,38 @@ export class ViewProvider {
   }
 
   expandSize() {
-    const min_size = this.layout.getMinSize();
-    let min_width = min_size.w + this.opts.hmargin * 2;
-    let min_height = min_size.h + this.opts.vmargin * 2;
-    let client_w = this.ePanel.clientWidth;
-    let client_h = this.ePanel.clientHeight;
-    if (client_w < min_width) {
-      client_w = min_width;
+    const minSize = this.layout.getMinSize();
+    const minWidth = minSize.w + this.opts.hmargin * 2;
+    const minHeight = minSize.h + this.opts.vmargin * 2;
+    let clientW = this.ePanel.clientWidth;
+    let clientH = this.ePanel.clientHeight;
+    if (clientW < minWidth) {
+      clientW = minWidth;
     }
-    if (client_h < min_height) {
-      client_h = min_height;
+    if (clientH < minHeight) {
+      clientH = minHeight;
     }
-    this.size.w = client_w;
-    this.size.h = client_h;
+    this.size.w = clientW;
+    this.size.h = clientH;
   }
 
   initNodesSize(node) {
-    const view_data = node._data.view;
-    view_data.width = view_data.element.clientWidth;
-    view_data.height = view_data.element.clientHeight;
+    const viewData = node._data.view;
+    viewData.width = viewData.element.clientWidth;
+    viewData.height = viewData.element.clientHeight;
   }
 
   initNodes() {
     const nodes = this.jm.mind.nodes;
-    const doc_frag = $document.createDocumentFragment();
-    for (let nodeid in nodes) {
-      this.createNodeElement(nodes[nodeid], doc_frag);
+    const docFrag = $document.createDocumentFragment();
+    for (const nodeid in nodes) {
+      if(nodeid)
+        this.createNodeElement(nodes[nodeid], docFrag);
     }
-    this.eNodes.appendChild(doc_frag);
-    for (let nodeid in nodes) {
-      this.initNodesSize(nodes[nodeid]);
+    this.eNodes.appendChild(docFrag);
+    for (const nodeid in nodes) {
+      if(nodeid)
+        this.initNodesSize(nodes[nodeid]);
     }
   }
 
@@ -360,49 +363,49 @@ export class ViewProvider {
     this.initNodesSize(node);
   }
 
-  createNodeElement(node, parent_node) {
-    let view_data = null;
+  createNodeElement(node, parentNode) {
+    let viewData = null;
     if ('view' in node._data) {
-      view_data = node._data.view;
+      viewData = node._data.view;
     } else {
-      view_data = {};
-      node._data.view = view_data;
+      viewData = {};
+      node._data.view = viewData;
     }
 
     const d = $create('jmnode');
     if (node.isroot) {
       d.className = 'root';
     } else {
-      let d_e = $create('jmexpander');
-      $text(d_e, '-');
-      d_e.setAttribute('nodeid', node.id);
-      d_e.style.visibility = 'hidden';
-      parent_node.appendChild(d_e);
-      view_data.expander = d_e;
+      const expander = $create('jmexpander');
+      $text(expander, '-');
+      expander.setAttribute('nodeid', node.id);
+      expander.style.visibility = 'hidden';
+      parentNode.appendChild(expander);
+      viewData.expander = expander;
     }
 
-    if (!!node.topic) {
+    if (node.topic) {
       if (this.opts.supportHtml) {
         $html(d, node.show());
       } else {
         $text(d, node.show());
       }
     }
-    if (!!node.interest) {
+    if (node.interest) {
       if (this.opts.supportHtml) {
         $html(d, node.show());
       } else {
         $text(d, node.show());
       }
     }
-    if (!!node.distribution) {
+    if (node.distribution) {
       if (this.opts.supportHtml) {
         $html(d, node.show());
       } else {
         $text(d, node.show());
       }
     }
-    if (!!node.investment) {
+    if (node.investment) {
       if (this.opts.supportHtml) {
         $html(d, node.show());
       } else {
@@ -412,8 +415,8 @@ export class ViewProvider {
     d.setAttribute('nodeid', node.id);
     d.style.visibility = 'hidden';
     this._resetNodeCustomStyle(d, node.data);
-    parent_node.appendChild(d);
-    view_data.element = d;
+    parentNode.appendChild(d);
+    viewData.element = d;
   }
 
   removeNode(node) {
@@ -442,46 +445,46 @@ export class ViewProvider {
   }
 
   updateNode(node) {
-    const view_data = node._data.view;
-    const element = view_data.element;
-    if (!!node.topic) {
+    const viewData = node._data.view;
+    const element = viewData.element;
+    if (node.topic) {
       if (this.opts.supportHtml) {
         $html(element, node.show());
       } else {
         $text(element, node.show());
       }
     }
-    if (!!node.interest) {
+    if (node.interest) {
       if (this.opts.supportHtml) {
         $html(element, node.show());
       } else {
         $text(element, node.show());
       }
     }
-    if (!!node.distribution) {
+    if (node.distribution) {
       if (this.opts.supportHtml) {
         $html(element, node.show());
       } else {
         $text(element, node.show());
       }
     }
-    if (!!node.investment) {
+    if (node.investment) {
       if (this.opts.supportHtml) {
         $html(element, node.show());
       } else {
         $text(element, node.show());
       }
     }
-    view_data.width = element.clientWidth;
-    view_data.height = element.clientHeight;
+    viewData.width = element.clientWidth;
+    viewData.height = element.clientHeight;
   }
 
   selectNode(node) {
-    if (!!this.selectedNode) {
+    if (this.selectedNode) {
       this.selectedNode._data.view.element.className = this.selectedNode._data.view.element.className.replace(/\s*selected\s*/i, '');
       this.resetNodeCustomStyle(this.selectedNode);
     }
-    if (!!node) {
+    if (node) {
       this.selectedNode = node;
       node._data.view.element.className += ' selected';
       this.clearNodeCustomStyle(node);
@@ -503,7 +506,7 @@ export class ViewProvider {
   createSelectByTypes(types) {
     const newSelect = $create('select');
     types.slice(1).forEach(type => {
-      newSelect.appendChild(ViewProvider.get_select_option(type));
+      newSelect.appendChild(ViewProvider.getSelectOption(type));
     });
     if (types.length <= 1) {
       newSelect.style.borderColor = 'red';
@@ -525,8 +528,8 @@ export class ViewProvider {
     }
     this.editingNode = node;
     this.previousNode = node;
-    const view_data = node._data.view;
-    const element = view_data.element;
+    const viewData = node._data.view;
+    const element = viewData.element;
     const topic = node.topic;
     const interest = node.interest;
     const distribution = node.distribution;
@@ -537,13 +540,13 @@ export class ViewProvider {
     this.eDistributionEditor.value = distribution;
     this.eInvestmentEditor.value = investment;
     this.eEditor.style.width =
-      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left')) - parseInt(ncs.getPropertyValue('padding-right')) + 'px';
+      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left'), 10) - parseInt(ncs.getPropertyValue('padding-right'), 10) + 'px';
     this.eInterestEditor.style.width =
-      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left')) - parseInt(ncs.getPropertyValue('padding-right')) + 'px';
+      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left'), 10) - parseInt(ncs.getPropertyValue('padding-right'), 10) + 'px';
     this.eDistributionEditor.style.width =
-      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left')) - parseInt(ncs.getPropertyValue('padding-right')) + 'px';
+      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left'), 10) - parseInt(ncs.getPropertyValue('padding-right'), 10) + 'px';
     this.eInvestmentEditor.style.width =
-      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left')) - parseInt(ncs.getPropertyValue('padding-right')) + 'px';
+      element.clientWidth - parseInt(ncs.getPropertyValue('padding-left'), 10) - parseInt(ncs.getPropertyValue('padding-right'), 10) + 'px';
 
     element.innerHTML = '';
     if (types) {
@@ -553,31 +556,31 @@ export class ViewProvider {
     }
     node.selectable && element.appendChild(this.currentSelect);
 
-    var table = document.createElement('table') as HTMLTableElement;
+    const table = document.createElement('table');
     table.id = 'editors';
-    var row = table.insertRow(0);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = 'Idea:';
-    cell2.appendChild(this.eEditor);
+    const row1 = table.insertRow(0);
+    const cell11 = row1.insertCell(0);
+    const cell21 = row1.insertCell(1);
+    cell11.innerHTML = 'Idea:';
+    cell21.appendChild(this.eEditor);
 
-    var row = table.insertRow(1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = 'Interest:';
-    cell2.appendChild(this.eInterestEditor);
+    const row2 = table.insertRow(1);
+    const cell12 = row2.insertCell(0);
+    const cell22 = row2.insertCell(1);
+    cell12.innerHTML = 'Interest:';
+    cell22.appendChild(this.eInterestEditor);
 
-    var row = table.insertRow(1);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = 'Distribution:';
-    cell2.appendChild(this.eDistributionEditor);
+    const row3 = table.insertRow(1);
+    const cell13 = row3.insertCell(0);
+    const cell23 = row3.insertCell(1);
+    cell13.innerHTML = 'Distribution:';
+    cell23.appendChild(this.eDistributionEditor);
 
-    var row = table.insertRow(2);
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    cell1.innerHTML = 'Investment:';
-    cell2.appendChild(this.eInvestmentEditor);
+    const row4 = table.insertRow(2);
+    const cell14 = row4.insertCell(0);
+    const cell24 = row4.insertCell(1);
+    cell14.innerHTML = 'Investment:';
+    cell24.appendChild(this.eInvestmentEditor);
     element.appendChild(table);
     element.style.zIndex = 5;
 
@@ -585,11 +588,11 @@ export class ViewProvider {
     // this.eEditor.select();
   }
 
-  editNodeEnd(value?, interest?, investment?, distribution?) {
+  editNodeEnd(value?) {
     if (this.editingNode != null) {
       const node = this.editingNode;
-      const view_data = node._data.view;
-      const element = view_data.element;
+      const viewData = node._data.view;
+      const element = viewData.element;
       if (value) {
         this.eEditor.value = value;
         this.eInterestEditor.value = value;
@@ -602,7 +605,7 @@ export class ViewProvider {
       const investment = this.eInvestmentEditor.value;
       const selectedType = this.currentSelect.value;
       element.style.zIndex = 'auto';
-      //element.removeChild(this.eEditor);
+      // element.removeChild(this.eEditor);
       const editors = document.getElementById('editors');
       element.removeChild(editors);
       node.selectable && element.removeChild(this.currentSelect);
@@ -671,22 +674,22 @@ export class ViewProvider {
 
   _centerRoot() {
     // center root node
-    const outer_w = this.ePanel.clientWidth;
-    const outer_h = this.ePanel.clientHeight;
-    if (this.size.w > outer_w) {
+    const outerW = this.ePanel.clientWidth;
+    const outerH = this.ePanel.clientHeight;
+    if (this.size.w > outerW) {
       const _offset = this.getViewOffset();
-      this.ePanel.scrollLeft = _offset.x - outer_w / 2;
+      this.ePanel.scrollLeft = _offset.x - outerW / 2;
     }
-    if (this.size.h > outer_h) {
-      this.ePanel.scrollTop = (this.size.h - outer_h) / 2;
+    if (this.size.h > outerH) {
+      this.ePanel.scrollTop = (this.size.h - outerH) / 2;
     }
   }
 
-  show(keep_center) {
+  show(keepCenter) {
     logger.debug('view.show');
     this.expandSize();
     this._show();
-    if (!!keep_center) {
+    if (keepCenter) {
       this._centerRoot();
     }
   }
@@ -698,16 +701,16 @@ export class ViewProvider {
 
   saveLocation(node) {
     const vd = node._data.view;
-    vd._saved_location = {
-      x: parseInt(vd.element.style.left) - this.ePanel.scrollLeft,
-      y: parseInt(vd.element.style.top) - this.ePanel.scrollTop
+    vd._savedLocation = {
+      x: parseInt(vd.element.style.left, 10) - this.ePanel.scrollLeft,
+      y: parseInt(vd.element.style.top, 10) - this.ePanel.scrollTop
     };
   }
 
   restoreLocation(node) {
     const vd = node._data.view;
-    this.ePanel.scrollLeft = parseInt(vd.element.style.left) - vd._saved_location.x;
-    this.ePanel.scrollTop = parseInt(vd.element.style.top) - vd._saved_location.y;
+    this.ePanel.scrollLeft = parseInt(vd.element.style.left, 10) - vd._savedLocation.x;
+    this.ePanel.scrollTop = parseInt(vd.element.style.top, 10) - vd._savedLocation.y;
   }
 
   clearNodes() {
@@ -717,10 +720,12 @@ export class ViewProvider {
     }
     const nodes = mind.nodes;
     let node = null;
-    for (let nodeid in nodes) {
-      node = nodes[nodeid];
-      node._data.view.element = null;
-      node._data.view.expander = null;
+    for (const nodeid in nodes) {
+      if(nodeid) {
+        node = nodes[nodeid];
+        node._data.view.element = null;
+        node._data.view.expander = null;
+      }
     }
     this.eNodes.innerHTML = '';
   }
@@ -728,53 +733,54 @@ export class ViewProvider {
   showNodes() {
     const nodes = this.jm.mind.nodes;
     let node = null;
-    let node_element = null;
+    let nodeElement = null;
     let operationArea = null;
     let expander = null;
     let p = null;
-    let p_expander = null;
-    let expander_text = '-';
-    let view_data = null;
+    let pExpander = null;
+    let expanderText = '-';
+    let viewData = null;
     const _offset = this.getViewOffset();
-    for (let nodeid in nodes) {
-      node = nodes[nodeid];
-      view_data = node._data.view;
-      node_element = view_data.element;
-      operationArea = view_data.operationArea;
-      expander = view_data.expander;
-      if (!this.layout.isVisible(node)) {
-        node_element.style.display = 'none';
-        expander.style.display = 'none';
-        continue;
-      }
-      this.resetNodeCustomStyle(node);
-      p = this.layout.getNodePoint(node);
-      view_data.abs_x = _offset.x + p.x;
-      view_data.abs_y = _offset.y + p.y;
-      node_element.style.left = _offset.x + p.x + 'px';
-      node_element.style.top = _offset.y + p.y + 'px';
-      node_element.style.display = '';
-      node_element.style.visibility = 'visible';
+    for (const nodeid in nodes) {
+      if(nodeid){
+        node = nodes[nodeid];
+        viewData = node._data.view;
+        nodeElement = viewData.element;
+        operationArea = viewData.operationArea;
+        expander = viewData.expander;
+        if (!this.layout.isVisible(node)) {
+          nodeElement.style.display = 'none';
+          expander.style.display = 'none';
+          continue;
+        }
+        this.resetNodeCustomStyle(node);
+        p = this.layout.getNodePoint(node);
+        viewData.absX = _offset.x + p.x;
+        viewData.absY = _offset.y + p.y;
+        nodeElement.style.left = _offset.x + p.x + 'px';
+        nodeElement.style.top = _offset.y + p.y + 'px';
+        nodeElement.style.display = '';
+        nodeElement.style.visibility = 'visible';
 
-      if (operationArea) {
-        operationArea.style.left = _offset.x + p.x + 'px';
-        operationArea.style.top = _offset.y + p.y + 43 + 'px';
-      }
-      if (!node.isroot && node.children.length > 0) {
-        expander_text = node.expanded ? '-' : '+';
-        p_expander = this.layout.getExpanderPoint(node);
-        expander.style.left = _offset.x + p_expander.x + 'px';
-        expander.style.top = _offset.y + p_expander.y + 'px';
-        expander.style.display = '';
-        expander.style.visibility = 'visible';
-        $text(expander, expander_text);
-      }
-      if (!node.isroot) {
-      }
-      // hide expander while all children have been removed
-      if (!node.isroot && node.children.length === 0) {
-        expander.style.display = 'none';
-        expander.style.visibility = 'hidden';
+        if (operationArea) {
+          operationArea.style.left = _offset.x + p.x + 'px';
+          operationArea.style.top = _offset.y + p.y + 43 + 'px';
+        }
+        if (!node.isroot && node.children.length > 0) {
+          expanderText = node.expanded ? '-' : '+';
+          pExpander = this.layout.getExpanderPoint(node);
+          expander.style.left = _offset.x + pExpander.x + 'px';
+          expander.style.top = _offset.y + pExpander.y + 'px';
+          expander.style.display = '';
+          expander.style.visibility = 'visible';
+          $text(expander, expanderText);
+        }
+
+        // hide expander while all children have been removed
+        if (!node.isroot && node.children.length === 0) {
+          expander.style.display = 'none';
+          expander.style.visibility = 'hidden';
+        }
       }
     }
   }
@@ -783,101 +789,102 @@ export class ViewProvider {
     this._resetNodeCustomStyle(node._data.view.element, node.data);
   }
 
-  _resetNodeCustomStyle(node_element, node_data) {
-    if ('background-color' in node_data) {
-      node_element.style.backgroundColor = node_data['background-color'];
+  _resetNodeCustomStyle(nodeElement, nodeData) {
+    if ('background-color' in nodeData) {
+      nodeElement.style.backgroundColor = nodeData['background-color'];
     }
-    if ('foreground-color' in node_data) {
-      node_element.style.color = node_data['foreground-color'];
+    if ('foreground-color' in nodeData) {
+      nodeElement.style.color = nodeData['foreground-color'];
     }
-    if ('width' in node_data) {
-      node_element.style.width = node_data['width'] + 'px';
+    if ('width' in nodeData) {
+      nodeElement.style.width = nodeData['width'] + 'px';
     }
-    if ('height' in node_data) {
-      node_element.style.height = node_data['height'] + 'px';
+    if ('height' in nodeData) {
+      nodeElement.style.height = nodeData['height'] + 'px';
     }
-    if ('font-size' in node_data) {
-      node_element.style.fontSize = node_data['font-size'] + 'px';
+    if ('font-size' in nodeData) {
+      nodeElement.style.fontSize = nodeData['font-size'] + 'px';
     }
-    if ('font-weight' in node_data) {
-      node_element.style.fontWeight = node_data['font-weight'];
+    if ('font-weight' in nodeData) {
+      nodeElement.style.fontWeight = nodeData['font-weight'];
     }
-    if ('font-style' in node_data) {
-      node_element.style.fontStyle = node_data['font-style'];
+    if ('font-style' in nodeData) {
+      nodeElement.style.fontStyle = nodeData['font-style'];
     }
-    if ('color' in node_data) {
-      node_element.style.color = node_data['color'];
+    if ('color' in nodeData) {
+      nodeElement.style.color = nodeData['color'];
     }
-    if ('background-image' in node_data) {
-      const backgroundImage = node_data['background-image'];
-      if (backgroundImage.startsWith('data') && node_data['width'] && node_data['height']) {
+    if ('background-image' in nodeData) {
+      const backgroundImage = nodeData['background-image'];
+      if (backgroundImage.startsWith('data') && nodeData['width'] && nodeData['height']) {
         const img = new Image();
 
         img.onload = function() {
           const c = $create('canvas');
-          c.width = node_element.clientWidth;
-          c.height = node_element.clientHeight;
-          const img = this;
+          c.width = nodeElement.clientWidth;
+          c.height = nodeElement.clientHeight;
           if (c.getContext) {
             const ctx = c.getContext('2d');
-            ctx.drawImage(img, 2, 2, node_element.clientWidth, node_element.clientHeight);
+            ctx.drawImage(this, 2, 2, nodeElement.clientWidth, nodeElement.clientHeight);
             const scaledImageData = c.toDataURL();
-            node_element.style.backgroundImage = 'url(' + scaledImageData + ')';
+            nodeElement.style.backgroundImage = 'url(' + scaledImageData + ')';
           }
         };
         img.src = backgroundImage;
       } else {
-        node_element.style.backgroundImage = 'url(' + backgroundImage + ')';
+        nodeElement.style.backgroundImage = 'url(' + backgroundImage + ')';
       }
-      node_element.style.backgroundSize = '99%';
+      nodeElement.style.backgroundSize = '99%';
 
-      if ('background-rotation' in node_data) {
-        node_element.style.transform = 'rotate(' + node_data['background-rotation'] + 'deg)';
+      if ('background-rotation' in nodeData) {
+        nodeElement.style.transform = 'rotate(' + nodeData['background-rotation'] + 'deg)';
       }
     }
   }
 
   clearNodeCustomStyle(node) {
-    const node_element = node._data.view.element;
-    node_element.style.backgroundColor = '';
-    node_element.style.color = '';
+    const nodeElement = node._data.view.element;
+    nodeElement.style.backgroundColor = '';
+    nodeElement.style.color = '';
   }
 
-  clearLines(canvas_ctx?) {
-    const ctx = canvas_ctx || this.canvasCtx;
+  clearLines(canvasCtx?) {
+    const ctx = canvasCtx || this.canvasCtx;
     customizeUtil.canvas.clear(ctx, 0, 0, this.size.w, this.size.h);
   }
 
-  showLines(canvas_ctx?) {
-    this.clearLines(canvas_ctx);
+  showLines(canvasCtx?) {
+    this.clearLines(canvasCtx);
     const nodes = this.jm.mind.nodes;
     let node = null;
     let pin = null;
     let pout = null;
     const _offset = this.getViewOffset();
-    for (let nodeid in nodes) {
-      node = nodes[nodeid];
-      if (!!node.isroot) {
-        continue;
+    for (const nodeid in nodes) {
+      if(nodeid) {
+        node = nodes[nodeid];
+        if (node.isroot) {
+          continue;
+        }
+        if ('visible' in node._data.layout && !node._data.layout.visible) {
+          continue;
+        }
+        pin = this.layout.getNodePointIn(node);
+        pout = this.layout.getNodePointOut(node.parent);
+        this.drawLine(pout, pin, _offset, canvasCtx);
       }
-      if ('visible' in node._data.layout && !node._data.layout.visible) {
-        continue;
-      }
-      pin = this.layout.getNodePointIn(node);
-      pout = this.layout.getNodePointOut(node.parent);
-      this.drawLine(pout, pin, _offset, canvas_ctx);
     }
-    let root = this.jm.getRoot();
-    let lastChildren = this.calc.getLastChildren();
+    const root = this.jm.mind.root;
+    const lastChildren = this.calc.getLastChildren();
     pout = this.layout.getNodePointIn(root);
     lastChildren.forEach(lastChild => {
       pin = this.layout.getNodePointOut(lastChild);
-      this.drawBackLine(pout, pin, _offset, canvas_ctx);
+      this.drawBackLine(pout, pin, _offset, canvasCtx);
     });
   }
 
-  drawLine(pin, pout, offset, canvas_ctx) {
-    let ctx = canvas_ctx || this.canvasCtx;
+  drawLine(pin, pout, offset, canvasCtx) {
+    const ctx = canvasCtx || this.canvasCtx;
     ctx.strokeStyle = this.opts.lineColor;
     ctx.lineWidth = this.opts.lineWidth;
     ctx.lineCap = 'round';
@@ -885,8 +892,8 @@ export class ViewProvider {
     customizeUtil.canvas.bezierto(ctx, pin.x + offset.x, pin.y + offset.y, pout.x + offset.x, pout.y + offset.y);
   }
 
-  drawBackLine(pin, pout, offset, canvas_ctx) {
-    let ctx = canvas_ctx || this.canvasCtx;
+  drawBackLine(pin, pout, offset, canvasCtx) {
+    const ctx = canvasCtx || this.canvasCtx;
     ctx.strokeStyle = '#ffaa11';
     ctx.lineWidth = this.opts.lineWidth;
     ctx.lineCap = 'round';
