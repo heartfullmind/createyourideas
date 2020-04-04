@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import './vendor';
@@ -32,6 +32,7 @@ import { FusionChartsModule } from 'angular-fusioncharts';
 import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
 import { PledgeModule } from './pledge/pledge.module';
+import { ServiceLocator } from './locale.service';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
 
@@ -70,4 +71,8 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
   ],
   bootstrap: [JhiMainComponent]
 })
-export class HomeAppModule {}
+export class HomeAppModule {
+  constructor(private injector: Injector) {
+    ServiceLocator.injector = injector;
+}
+}

@@ -11,22 +11,58 @@ const HIERARCHY_RULES = {
   ROOT: {
     name: 'root',
     backgroundColor: '#7EC6E1',
-    getChildren: () => [HIERARCHY_RULES.SALES_MANAGER, HIERARCHY_RULES.SHOW_ROOM, HIERARCHY_RULES.SALES_TEAM]
+    getChildren: () => [HIERARCHY_RULES.LEVEL1]
   },
-  SALES_MANAGER: {
-    name: 'sales_manager',
+  LEVEL1: {
+    name: 'Level 1',
     color: '#fff',
     backgroundColor: '#616161',
-    getChildren: () => [HIERARCHY_RULES.SHOW_ROOM, HIERARCHY_RULES.SALES_TEAM]
+    getChildren: () => [HIERARCHY_RULES.LEVEL2]
   },
-  SHOW_ROOM: {
-    name: 'show_room',
+  LEVEL2: {
+    name: 'Level 2',
     color: '#fff',
     backgroundColor: '#989898',
-    getChildren: () => [HIERARCHY_RULES.SALES_TEAM]
+    getChildren: () => [HIERARCHY_RULES.LEVEL3]
   },
-  SALES_TEAM: {
-    name: 'sales_team',
+  LEVEL3: {
+    name: 'Level 3',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL4]
+  },
+  LEVEL4: {
+    name: 'Level 4',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL5]
+  },
+  LEVEL5: {
+    name: 'Level 5',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL6]
+  },
+  LEVEL6: {
+    name: 'Level 6',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL7]
+  },
+  LEVEL7: {
+    name: 'Level 3',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL8]
+  },
+  LEVEL8: {
+    name: 'Level 3',
+    color: '#fff',
+    backgroundColor: '#C6C6C6',
+    getChildren: () => [HIERARCHY_RULES.LEVEL9]
+  },
+  LEVEL9: {
+    name: 'Level 3',
     color: '#fff',
     backgroundColor: '#C6C6C6',
     getChildren: () => []
@@ -36,10 +72,10 @@ const HIERARCHY_RULES = {
 const option = {
   container: 'jsmind_container',
   theme: 'primary',
-  editable: true,
-  depth: 9999,
+  editable: false,
+  depth: 10,
   hierarchyRule: HIERARCHY_RULES,
-  enableDraggable: true
+  enableDraggable: false
 };
 
 @Component({
@@ -66,10 +102,7 @@ export class IdeaFunnelComponent implements OnInit {
   loadIdeaFunnel() {
     this.ideaFunnelService.getIdeaFunnel().subscribe((res: HttpResponse<any>) => {
       this.mind2 = res.body;
-      //this.mindMap = MindMapMain.show(option, this.mind2, this.incomeService, this.outgoingsService, this.ideaService);
-
-      let _jm = new MindMapMain(option, this.ideaService, this.incomeService, this.outgoingsService);
-      this.mindMap = _jm.show(this.mind2, this.ideaService, this.incomeService, this.outgoingsService);
+      this.mindMap = MindMapMain.show(option, this.mind2);
     });
   }
 
@@ -91,6 +124,31 @@ export class IdeaFunnelComponent implements OnInit {
 
     const nodeId = customizeUtil.uuid.newid();
     this.mindMap.addNode(selectedNode, nodeId);
+  }
+
+  getParent() {
+    const selectedNode = this.mindMap.getSelectedNode();
+    if (!selectedNode) {
+      return;
+    }
+
+    this.mindMap.getParent(selectedNode);
+  }
+
+  calculateProfit() {
+    this.mindMap.calculateProfit();
+  }
+
+  calculateDailyBalance() {
+    this.mindMap.calculateDailyBalance();
+  }
+
+  calculateAllLevels() {
+    this.mindMap.calculateAllLevels();
+  }
+
+  calculateDistribution() {
+    this.mindMap.calculateDistribution();
   }
 
   getMindMapData() {

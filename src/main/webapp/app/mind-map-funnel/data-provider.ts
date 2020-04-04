@@ -1,22 +1,17 @@
+import { CalcProvider } from './mind-map-calc';
 import { logger } from './config';
 import { customizeFormat } from './customize-format';
-import { MindMapModuleOpts } from './mind-map-main';
+import { MindMapModuleOpts, MindMapMain } from './mind-map-main';
 import { MIND_TYPE } from './constants';
-import { OutgoingsService } from './../entities/outgoings/outgoings.service';
-import { IncomeService } from './../entities/income/income.service';
-import { IdeaService } from './../entities/idea/idea.service';
+import { MindMapMind } from './mind-map-mind';
 
 export class MindMapDataProvider {
   jm: any;
-  ideaService: IdeaService;
-  incomeService: IncomeService;
-  outgoingsService: OutgoingsService;
+  calc: CalcProvider;
 
-  constructor(jm, ideaService?: IdeaService, incomeService?: IncomeService, outgoingsService?: OutgoingsService) {
+  constructor(jm, calc: CalcProvider) {
     this.jm = jm;
-    this.incomeService = incomeService;
-    this.outgoingsService = outgoingsService;
-    this.ideaService = ideaService;
+    this.calc = calc;
   }
 
   init() {
@@ -27,30 +22,30 @@ export class MindMapDataProvider {
     logger.debug('data.reset');
   }
 
-  load(mind_data, opts: MindMapModuleOpts, ideaService: IdeaService, incomeService: IncomeService, outgoingsService: OutgoingsService) {
-    let df = null;
-    let mind = null;
-    if (typeof mind_data === 'object') {
-      if (!!mind_data.format) {
-        df = mind_data.format;
+  load(mind_data, opts: MindMapModuleOpts, calc: CalcProvider) {
+      let df = null;
+      let mind = null;
+      if (typeof mind_data === 'object') {
+        if (!!mind_data.format) {
+          df = mind_data.format;
+        } else {
+          df = MIND_TYPE.NODE_TREE;
+        }
       } else {
-        df = MIND_TYPE.NODE_TREE;
+        df = MIND_TYPE.FREE_MIND;
       }
-    } else {
-      df = MIND_TYPE.FREE_MIND;
-    }
-    customizeFormat.setSelectable(opts.selectable);
+      customizeFormat.setSelectable(opts.selectable);
 
-    if (df === MIND_TYPE.NODE_ARRAY) {
-      mind = customizeFormat.node_array.getMind(mind_data, ideaService, incomeService, outgoingsService);
-    } else if (df === MIND_TYPE.NODE_TREE) {
-      mind = customizeFormat.nodeTree.getMind(mind_data, ideaService, incomeService, outgoingsService);
-    } else if (df === MIND_TYPE.FREE_MIND) {
-      mind = customizeFormat.freemind.getMind(mind_data);
-    } else {
-      logger.warn('unsupported format');
-    }
-    return mind;
+      if (df === MIND_TYPE.NODE_ARRAY) {
+        mind = customizeFormat.node_array.getMind(mind_data, calc);
+      } else if (df === MIND_TYPE.NODE_TREE) {
+        mind = customizeFormat.nodeTree.getMind(mind_data, calc);
+      } else if (df === MIND_TYPE.FREE_MIND) {
+        mind = customizeFormat.freemind.getMind(mind_data, calc);
+      } else {
+        logger.warn('unsupported format');
+      }
+      return mind;
   }
 
   getData(data_format) {

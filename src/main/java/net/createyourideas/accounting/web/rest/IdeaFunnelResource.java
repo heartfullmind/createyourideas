@@ -59,9 +59,9 @@ public class IdeaFunnelResource {
         try {
             for(Idea idea : ideas) {
                 if(idea.getIdea() == null)
-                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getId().toString(), null));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), null));
                 else
-                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getId().toString(), idea.getIdea().getId().toString()));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), idea.getIdea().getId().toString()));
             }
             json = "{\n" +
                         "\"format\":\"nodeTree\",\n" +

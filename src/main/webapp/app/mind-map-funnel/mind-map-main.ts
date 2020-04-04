@@ -75,10 +75,7 @@ export class MindMapMain {
   static initPlugins;
   static show;
 
-  constructor(options, ideaService: IdeaService, incomeService: IncomeService, outgoingsService: OutgoingsService) {
-    this.incomeService = incomeService;
-    this.outgoingsService = outgoingsService;
-    this.ideaService = ideaService;
+  constructor(options) {
     customizeUtil.json.merge(this.opts, DEFAULT_OPTIONS);
     customizeUtil.json.merge(this.opts, options);
     if (this.opts.container === null || this.opts.container.length === 0) {
@@ -111,12 +108,13 @@ export class MindMapMain {
       lineColor: opts.view.lineColor
     };
     // create instance of function provider
-    this.data = new MindMapDataProvider(this, this.ideaService, this.incomeService, this.outgoingsService);
+    this.calc = new CalcProvider(this);
+    this.data = new MindMapDataProvider(this, this.calc);
     this.layout = new LayoutProvider(this, optsLayout);
-    this.calc = new CalcProvider(this, this.mind);
     this.view = new ViewProvider(this, optsView, this.calc);
     this.shortcut = new ShortcutProvider(this, opts.shortcut);
 
+    this.calc.init();
     this.data.init();
     this.layout.init();
     this.view.init();
@@ -243,6 +241,30 @@ export class MindMapMain {
     return _.compact(types);
   }
 
+  calculateProfit() {
+    this.calc.calculateProfit();
+  }
+
+  calculateDailyBalance() {
+    this.calc.calculateDailyBalance();
+  }
+
+  calculateAllLevels() {
+    this.calc.calculateAllLevels();
+  }
+
+  calculateDistribution() {
+    this.calc.calculateDistribution();
+  }
+
+  getParent(node) {
+    let parents = [];
+    parents = this.calc.getAllParents(node);
+    parents.forEach(parent => {
+      console.log(parent);
+    });
+  }
+
   beginEdit(node) {
     if (!customizeUtil.is_node(node)) {
       return this.beginEdit(this.getNode(node));
@@ -337,10 +359,9 @@ export class MindMapMain {
     this.data.reset();
   }
 
-  _show(mind, ideaService: IdeaService, incomeService: IncomeService, outgoingsService: OutgoingsService) {
+  _show(mind) {
     const m = mind || customizeFormat.node_array.example;
-
-    this.mind = this.data.load(m, this.opts, ideaService, incomeService, outgoingsService);
+    this.mind = this.data.load(m, this.opts, this.calc);
     if (!this.mind) {
       logger.error('data.load error');
       return;
@@ -361,9 +382,9 @@ export class MindMapMain {
   }
 
   // show entrance
-  show(mind, ideaService: IdeaService, incomeService: IncomeService, outgoingsService: OutgoingsService) {
+  show(mind) {
     this._reset();
-    this._show(mind, ideaService, incomeService, outgoingsService);
+    this._show(mind);
   }
 
   getMeta() {
@@ -420,7 +441,8 @@ export class MindMapMain {
     return _.find(this.options.hierarchyRule, { name: parent_node.selectedType }).getChildren()[0];
   }
 
-  addNode(parent_node, nodeid, topic, data, interest?, investment?, distribution?) {
+  addNode(parent_node, nodeid, topic, data, interest?, investment?, distribution?, profit?) {
+
     data = data || {};
     data.isCreated = true;
     if (this.options.depth && parent_node.level >= this.options.depth) {
@@ -848,7 +870,7 @@ MindMapMain.initPlugins = function(sender) {
 
 // quick way
 MindMapMain.show = function(options, mind) {
-  // let _jm = new MindMapMain(options);
-  //_jm.show(mind);
-  // return _jm;
+  let _jm = new MindMapMain(options);
+  _jm.show(mind);
+  return _jm;
 };

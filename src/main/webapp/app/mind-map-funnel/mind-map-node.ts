@@ -1,11 +1,5 @@
-import { IOutgoings } from './../shared/model/outgoings.model';
-import { IIncome } from './../shared/model/income.model';
-import { IIdea } from './../shared/model/idea.model';
-import { IdeaService } from 'app/entities/idea/idea.service';
-import { IncomeService } from 'app/entities/income/income.service';
-import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
-import { HttpResponse } from '@angular/common/http';
 import { logger } from './config';
+import { FinanceService } from 'app/finance.service';
 
 interface NodeData {
   view?: NodeView;
@@ -25,7 +19,8 @@ export class MindMapNode {
   interest: number;
   distribution: number;
   investment: number;
-  profit: number = 0;
+  dailyBalance: number;
+  profit: number;
   selectedType: string;
   data: { isCreated?: boolean };
   isroot: boolean;
@@ -37,12 +32,8 @@ export class MindMapNode {
   isCreated: boolean;
   selectable: boolean;
   private _data: NodeData;
-  incomes: IIncome[];
-  outgoings: IOutgoings[];
+  financeService: FinanceService;
 
-  incomeService: IncomeService;
-  outgoingsService: OutgoingsService;
-  ideaService: IdeaService;
 
   static compare;
   static inherited;
@@ -62,15 +53,10 @@ export class MindMapNode {
     sInterest?,
     sInvestment?,
     sDistribution?,
-    ideaService?: IdeaService,
-    incomeService?: IncomeService,
-    outgoingsService?: OutgoingsService
+    sProfit?
+
   ) {
-    this.incomeService = incomeService;
-    this.outgoingsService = outgoingsService;
-    this.ideaService = ideaService;
-    this._loadIncomeArray().then(i => (this.incomes = i));
-    this._loadOutgoingsArray().then(o => (this.outgoings = o));
+
     if (!sId) {
       logger.error('invalid nodeid');
       return;
@@ -88,7 +74,7 @@ export class MindMapNode {
     this.interest = sInterest;
     this.distribution = sDistribution;
     this.investment = sInvestment;
-    this.profit = this.calculateDailyBalance();
+    this.profit = sProfit;
     this.selectedType = selectedType;
     this.selectable = selectable;
     this.data = oData || {};
@@ -124,6 +110,9 @@ export class MindMapNode {
         '<tr><td>Investment:</td><td>' +
         this.investment +
         '</td></tr>' +
+        '<tr><td>Daily Balance:</td><td>' +
+        this.dailyBalance +
+        '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
         this.profit +
         '</td></tr>' +
@@ -141,6 +130,9 @@ export class MindMapNode {
         '</td></tr>' +
         '<tr><td>Distribution:</td><td>' +
         this.distribution +
+        '</td></tr>' +
+        '<tr><td>Daily Balance:</td><td>' +
+        this.dailyBalance +
         '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
         this.profit +
@@ -161,6 +153,9 @@ export class MindMapNode {
         '</td></tr>' +
         '<tr><td>Investment:</td><td>' +
         this.investment +
+        '</td></tr>' +
+        '<tr><td>Daily Balance:</td><td>' +
+        this.dailyBalance +
         '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
         this.profit +
@@ -186,35 +181,23 @@ export class MindMapNode {
     };
   }
 
-  _loadIncomeArray() {
-    return new Promise<IIncome[]>(a => {
-      this.incomeService.queryByIdeaId(Number(this.id)).subscribe((incomes: HttpResponse<IIncome[]>) => {
-        a(incomes.body);
-      });
-    });
+  setProfit(profit: number) {
+    this.profit = profit;
   }
 
-  _loadOutgoingsArray() {
-    return new Promise<IOutgoings[]>(a => {
-      this.outgoingsService.queryByIdeaId(Number(this.id)).subscribe((outgoings: HttpResponse<IOutgoings[]>) => {
-        a(outgoings.body);
-      });
-    });
+  getProfit() {
+    return this.profit;
   }
 
-  calculateDailyBalance(): number {
-    let ti = 0;
-    let to = 0;
-    new Promise<number>(n => {
-      this.incomes.forEach(income => {
-        ti += income.value;
-      });
-      this.outgoings.forEach(outgoings => {
-        to += outgoings.value;
-      });
-    });
-    return ti - to;
+  setDailyBalance(dailyBalance: number) {
+    this.dailyBalance = dailyBalance;
   }
+
+  getDailyBalance() {
+    return this.dailyBalance;
+  }
+
+
 }
 
 MindMapNode.compare = (node1, node2) => {

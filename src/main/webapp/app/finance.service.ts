@@ -1,27 +1,22 @@
 import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
 import { IncomeService } from 'app/entities/income/income.service';
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { IIncome } from './shared/model/income.model';
+import { HttpResponse, HttpClient } from '@angular/common/http';
+import { SERVER_API_URL } from './app.constants';
+import { Observable } from 'rxjs';
+import { createRequestOption } from './shared/util/request-util';
+
 
 @Injectable({ providedIn: 'root' })
 export class FinanceService {
-  incomeService: IncomeService;
-  outgoingsService: OutgoingsService;
 
-  constructor(incomeService: IncomeService, outgoingsService: OutgoingsService) {}
+  public resourceUrl = SERVER_API_URL + 'api/calculation';
 
-  calculateIncomes(ideaId) {
-    return new Promise<number>(value => {
-      let incomes = [];
-      this.incomeService.queryByIdeaId(ideaId).subscribe((resi: HttpResponse<IIncome[]>) => {
-        incomes = resi.body;
-        let total = 0;
-        for (let i = 0; i < incomes.length; i++) {
-          total += incomes[i].value;
-        }
-        value(total);
-      });
-    });
+  constructor(protected http: HttpClient) {}
+
+  getDailyBalance(id: number, req?: any): Observable<HttpResponse<number>> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<number>(`${this.resourceUrl}/${id}/dailyBalance`, { params: options, observe: 'response' });
   }
 }

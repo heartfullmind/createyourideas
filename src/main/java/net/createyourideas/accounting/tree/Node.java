@@ -13,6 +13,7 @@ public class Node {
   private Float investment;
   private Float profit;
   private Node parent;
+  private String type;
 
 
   private List<Node> children;
@@ -22,7 +23,7 @@ public class Node {
       this.children = new ArrayList<>();
   }
 
-  public Node(String value, Float rate, Float distribution, Float investment, String childId, String parentId) {
+  public Node(String value, Float rate, Float distribution, Float investment, String type, String childId, String parentId) {
       this.value = value;
       this.rate = rate;
       this.distribution = distribution;
@@ -30,6 +31,7 @@ public class Node {
       this.id = childId;
       this.parentId = parentId;
       this.children = new ArrayList<>();
+      this.type = type;
   }
 
   public String getValue() {
@@ -70,6 +72,14 @@ public class Node {
 
   public void setProfit(Float profit) {
       this.profit = profit;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public void getType() {
+    return this.type;
   }
 
   public String getId() {
@@ -119,7 +129,7 @@ public class Node {
                "\"investment\": \"" + investment + "\", \n" +
                "\"profit\": \"" + profit + "\", \n" +
                "\"direction\": \"right\", \n" +
-               "\"selectedType\": \"show_room\", \n" +
+               "\"selectedType\": \"" + type + "\", \n" +
                "\"backgroundColor\": \"#64cfea\", \n" +
                "\"children\":" + children + "\n" +
              "}";

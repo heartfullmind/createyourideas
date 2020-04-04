@@ -1,7 +1,4 @@
-import { Idea } from './../shared/model/idea.model';
-import { OutgoingsService } from './../entities/outgoings/outgoings.service';
-import { IncomeService } from './../entities/income/income.service';
-import { IdeaService } from './../entities/idea/idea.service';
+import { CalcProvider } from './mind-map-calc';
 import * as _ from 'lodash';
 import { $win, AUTHOR, logger, NAME, VERSION } from './config';
 import { MindMapMain } from './mind-map-main';
@@ -11,16 +8,14 @@ import { MindMapNode } from './mind-map-node';
 function getBasicMind(
   source,
   formatType: 'nodeTree' | 'node_array',
-  ideaService?: IdeaService,
-  incomeService?: IncomeService,
-  outgoingsService?: OutgoingsService
+  calc: CalcProvider
 ) {
   const df = customizeFormat[formatType];
-  const mind = new MindMapMind(ideaService, incomeService, outgoingsService);
+  const mind = new MindMapMind(calc);
   mind.name = _.get(source, 'meta.name', NAME);
   mind.author = _.get(source, 'meta.author', AUTHOR);
   mind.version = _.get(source, 'meta.version', VERSION);
-  df._parse(mind, source.data, ideaService, incomeService, outgoingsService);
+  df._parse(mind, source.data, calc);
   return mind;
 }
 
@@ -44,8 +39,8 @@ export const customizeFormat = {
       format: 'nodeTree',
       data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000' }
     },
-    getMind: function(source, ideaService: IdeaService, incomeService: IncomeService, outgoingsService: OutgoingsService) {
-      return getBasicMind(source, 'nodeTree', ideaService, incomeService, outgoingsService);
+    getMind: function(source, calc?: CalcProvider) {
+      return getBasicMind(source, 'nodeTree', calc);
     },
     getData: function(mind) {
       const df = customizeFormat.nodeTree;
@@ -60,7 +55,7 @@ export const customizeFormat = {
       return json;
     },
 
-    _parse: function(mind, node_root, ideaService?: IdeaService, incomeService?: IncomeService, outgoingsService?: OutgoingsService) {
+    _parse: function(mind, node_root, calc: CalcProvider) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(node_root);
       mind.setRoot(
@@ -68,15 +63,12 @@ export const customizeFormat = {
         node_root.topic,
         data,
         node_root.interest,
-        node_root.distribution,
-        ideaService,
-        incomeService,
-        outgoingsService
+        node_root.distribution
       );
       if ('children' in node_root) {
         const children = node_root.children;
         for (let i = 0; i < children.length; i++) {
-          df._extractSubNode(mind, mind.root, children[i], ideaService, incomeService, outgoingsService);
+         df._extractSubNode(mind, mind.root, children[i], calc);
         }
       }
     },
@@ -110,9 +102,7 @@ export const customizeFormat = {
       mind,
       node_parent,
       node_json,
-      ideaService?: IdeaService,
-      incomeService?: IncomeService,
-      outgoingsService?: OutgoingsService
+      calc: CalcProvider,
     ) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(node_json);
@@ -133,15 +123,13 @@ export const customizeFormat = {
         node_json.interest,
         node_json.investment,
         node_json.distribution,
-        ideaService,
-        incomeService,
-        outgoingsService
+        calc
       );
 
       if ('children' in node_json) {
         const children = node_json.children;
         for (let i = 0; i < children.length; i++) {
-          df._extractSubNode(mind, node, children[i]);
+          df._extractSubNode(mind, node, children[i], calc);
         }
       }
     },
@@ -195,8 +183,8 @@ export const customizeFormat = {
       data: [{ id: 'root', topic: 'Main Node', isroot: true }]
     },
 
-    getMind: function(source, ideaService?: IdeaService, incomeService?: IncomeService, outgoingsService?: OutgoingsService) {
-      return getBasicMind(source, 'node_array', ideaService, incomeService, outgoingsService);
+    getMind: function(source, calc: CalcProvider) {
+      return getBasicMind(source, 'node_array', calc);
     },
 
     getData: function(mind) {
@@ -217,14 +205,14 @@ export const customizeFormat = {
       return json;
     },
 
-    _parse: function(mind, node_array, ideaService?: IdeaService, incomeService?: IncomeService, outgoingsService?: OutgoingsService) {
+    _parse: function(mind, node_array) {
       const df = customizeFormat.node_array;
       const narray = node_array.slice(0);
       // reverse array for improving looping performance
       narray.reverse();
-      const root_id = df._extractRoot(mind, narray, ideaService, incomeService, outgoingsService);
+      const root_id = df._extractRoot(mind, narray);
       if (!!root_id) {
-        df._extractSubNode(mind, root_id, narray, ideaService, incomeService, outgoingsService);
+        df._extractSubNode(mind, root_id, narray);
       } else {
         logger.error('root node can not be found');
       }
@@ -233,9 +221,6 @@ export const customizeFormat = {
     _extractRoot: function(
       mind,
       node_array,
-      ideaService?: IdeaService,
-      incomeService?: IncomeService,
-      outgoingsService?: OutgoingsService
     ) {
       const df = customizeFormat.node_array;
       let i = node_array.length;
@@ -248,10 +233,7 @@ export const customizeFormat = {
             root_json.topic,
             data,
             root_json.interest,
-            root_json.distribution,
-            ideaService,
-            incomeService,
-            outgoingsService
+            root_json.distribution
           );
           node_array.splice(i, 1);
           return root_json.id;
@@ -264,9 +246,6 @@ export const customizeFormat = {
       mind,
       parentid,
       node_array,
-      ideaService?: IdeaService,
-      incomeService?: IncomeService,
-      outgoingsService?: OutgoingsService
     ) {
       const df = customizeFormat.node_array;
       let i = node_array.length;
@@ -295,9 +274,6 @@ export const customizeFormat = {
             node_json.interest,
             node_json.investment,
             node_json.distribution,
-            ideaService,
-            incomeService,
-            outgoingsService
           );
           node_array.splice(i, 1);
           extract_count++;
@@ -377,9 +353,9 @@ export const customizeFormat = {
       format: 'freemind',
       data: '<map version="1.0.1"><node ID="root" TEXT="freemind Example"/></map>'
     },
-    getMind: function(source) {
+    getMind: function(source, calc: CalcProvider) {
       const df = customizeFormat.freemind;
-      const mind = new MindMapMind();
+      const mind = new MindMapMind(calc);
       mind.name = _.get(source, 'meta.name', NAME);
       mind.author = _.get(source, 'meta.author', AUTHOR);
       mind.version = _.get(source, 'meta.version', VERSION);

@@ -57,9 +57,15 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="homeApp.idea.ideatype" for="field_ideatype">Ideatype</label>
                     <select class="form-control" name="ideatype" formControlName="ideatype" id="field_ideatype">
-                        <option value="PRODUCTION">{{'homeApp.Ideatype.PRODUCTION' | translate}}</option>
-                        <option value="SERVICE">{{'homeApp.Ideatype.SERVICE' | translate}}</option>
-                        <option value="PURCHASE">{{'homeApp.Ideatype.PURCHASE' | translate}}</option>
+                        <option value="LEVEL1">{{'homeApp.Ideatype.LEVEL1' | translate}}</option>
+                        <option value="LEVEL2">{{'homeApp.Ideatype.LEVEL2' | translate}}</option>
+                        <option value="LEVEL3">{{'homeApp.Ideatype.LEVEL3' | translate}}</option>
+                        <option value="LEVEL4">{{'homeApp.Ideatype.LEVEL4' | translate}}</option>
+                        <option value="LEVEL5">{{'homeApp.Ideatype.LEVEL5' | translate}}</option>
+                        <option value="LEVEL6">{{'homeApp.Ideatype.LEVEL6' | translate}}</option>
+                        <option value="LEVEL7">{{'homeApp.Ideatype.LEVEL7' | translate}}</option>
+                        <option value="LEVEL8">{{'homeApp.Ideatype.LEVEL8' | translate}}</option>
+                        <option value="LEVEL9">{{'homeApp.Ideatype.LEVEL9' | translate}}</option>
                     </select>
                     <div *ngIf="editForm.get('ideatype').invalid && (editForm.get('ideatype').dirty || editForm.get('ideatype').touched)">
                         <small class="form-text text-danger"

@@ -1,6 +1,4 @@
-import { IdeaService } from './../entities/idea/idea.service';
-import { IncomeService } from './../entities/income/income.service';
-import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
+import { CalcProvider } from './mind-map-calc';
 import { logger } from './config';
 import { MindMapNode } from './mind-map-node';
 import { customizeUtil } from './util';
@@ -13,15 +11,10 @@ export class MindMapMind {
   root = null;
   selected = null;
   nodes = {};
+  calc: CalcProvider;
 
-  ideaService: IdeaService;
-  incomeService: IncomeService;
-  outgoingsService: OutgoingsService;
-
-  constructor(ideaService?: IdeaService, incomeService?: IncomeService, outgoingsService?: OutgoingsService) {
-    this.incomeService = incomeService;
-    this.outgoingsService = outgoingsService;
-    this.ideaService = ideaService;
+  constructor(calc?: CalcProvider) {
+    this.calc = calc;
   }
 
   getNode(nodeid) {
@@ -33,40 +26,28 @@ export class MindMapMind {
     }
   }
 
-  setRoot(
-    nodeid,
-    topic,
-    data,
-    interest?,
-    distribution?,
-    ideaService?: IdeaService,
-    incomeService?: IncomeService,
-    outgoingsService?: OutgoingsService
-  ) {
-    if (this.root == null) {
-      this.root = new MindMapNode(
-        nodeid,
-        0,
-        topic,
-        data,
-        true,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        interest,
-        null,
-        distribution,
-        ideaService,
-        incomeService,
-        outgoingsService
-      );
-      this.putNode(this.root);
-    } else {
-      logger.error('root node is already exist');
-    }
+  setRoot(nodeid, topic, data, interest?, distribution?) {
+      if (this.root == null) {
+        this.root = new MindMapNode(
+          nodeid,
+          0,
+          topic,
+          data,
+          true,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          interest,
+          null,
+          distribution
+        );
+        this.putNode(this.root);
+      } else {
+        logger.error('root node is already exist');
+      }
   }
 
   addNode(
@@ -81,10 +62,7 @@ export class MindMapMind {
     selectable?,
     interest?,
     investment?,
-    distribution?,
-    ideaService?: IdeaService,
-    incomeService?: IncomeService,
-    outgoingsService?: OutgoingsService
+    distribution?
   ) {
     if (!customizeUtil.is_node(parent_node)) {
       return this.addNode(
@@ -99,10 +77,7 @@ export class MindMapMind {
         null,
         interest,
         investment,
-        distribution,
-        ideaService,
-        incomeService,
-        outgoingsService
+        distribution
       );
     }
     const nodeindex = idx || -1;
@@ -135,10 +110,7 @@ export class MindMapMind {
           selectable,
           interest,
           investment,
-          distribution,
-          ideaService,
-          incomeService,
-          outgoingsService
+          distribution
         );
       } else {
         node = new MindMapNode(
@@ -156,9 +128,6 @@ export class MindMapMind {
           interest,
           investment,
           distribution,
-          ideaService,
-          incomeService,
-          outgoingsService
         );
       }
       if (this.putNode(node)) {
