@@ -9,62 +9,62 @@ import { IdeaFunnelService } from './idea-funnel.service';
 
 const HIERARCHY_RULES = {
   ROOT: {
-    name: 'root',
+    name: 'ROOT§',
     backgroundColor: '#7EC6E1',
     getChildren: () => [HIERARCHY_RULES.LEVEL1]
   },
   LEVEL1: {
-    name: 'Level 1',
+    name: 'LEVEL1',
     color: '#fff',
     backgroundColor: '#616161',
     getChildren: () => [HIERARCHY_RULES.LEVEL2]
   },
   LEVEL2: {
-    name: 'Level 2',
+    name: 'LEVEL2',
     color: '#fff',
     backgroundColor: '#989898',
     getChildren: () => [HIERARCHY_RULES.LEVEL3]
   },
   LEVEL3: {
-    name: 'Level 3',
+    name: 'LEVEL3',
     color: '#fff',
     backgroundColor: '#C6C6C6',
     getChildren: () => [HIERARCHY_RULES.LEVEL4]
   },
   LEVEL4: {
-    name: 'Level 4',
+    name: 'LEVEL4',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#CC2EFA',
     getChildren: () => [HIERARCHY_RULES.LEVEL5]
   },
   LEVEL5: {
-    name: 'Level 5',
+    name: 'LEVEL5',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#0B610B',
     getChildren: () => [HIERARCHY_RULES.LEVEL6]
   },
   LEVEL6: {
-    name: 'Level 6',
+    name: 'LEVEL6',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#610B0B',
     getChildren: () => [HIERARCHY_RULES.LEVEL7]
   },
   LEVEL7: {
-    name: 'Level 3',
+    name: 'LEVEL7',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#0B243B',
     getChildren: () => [HIERARCHY_RULES.LEVEL8]
   },
   LEVEL8: {
-    name: 'Level 3',
+    name: 'LEVEL8',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#393B0B',
     getChildren: () => [HIERARCHY_RULES.LEVEL9]
   },
   LEVEL9: {
-    name: 'Level 3',
+    name: 'LEVEL9',
     color: '#fff',
-    backgroundColor: '#C6C6C6',
+    backgroundColor: '#190707',
     getChildren: () => []
   }
 };
@@ -149,6 +149,10 @@ export class IdeaFunnelComponent implements OnInit {
 
   calculateDistribution() {
     this.mindMap.calculateDistribution();
+  }
+
+  calcCollection() {
+    this.mindMap.calcCollection();
   }
 
   getMindMapData() {

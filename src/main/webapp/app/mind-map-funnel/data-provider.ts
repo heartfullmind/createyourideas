@@ -39,7 +39,7 @@ export class MindMapDataProvider {
         if (df === MIND_TYPE.nodeArray) {
           mind = customizeFormat.nodeArray.getMind(mindData, calc, this.jm);
         } else if (df === MIND_TYPE.NODE_TREE) {
-          mind = customizeFormat.nodeTree.getMind(mindData, calc);
+          mind = customizeFormat.nodeTree.getMind(mindData, calc, opts);
         } else if (df === MIND_TYPE.FREE_MIND) {
           mind = customizeFormat.freemind.getMind(mindData, calc);
         } else {

@@ -1,7 +1,7 @@
 import { CalcProvider } from './mind-map-calc';
 import * as _ from 'lodash';
 import { $win, AUTHOR, logger, NAME, VERSION } from './config';
-import { MindMapMain } from './mind-map-main';
+import { MindMapMain, MindMapModuleOpts } from './mind-map-main';
 import { MindMapMind } from './mind-map-mind';
 import { MindMapNode } from './mind-map-node';
 
@@ -9,14 +9,14 @@ function getBasicMind(
   source,
   formatType: 'nodeTree' | 'nodeArray',
   calc: CalcProvider,
-  mindMapMain?: MindMapMain
+  opts: MindMapModuleOpts
 ) {
   const df = customizeFormat[formatType];
-  const mind = new MindMapMind(calc);
+  const mind = new MindMapMind(calc, opts);
   mind.name = _.get(source, 'meta.name', NAME);
   mind.author = _.get(source, 'meta.author', AUTHOR);
   mind.version = _.get(source, 'meta.version', VERSION);
-  df._parse(mind, source.data, calc, mindMapMain);
+  df._parse(mind, source.data, calc);
   return mind;
 }
 
@@ -40,8 +40,8 @@ export const customizeFormat = {
       format: 'nodeTree',
       data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000' }
     },
-    getMind(source, calc?: CalcProvider, mindMapMain?: MindMapMain) {
-      return getBasicMind(source, 'nodeTree', calc, mindMapMain);
+    getMind(source, calc?: CalcProvider, opts?: MindMapModuleOpts) {
+      return getBasicMind(source, 'nodeTree', calc, opts);
     },
     getData(mind) {
       const df = customizeFormat.nodeTree;
@@ -56,7 +56,7 @@ export const customizeFormat = {
       return json;
     },
 
-    _parse(mind, nodeRoot, calc: CalcProvider, mindMapMain: MindMapMain) {
+    _parse(mind, nodeRoot, calc: CalcProvider) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(nodeRoot);
       mind.setRoot(
@@ -69,7 +69,7 @@ export const customizeFormat = {
       if ('children' in nodeRoot) {
         const children = nodeRoot.children;
         for (let i = 0; i < children.length; i++) {
-         df._extractSubNode(mind, mind.root, children[i], calc, mindMapMain);
+         df._extractSubNode(mind, mind.root, children[i], calc);
         }
       }
     },
@@ -104,7 +104,6 @@ export const customizeFormat = {
       nodeParent,
       nodeJson,
       calc: CalcProvider,
-      mindMapMain: MindMapMain,
     ) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(nodeJson);
@@ -130,7 +129,7 @@ export const customizeFormat = {
       if ('children' in nodeJson) {
         const children = nodeJson.children;
         for (let i = 0; i < children.length; i++) {
-          df._extractSubNode(mind, node, children[i], calc, mindMapMain);
+          df._extractSubNode(mind, node, children[i], calc);
         }
       }
     },
@@ -185,8 +184,8 @@ export const customizeFormat = {
       data: [{ id: 'root', topic: 'Main Node', isroot: true }]
     },
 
-    getMind(source, calc: CalcProvider, mindMapMain: MindMapMain) {
-      return getBasicMind(source, 'nodeArray', calc, mindMapMain);
+    getMind(source, calc: CalcProvider, opts: MindMapModuleOpts) {
+      return getBasicMind(source, 'nodeArray', calc, opts);
     },
 
     getData(mind) {

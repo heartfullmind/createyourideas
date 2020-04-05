@@ -31,7 +31,25 @@ export class CalcProvider {
       this.financeService = value;
     });
   }
+/*
+  calcCollection() {
+    const root = this.mindMap.mind.root;
+    const takenProfit = root.profitToSpend;
+    const depth = this.mindMap.getDepth();
+    const div = 100/depth;
+    let collectionKey = [];
+    for (let index = 0; index < depth.length; index++) {
+      if(depth%2 == 0) {
 
+      }else {
+
+        collectionKey[index] = (100/depth);
+
+      }
+
+    }
+
+  }*/
   calculateProfit() {
     const childrenRoot = this.getChildren(this.mindMap.mind.root);
     let totalDailyBalance = 0;

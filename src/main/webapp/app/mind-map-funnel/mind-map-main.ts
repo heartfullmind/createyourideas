@@ -257,6 +257,10 @@ export class MindMapMain {
     this.calc.calculateDistribution();
   }
 
+  calcCollection() {
+    this.calc.calcCollection();
+  }
+
   getParent(node) {
     let parents = [];
     parents = this.calc.getAllParents(node);
@@ -266,7 +270,7 @@ export class MindMapMain {
   }
 
   beginEdit(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.beginEdit(this.getNode(node));
     }
     if (this.getEditable() && this.getNodeEditable(node)) {
@@ -286,7 +290,7 @@ export class MindMapMain {
   }
 
   toggleNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.toggleNode(this.getNode(node));
     }
     if (node) {
@@ -303,7 +307,7 @@ export class MindMapMain {
   }
 
   expandNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.expandNode(this.getNode(node));
     }
     if (node) {
@@ -322,7 +326,7 @@ export class MindMapMain {
 
 
   collapseNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.collapseNode(this.getNode(node));
     }
     if (node) {
@@ -500,7 +504,7 @@ export class MindMapMain {
 
   insertNodeBefore(nodeBefor, nodeid, topic, data) {
     if (this.getEditable()) {
-      const beforeid = customizeUtil.is_node(nodeBefor) ? nodeBefor.id : nodeBefor;
+      const beforeid = customizeUtil.isNode(nodeBefor) ? nodeBefor.id : nodeBefor;
       const node = this.mind.insertNodeBefore(nodeBefor, nodeid, topic, data);
       if (node) {
         this.view.addNode(node);
@@ -540,7 +544,7 @@ export class MindMapMain {
   }
 
   removeNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.removeNode(this.getNode(node));
     }
     if (this.getEditable()) {
@@ -632,7 +636,7 @@ export class MindMapMain {
   }
 
   selectNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.selectNode(this.getNode(node));
     }
     if (!node || !this.layout.isVisible(node)) {
@@ -664,7 +668,7 @@ export class MindMapMain {
   }
 
   findNodeBefore(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.findNodeBefore(this.getNode(node));
     }
     if (!node || node.isroot) {
@@ -691,7 +695,7 @@ export class MindMapMain {
   }
 
   findNodeAfter(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.findNodeAfter(this.getNode(node));
     }
     if (!node || node.isroot) {

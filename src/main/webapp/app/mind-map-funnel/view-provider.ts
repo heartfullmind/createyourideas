@@ -589,6 +589,10 @@ export class ViewProvider {
   }
 
   editNodeEnd(value?) {
+    const interest = this.eInterestEditor.value;
+    const distribution = this.eDistributionEditor.value;
+    const investment = this.eInvestmentEditor.value;
+    const selectedType = this.currentSelect.value;
     if (this.editingNode != null) {
       const node = this.editingNode;
       const viewData = node._data.view;
@@ -600,10 +604,6 @@ export class ViewProvider {
         this.eInvestmentEditor.value = value;
       }
       const topic = this.eEditor.value;
-      const interest = this.eInterestEditor.value;
-      const distribution = this.eDistributionEditor.value;
-      const investment = this.eInvestmentEditor.value;
-      const selectedType = this.currentSelect.value;
       element.style.zIndex = 'auto';
       // element.removeChild(this.eEditor);
       const editors = document.getElementById('editors');

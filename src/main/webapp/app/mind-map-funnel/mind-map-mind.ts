@@ -2,7 +2,8 @@ import { CalcProvider } from './mind-map-calc';
 import { logger } from './config';
 import { MindMapNode } from './mind-map-node';
 import { customizeUtil } from './util';
-import { MindMapMain } from './mind-map-main';
+import { MindMapMain, MindMapModuleOpts } from './mind-map-main';
+import * as _ from 'lodash';
 
 export class MindMapMind {
   name = null;
@@ -12,9 +13,11 @@ export class MindMapMind {
   selected = null;
   nodes = {};
   calc: CalcProvider;
+  opts: MindMapModuleOpts;
 
-  constructor(calc?: CalcProvider) {
+  constructor(calc?: CalcProvider, opts?: MindMapModuleOpts) {
     this.calc = calc;
+    this.opts = opts;
   }
 
   getNode(nodeid) {
@@ -50,6 +53,19 @@ export class MindMapMind {
       }
   }
 
+
+  getCurrentHierarchyRule(parentNode) {
+    if (!this.opts.hierarchyRule) {
+      return null;
+    }
+    if (parentNode.isroot) {
+      return this.opts.hierarchyRule.ROOT.getChildren()[0];
+    }
+    return _.find(this.opts.hierarchyRule, { name: parentNode.selectedType }).getChildren()[0];
+  }
+
+
+
   addNode(
     parentNode,
     nodeid,
@@ -64,7 +80,7 @@ export class MindMapMind {
     investment?,
     distribution?
   ) {
-    if (!customizeUtil.is_node(parentNode)) {
+    if (!customizeUtil.isNode(parentNode)) {
       return this.addNode(
         this.getNode(parentNode),
         nodeid,
@@ -84,6 +100,25 @@ export class MindMapMind {
 
     if (parentNode) {
       // logger.debug(parentNode);
+
+
+
+      const currentRule = this.getCurrentHierarchyRule(parentNode);
+      const selType = currentRule && currentRule.name;
+      if (!selType && this.opts.hierarchyRule) {
+        throw new Error('forbidden add');
+      } else {
+        topic = topic || `${selType}select`;
+      }
+      if (currentRule.backgroundColor) {
+        data['background-color'] = currentRule.backgroundColor;
+      }
+      if (currentRule.color) {
+        data['color'] = currentRule.color;
+      }
+
+
+
       let node = null;
       if (parentNode.isroot) {
         let d = MindMapMain.direction.right;
@@ -145,7 +180,7 @@ export class MindMapMind {
   }
 
   insertNodeBefore(nodeBefore, nodeid, topic, data, interest?, investment?, distribution?) {
-    if (!customizeUtil.is_node(nodeBefore)) {
+    if (!customizeUtil.isNode(nodeBefore)) {
       return this.insertNodeBefore(this.getNode(nodeBefore), nodeid, topic, data, interest, investment, distribution);
     }
     if (nodeBefore) {
@@ -161,7 +196,7 @@ export class MindMapMind {
     if (!node) {
       return null;
     }
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.getNodeBefore(this.getNode(node));
     }
     if (node.isroot) {
@@ -176,7 +211,7 @@ export class MindMapMind {
   }
 
   insertNodeAfter(nodeAfter, nodeid, topic, data, interest?, investment?, distribution?) {
-    if (!customizeUtil.is_node(nodeAfter)) {
+    if (!customizeUtil.isNode(nodeAfter)) {
       return this.insertNodeAfter(this.getNode(nodeAfter), nodeid, topic, data, interest, investment, distribution);
     }
     if (nodeAfter) {
@@ -192,7 +227,7 @@ export class MindMapMind {
     if (!node) {
       return null;
     }
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.getNodeAfter(this.getNode(node));
     }
     if (node.isroot) {
@@ -208,7 +243,7 @@ export class MindMapMind {
   }
 
   moveNode(node, beforeid, parentid, direction) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.moveNode(this.getNode(node), beforeid, parentid, direction);
     }
     if (!parentid) {
@@ -280,7 +315,7 @@ export class MindMapMind {
   }
 
   removeNode(node) {
-    if (!customizeUtil.is_node(node)) {
+    if (!customizeUtil.isNode(node)) {
       return this.removeNode(this.getNode(node));
     }
     if (!node) {
