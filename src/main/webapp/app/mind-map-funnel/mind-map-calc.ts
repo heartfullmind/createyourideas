@@ -33,17 +33,17 @@ export class CalcProvider {
   }
 
   calcCollection() {
-    const root = this.mindMap.mind.root;
-    const takenProfit = root.profitToSpend;
+    // const root = this.mindMap.mind.root;
+    // const takenProfit = root.profitToSpend;
     const depth = this.mindMap.getDepth();
     const div = 100/depth;
-    let collectionLevel = [];
+    const collectionLevel = [];
     for (let index = 1; index <= depth; index++) {
-      if(depth%2 == 0) {
+      if(depth%2 === 0) {
         const pm = div/depth;
-        for (let index = 1; index <= depth/2; index++){
-          collectionLevel[index] = (100/depth)+pm;
-          collectionLevel[index] = (100/depth)-pm;
+        for (let i = 1; i <= depth/2; i++){
+          collectionLevel[i] = (100/depth)+pm;
+          collectionLevel[i] = (100/depth)-pm;
         }
       }
     }
