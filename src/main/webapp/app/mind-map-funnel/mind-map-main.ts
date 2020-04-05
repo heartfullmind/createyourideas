@@ -218,7 +218,7 @@ export class MindMapMain {
     if (this.getEditable()) {
       const element = e.target || event.srcElement;
       const nodeid = this.view.getBindedNodeId(element);
-      if (!!nodeid && nodeid !== 'root') {
+      if (nodeid && nodeid !== 'root') {
         this.beginEdit(nodeid);
       }
     }

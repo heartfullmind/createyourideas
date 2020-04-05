@@ -265,7 +265,7 @@ export class MindMapMind {
   }
 
   moveNodeInternal(node, beforeid) {
-    if (!!node && !!beforeid) {
+    if (node && beforeid) {
       if (beforeid === '_last_') {
         node.index = -1;
         this.reindex(node.parent);
@@ -284,7 +284,7 @@ export class MindMapMind {
   }
 
   moveNodeDirect(node, beforeid, parentid, direction) {
-    if (!!node && !!parentid) {
+    if (node && parentid) {
       if (node.parent.id !== parentid) {
         // remove from parent's children
         const sibling = node.parent.children;

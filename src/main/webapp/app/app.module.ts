@@ -25,7 +25,6 @@ import { FooterModule } from './layouts/footer/footer.module';
 import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
 import { HomeIdeaPinwallModule } from './idea-pinwall/idea-pinwall.module';
 import { HomeTotalModule } from './total/total.module';
-import { ContextMenuComponent } from './context-menu/context-menu.component';
 // Import angular-fusioncharts
 import { FusionChartsModule } from 'angular-fusioncharts';
 // Import FusionCharts library and chart modules
@@ -66,8 +65,7 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     ErrorComponent,
     PageRibbonComponent,
     ActiveMenuDirective,
-    IdeaListComponent,
-    ContextMenuComponent
+    IdeaListComponent
   ],
   bootstrap: [JhiMainComponent]
 })

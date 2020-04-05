@@ -152,7 +152,7 @@ export const customizeFormat = {
         isroot: node.isroot,
         expanded: node.expanded
       };
-      if (!!node.parent && node.parent.isroot) {
+      if (node.parent && node.parent.isroot) {
         o.direction = node.direction === MindMapMain.direction.left ? 'left' : 'right';
       }
       if (node.data != null) {
@@ -327,7 +327,7 @@ export const customizeFormat = {
       if (node.isroot) {
         o.isroot = true;
       }
-      if (!!node.parent && node.parent.isroot) {
+      if (node.parent && node.parent.isroot) {
         o.direction = node.direction === MindMapMain.direction.left ? 'left' : 'right';
       }
       if (node.data != null) {

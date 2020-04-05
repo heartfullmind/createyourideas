@@ -322,7 +322,7 @@ export class Draggable {
 
   moveNode(srcNode, targetNode, targetDirect) {
     const shadowH = this.shadow.offsetTop;
-    if (!!targetNode && !!srcNode && !MindMapNode.inherited(srcNode, targetNode)) {
+    if (targetNode && srcNode && !MindMapNode.inherited(srcNode, targetNode)) {
       // lookup before_node
       const siblingNodes = targetNode.children;
       let sc = siblingNodes.length;

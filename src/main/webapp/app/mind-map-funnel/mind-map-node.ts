@@ -250,7 +250,7 @@ MindMapNode.compare = (node1, node2) => {
 };
 
 MindMapNode.inherited = (pnode, node) => {
-  if (!!pnode && !!node) {
+  if (pnode && node) {
     if (pnode.id === node.id) {
       return true;
     }

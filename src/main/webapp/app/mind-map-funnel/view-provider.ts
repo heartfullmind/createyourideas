@@ -648,7 +648,7 @@ export class ViewProvider {
     this.eNodes.style.height = this.size.h + 'px';
     this.showNodes();
     this.showLines();
-    // this.layout.cache_valid = true;
+    // this.layout.cacheValid = true;
     this.jm.invokeEventHandleNextTick(MindMapMain.eventType.resize, { data: [] });
   }
 
