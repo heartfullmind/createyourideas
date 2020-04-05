@@ -31,25 +31,25 @@ export class CalcProvider {
       this.financeService = value;
     });
   }
-/*
+
   calcCollection() {
     const root = this.mindMap.mind.root;
     const takenProfit = root.profitToSpend;
     const depth = this.mindMap.getDepth();
     const div = 100/depth;
-    let collectionKey = [];
-    for (let index = 0; index < depth.length; index++) {
+    let collectionLevel = [];
+    for (let index = 1; index <= depth; index++) {
       if(depth%2 == 0) {
-
-      }else {
-
-        collectionKey[index] = (100/depth);
-
+        const pm = div/depth;
+        for (let index = 1; index <= depth/2; index++){
+          collectionLevel[index] = (100/depth)+pm;
+          collectionLevel[index] = (100/depth)-pm;
+        }
       }
-
     }
+  }
 
-  }*/
+
   calculateProfit() {
     const childrenRoot = this.getChildren(this.mindMap.mind.root);
     let totalDailyBalance = 0;
