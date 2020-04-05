@@ -51,22 +51,22 @@ export class MindMapMind {
   }
 
   addNode(
-    parent_node,
+    parentNode,
     nodeid,
     topic,
     data,
     idx,
     direction?,
     expanded?,
-    selected_type?,
+    selectedType?,
     selectable?,
     interest?,
     investment?,
     distribution?
   ) {
-    if (!customizeUtil.is_node(parent_node)) {
+    if (!customizeUtil.is_node(parentNode)) {
       return this.addNode(
-        this.getNode(parent_node),
+        this.getNode(parentNode),
         nodeid,
         topic,
         data,
@@ -82,15 +82,15 @@ export class MindMapMind {
     }
     const nodeindex = idx || -1;
 
-    if (!!parent_node) {
-      // logger.debug(parent_node);
+    if (parentNode) {
+      // logger.debug(parentNode);
       let node = null;
-      if (parent_node.isroot) {
+      if (parentNode.isroot) {
         let d = MindMapMain.direction.right;
         if (isNaN(direction)) {
-          const children = parent_node.children;
-          const children_len = children.length;
-          let r = 0;
+          // const children = parentNode.children;
+          // const children_len = children.length;
+          // let r = 0;
           // for(var i=0;i<children_len;i++){if(children[i].direction === jm.direction.left){r--;}else{r++;}}
           d = MindMapMain.direction.right;
         } else {
@@ -102,11 +102,11 @@ export class MindMapMind {
           topic,
           data,
           false,
-          parent_node,
+          parentNode,
           d,
           expanded,
-          selected_type,
-          parent_node.level + 1,
+          selectedType,
+          parentNode.level + 1,
           selectable,
           interest,
           investment,
@@ -119,11 +119,11 @@ export class MindMapMind {
           topic,
           data,
           false,
-          parent_node,
-          parent_node.direction,
+          parentNode,
+          parentNode.direction,
           expanded,
-          selected_type,
-          parent_node.level + 1,
+          selectedType,
+          parentNode.level + 1,
           selectable,
           interest,
           investment,
@@ -131,8 +131,8 @@ export class MindMapMind {
         );
       }
       if (this.putNode(node)) {
-        parent_node.children.push(node);
-        this.reindex(parent_node);
+        parentNode.children.push(node);
+        this.reindex(parentNode);
       } else {
         logger.error("fail, the nodeid '" + node.id + "' has been already exist.");
         node = null;
@@ -144,13 +144,13 @@ export class MindMapMind {
     }
   }
 
-  insertNodeBefore(node_before, nodeid, topic, data, interest?, investment?, distribution?) {
-    if (!customizeUtil.is_node(node_before)) {
-      return this.insertNodeBefore(this.getNode(node_before), nodeid, topic, data, interest, investment, distribution);
+  insertNodeBefore(nodeBefore, nodeid, topic, data, interest?, investment?, distribution?) {
+    if (!customizeUtil.is_node(nodeBefore)) {
+      return this.insertNodeBefore(this.getNode(nodeBefore), nodeid, topic, data, interest, investment, distribution);
     }
-    if (!!node_before) {
-      const node_index = node_before.index - 0.5;
-      return this.addNode(node_before.parent, nodeid, topic, data, node_index, null, null, null, null, interest, investment, distribution);
+    if (nodeBefore) {
+      const nodeIndex = nodeBefore.index - 0.5;
+      return this.addNode(nodeBefore.parent, nodeid, topic, data, nodeIndex, null, null, null, null, interest, investment, distribution);
     } else {
       logger.error('fail, the [node_before] can not be found.');
       return null;
@@ -175,13 +175,13 @@ export class MindMapMind {
     }
   }
 
-  insertNodeAfter(node_after, nodeid, topic, data, interest?, investment?, distribution?) {
-    if (!customizeUtil.is_node(node_after)) {
-      return this.insertNodeAfter(this.getNode(node_after), nodeid, topic, data, interest, investment, distribution);
+  insertNodeAfter(nodeAfter, nodeid, topic, data, interest?, investment?, distribution?) {
+    if (!customizeUtil.is_node(nodeAfter)) {
+      return this.insertNodeAfter(this.getNode(nodeAfter), nodeid, topic, data, interest, investment, distribution);
     }
-    if (!!node_after) {
-      const node_index = node_after.index + 0.5;
-      return this.addNode(node_after.parent, nodeid, topic, data, node_index, null, null, null, null, interest, investment, distribution);
+    if (nodeAfter) {
+      const nodeIndex = nodeAfter.index + 0.5;
+      return this.addNode(nodeAfter.parent, nodeid, topic, data, nodeIndex, null, null, null, null, interest, investment, distribution);
     } else {
       logger.error('fail, the [node_after] can not be found.');
       return null;
@@ -238,9 +238,9 @@ export class MindMapMind {
         node.index = 0;
         this.reindex(node.parent);
       } else {
-        const node_before = !!beforeid ? this.getNode(beforeid) : null;
-        if (node_before != null && node_before.parent != null && node_before.parent.id === node.parent.id) {
-          node.index = node_before.index - 0.5;
+        const nodeBefore = beforeid ? this.getNode(beforeid) : null;
+        if (nodeBefore != null && nodeBefore.parent != null && nodeBefore.parent.id === node.parent.id) {
+          node.index = nodeBefore.index - 0.5;
           this.reindex(node.parent);
         }
       }
@@ -314,8 +314,9 @@ export class MindMapMind {
     // remove from global nodes
     delete this.nodes[node.id];
     // clean all properties
-    for (let k in node) {
-      delete node[k];
+    for (const k in node) {
+      if(k)
+        delete node[k];
     }
     // remove it's self
     node = null;

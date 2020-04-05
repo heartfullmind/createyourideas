@@ -134,7 +134,7 @@ export class MindMapMain {
       const jd = new Draggable(jm);
       jd.init();
       jm.addEventListener(function(type, data) {
-        jd.jm_event_handle.call(jd, type, data);
+        jd.jmEventHandle.call(jd, type, data);
       });
     });
 
@@ -360,7 +360,7 @@ export class MindMapMain {
   }
 
   _show(mind) {
-    const m = mind || customizeFormat.node_array.example;
+    const m = mind || customizeFormat.nodeArray.example;
     this.mind = this.data.load(m, this.opts, this.calc);
     if (!this.mind) {
       logger.error('data.load error');
@@ -431,7 +431,20 @@ export class MindMapMain {
     return _.find(this.options.hierarchyRule, { name: parentNode.selectedType }).getChildren()[0];
   }
 
-  addNode(parentNode, nodeid, topic, data, interest?, investment?, distribution?) {
+  addNode(
+    parentNode,
+    nodeid,
+    topic,
+    data,
+    idx,
+    direction?,
+    expanded?,
+    selectedType?,
+    selectable?,
+    interest?,
+    investment?,
+    distribution?
+  ) {
 
     data = data || {};
     data.isCreated = true;
@@ -440,11 +453,11 @@ export class MindMapMain {
     }
     if (this.getEditable()) {
       const currentRule = this.getCurrentHierarchyRule(parentNode);
-      const selectedType = currentRule && currentRule.name;
-      if (!selectedType && this.options.hierarchyRule) {
+      const selType = currentRule && currentRule.name;
+      if (!selType && this.options.hierarchyRule) {
         throw new Error('forbidden add');
       } else {
-        topic = topic || `${selectedType}select`;
+        topic = topic || `${selType}select`;
       }
       if (currentRule.backgroundColor) {
         data['background-color'] = currentRule.backgroundColor;
@@ -460,7 +473,7 @@ export class MindMapMain {
         null,
         null,
         null,
-        selectedType,
+        selType,
         this.options.selectable,
         interest,
         investment,

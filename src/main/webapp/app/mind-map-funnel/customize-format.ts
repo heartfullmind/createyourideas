@@ -7,15 +7,16 @@ import { MindMapNode } from './mind-map-node';
 
 function getBasicMind(
   source,
-  formatType: 'nodeTree' | 'node_array',
-  calc: CalcProvider
+  formatType: 'nodeTree' | 'nodeArray',
+  calc: CalcProvider,
+  mindMapMain?: MindMapMain
 ) {
   const df = customizeFormat[formatType];
   const mind = new MindMapMind(calc);
   mind.name = _.get(source, 'meta.name', NAME);
   mind.author = _.get(source, 'meta.author', AUTHOR);
   mind.version = _.get(source, 'meta.version', VERSION);
-  df._parse(mind, source.data, calc);
+  df._parse(mind, source.data, calc, mindMapMain);
   return mind;
 }
 
@@ -39,12 +40,12 @@ export const customizeFormat = {
       format: 'nodeTree',
       data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000' }
     },
-    getMind: function(source, calc?: CalcProvider) {
-      return getBasicMind(source, 'nodeTree', calc);
+    getMind(source, calc?: CalcProvider, mindMapMain?: MindMapMain) {
+      return getBasicMind(source, 'nodeTree', calc, mindMapMain);
     },
-    getData: function(mind) {
+    getData(mind) {
       const df = customizeFormat.nodeTree;
-      let json = { meta: {}, format: '', data: {} };
+      const json = { meta: {}, format: '', data: {} };
       json.meta = {
         name: mind.name,
         author: mind.author,
@@ -55,27 +56,27 @@ export const customizeFormat = {
       return json;
     },
 
-    _parse: function(mind, node_root, calc: CalcProvider) {
+    _parse(mind, nodeRoot, calc: CalcProvider, mindMapMain: MindMapMain) {
       const df = customizeFormat.nodeTree;
-      const data = df._extractData(node_root);
+      const data = df._extractData(nodeRoot);
       mind.setRoot(
-        node_root.id,
-        node_root.topic,
+        nodeRoot.id,
+        nodeRoot.topic,
         data,
-        node_root.interest,
-        node_root.distribution
+        nodeRoot.interest,
+        nodeRoot.distribution
       );
-      if ('children' in node_root) {
-        const children = node_root.children;
+      if ('children' in nodeRoot) {
+        const children = nodeRoot.children;
         for (let i = 0; i < children.length; i++) {
-         df._extractSubNode(mind, mind.root, children[i], calc);
+         df._extractSubNode(mind, mind.root, children[i], calc, mindMapMain);
         }
       }
     },
 
-    _extractData: function(node_json) {
+    _extractData(nodeJson) {
       const data = {};
-      for (let k in node_json) {
+      for (const k in nodeJson) {
         if (
           k === 'id' ||
           k === 'topic' ||
@@ -90,51 +91,51 @@ export const customizeFormat = {
           continue;
         }
         if (k === 'backgroundColor') {
-          data['background-color'] = node_json[k];
+          data['background-color'] = nodeJson[k];
         } else {
-          data[k] = node_json[k];
+          data[k] = nodeJson[k];
         }
       }
       return data;
     },
 
-    _extractSubNode: function(
+    _extractSubNode(
       mind,
-      node_parent,
-      node_json,
+      nodeParent,
+      nodeJson,
       calc: CalcProvider,
+      mindMapMain: MindMapMain,
     ) {
       const df = customizeFormat.nodeTree;
-      const data = df._extractData(node_json);
+      const data = df._extractData(nodeJson);
       let d = null;
-      if (node_parent != null && node_parent.isroot) {
-        d = node_json.direction === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
+      if (nodeParent != null && nodeParent.isroot) {
+        d = nodeJson.direction === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
       }
       const node = mind.addNode(
-        node_parent,
-        node_json.id,
-        node_json.topic,
+        nodeParent,
+        nodeJson.id,
+        nodeJson.topic,
         data,
         null,
         d,
-        node_json.expanded,
-        node_json.selectedType,
+        nodeJson.expanded,
+        nodeJson.selectedType,
         customizeFormat.config.selectable,
-        node_json.interest,
-        node_json.investment,
-        node_json.distribution,
-        calc
+        nodeJson.interest,
+        nodeJson.investment,
+        nodeJson.distribution
       );
 
-      if ('children' in node_json) {
-        const children = node_json.children;
+      if ('children' in nodeJson) {
+        const children = nodeJson.children;
         for (let i = 0; i < children.length; i++) {
-          df._extractSubNode(mind, node, children[i], calc);
+          df._extractSubNode(mind, node, children[i], calc, mindMapMain);
         }
       }
     },
 
-    _buildNode: function(node) {
+    _buildNode(node) {
       const df = customizeFormat.nodeTree;
       if (!(node instanceof MindMapNode)) {
         return;
@@ -156,9 +157,10 @@ export const customizeFormat = {
         o.direction = node.direction === MindMapMain.direction.left ? 'left' : 'right';
       }
       if (node.data != null) {
-        const node_data = node.data;
-        for (let k in node_data) {
-          o[k] = node_data[k];
+        const nodeData = node.data;
+        for (const k in nodeData) {
+          if(k)
+            o[k] = nodeData[k];
         }
       }
       const children = node.children;
@@ -172,23 +174,23 @@ export const customizeFormat = {
     }
   },
 
-  node_array: {
+  nodeArray: {
     example: {
       meta: {
         name: NAME,
         author: AUTHOR,
         version: VERSION
       },
-      format: 'node_array',
+      format: 'nodeArray',
       data: [{ id: 'root', topic: 'Main Node', isroot: true }]
     },
 
-    getMind: function(source, calc: CalcProvider) {
-      return getBasicMind(source, 'node_array', calc);
+    getMind(source, calc: CalcProvider, mindMapMain: MindMapMain) {
+      return getBasicMind(source, 'nodeArray', calc, mindMapMain);
     },
 
-    getData: function(mind) {
-      const df = customizeFormat.node_array;
+    getData(mind) {
+      const df = customizeFormat.nodeArray;
       const json = {
         meta: {},
         format: '',
@@ -199,113 +201,113 @@ export const customizeFormat = {
         author: mind.author,
         version: mind.version
       };
-      json.format = 'node_array';
+      json.format = 'nodeArray';
       json.data = [];
       df._array(mind, json.data);
       return json;
     },
 
-    _parse: function(mind, node_array) {
-      const df = customizeFormat.node_array;
-      const narray = node_array.slice(0);
+    _parse(mind, nodeArray) {
+      const df = customizeFormat.nodeArray;
+      const narray = nodeArray.slice(0);
       // reverse array for improving looping performance
       narray.reverse();
-      const root_id = df._extractRoot(mind, narray);
-      if (!!root_id) {
-        df._extractSubNode(mind, root_id, narray);
+      const rootId = df._extractRoot(mind, narray);
+      if (rootId) {
+        df._extractSubNode(mind, rootId, narray);
       } else {
         logger.error('root node can not be found');
       }
     },
 
-    _extractRoot: function(
+    _extractRoot(
       mind,
-      node_array,
+      nodeArray,
     ) {
-      const df = customizeFormat.node_array;
-      let i = node_array.length;
+      const df = customizeFormat.nodeArray;
+      let i = nodeArray.length;
       while (i--) {
-        if ('isroot' in node_array[i] && node_array[i].isroot) {
-          const root_json = node_array[i];
-          const data = df._extractData(root_json);
+        if ('isroot' in nodeArray[i] && nodeArray[i].isroot) {
+          const rootJson = nodeArray[i];
+          const data = df._extractData(rootJson);
           mind.setRoot(
-            root_json.id,
-            root_json.topic,
+            rootJson.id,
+            rootJson.topic,
             data,
-            root_json.interest,
-            root_json.distribution
+            rootJson.interest,
+            rootJson.distribution
           );
-          node_array.splice(i, 1);
-          return root_json.id;
+          nodeArray.splice(i, 1);
+          return rootJson.id;
         }
       }
       return null;
     },
 
-    _extractSubNode: function(
+    _extractSubNode(
       mind,
       parentid,
-      node_array,
+      nodeArray,
     ) {
-      const df = customizeFormat.node_array;
-      let i = node_array.length;
-      let node_json = null;
+      const df = customizeFormat.nodeArray;
+      let i = nodeArray.length;
+      let nodeJson = null;
       let data = null;
-      let extract_count = 0;
+      let extractCount = 0;
       while (i--) {
-        node_json = node_array[i];
-        if (node_json.parentid === parentid) {
-          data = df._extractData(node_json);
+        nodeJson = nodeArray[i];
+        if (nodeJson.parentid === parentid) {
+          data = df._extractData(nodeJson);
           let d = null;
-          const node_direction = node_json.direction;
-          if (!!node_direction) {
-            d = node_direction === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
+          const nodeDirection = nodeJson.direction;
+          if (nodeDirection) {
+            d = nodeDirection === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
           }
           mind.addNode(
             parentid,
-            node_json.id,
-            node_json.topic,
+            nodeJson.id,
+            nodeJson.topic,
             data,
             null,
             d,
-            node_json.expanded,
+            nodeJson.expanded,
             null,
             null,
-            node_json.interest,
-            node_json.investment,
-            node_json.distribution,
+            nodeJson.interest,
+            nodeJson.investment,
+            nodeJson.distribution,
           );
-          node_array.splice(i, 1);
-          extract_count++;
-          const sub_extract_count = df._extractSubNode(mind, node_json.id, node_array);
-          if (sub_extract_count > 0) {
+          nodeArray.splice(i, 1);
+          extractCount++;
+          const subExtractCount = df._extractSubNode(mind, nodeJson.id, nodeArray);
+          if (subExtractCount > 0) {
             // reset loop index after extract subordinate node
-            i = node_array.length;
-            extract_count += sub_extract_count;
+            i = nodeArray.length;
+            extractCount += subExtractCount;
           }
         }
       }
-      return extract_count;
+      return extractCount;
     },
 
-    _extractData: function(node_json) {
+    _extractData(nodeJson) {
       const data = {};
-      for (const k in node_json) {
+      for (const k in nodeJson) {
         if (k === 'id' || k === 'topic' || k === 'parentid' || k === 'isroot' || k === 'direction' || k === 'expanded') {
           continue;
         }
-        data[k] = node_json[k];
+        data[k] = nodeJson[k];
       }
       return data;
     },
 
-    _array: function(mind, node_array) {
-      const df = customizeFormat.node_array;
-      df._arrayNode(mind.root, node_array);
+    _array(mind, nodeArray) {
+      const df = customizeFormat.nodeArray;
+      df._arrayNode(mind.root, nodeArray);
     },
 
-    _arrayNode: function(node, node_array) {
-      const df = customizeFormat.node_array;
+    _arrayNode(node, nodeArray) {
+      const df = customizeFormat.nodeArray;
       if (!(node instanceof MindMapNode)) {
         return;
       }
@@ -320,7 +322,7 @@ export const customizeFormat = {
         direction: '',
         expanded: node.expanded
       };
-      if (!!node.parent) {
+      if (node.parent) {
         o.parentid = node.parent.id;
       }
       if (node.isroot) {
@@ -330,15 +332,16 @@ export const customizeFormat = {
         o.direction = node.direction === MindMapMain.direction.left ? 'left' : 'right';
       }
       if (node.data != null) {
-        const node_data = node.data;
-        for (const k in node_data) {
-          o[k] = node_data[k];
+        const nodeData = node.data;
+        for (const k in nodeData) {
+          if(k)
+            o[k] = nodeData[k];
         }
       }
-      node_array.push(o);
+      nodeArray.push(o);
       const ci = node.children.length;
       for (let i = 0; i < ci; i++) {
-        df._arrayNode(node.children[i], node_array);
+        df._arrayNode(node.children[i], nodeArray);
       }
     }
   },
@@ -353,20 +356,20 @@ export const customizeFormat = {
       format: 'freemind',
       data: '<map version="1.0.1"><node ID="root" TEXT="freemind Example"/></map>'
     },
-    getMind: function(source, calc: CalcProvider) {
+    getMind(source, calc: CalcProvider) {
       const df = customizeFormat.freemind;
       const mind = new MindMapMind(calc);
       mind.name = _.get(source, 'meta.name', NAME);
       mind.author = _.get(source, 'meta.author', AUTHOR);
       mind.version = _.get(source, 'meta.version', VERSION);
       const xml = source.data;
-      const xml_doc = df._parseXml(xml);
-      const xml_root = df._findRoot(xml_doc);
-      df._loadNode(mind, null, xml_root);
+      const xmlDoc = df._parseXml(xml);
+      const xmlRoot = df._findRoot(xmlDoc);
+      df._loadNode(mind, null, xmlRoot);
       return mind;
     },
 
-    getData: function(mind) {
+    getData(mind) {
       const df = customizeFormat.freemind;
       const json = { meta: {}, format: '', data: '' };
       json.meta = {
@@ -383,24 +386,23 @@ export const customizeFormat = {
       return json;
     },
 
-    _parseXml: function(xml) {
-      let xml_doc = null;
+    _parseXml(xml) {
+      let xmlDoc = null;
       if ($win.DOMParser) {
         const parser = new DOMParser();
-        xml_doc = parser.parseFromString(xml, 'text/xml');
+        xmlDoc = parser.parseFromString(xml, 'text/xml');
       } else {
         // Internet Explorer
-        xml_doc = new ActiveXObject('Microsoft.XMLDOM');
-        xml_doc.async = false;
-        xml_doc.loadXML(xml);
+        xmlDoc = new ActiveXObject('Microsoft.XMLDOM');
+        xmlDoc.async = false;
+        xmlDoc.loadXML(xml);
       }
-      return xml_doc;
+      return xmlDoc;
     },
 
-    _findRoot: function(xml_doc) {
-      const nodes = xml_doc.childNodes;
+    _findRoot(xmlDoc) {
+      const nodes = xmlDoc.childNodes;
       let node = null;
-      let root = null;
       let n = null;
       for (let i = 0; i < nodes.length; i++) {
         n = nodes[i];
@@ -409,7 +411,7 @@ export const customizeFormat = {
           break;
         }
       }
-      if (!!node) {
+      if (node) {
         const ns = node.childNodes;
         node = null;
         for (let i = 0; i < ns.length; i++) {
@@ -423,86 +425,86 @@ export const customizeFormat = {
       return node;
     },
 
-    _loadNode: function(mind, parent_id, xml_node) {
+    _loadNode(mind, parentId, xmlNode) {
       const df = customizeFormat.freemind;
-      const node_id = xml_node.getAttribute('ID');
-      let node_topic = xml_node.getAttribute('TEXT');
-      let node_interest = xml_node.getAttribute('INTEREST');
-      let node_distribution = xml_node.getAttribute('DISTRIBUTION');
-      let node_investment = xml_node.getAttribute('INVESTMENT');
+      const nodeId = xmlNode.getAttribute('ID');
+      let nodeTopic = xmlNode.getAttribute('TEXT');
+      const nodeInterest = xmlNode.getAttribute('INTEREST');
+      const nodeDistribution = xmlNode.getAttribute('DISTRIBUTION');
+      const nodeInvestment = xmlNode.getAttribute('INVESTMENT');
       // look for richcontent
-      if (node_topic == null) {
-        const topic_children = xml_node.childNodes;
-        let topic_child = null;
-        for (let i = 0; i < topic_children.length; i++) {
-          topic_child = topic_children[i];
+      if (nodeTopic == null) {
+        const topicChildren = xmlNode.childNodes;
+        let topicChild = null;
+        for (let i = 0; i < topicChildren.length; i++) {
+          topicChild = topicChildren[i];
           // logger.debug(topic_child.tagName);
-          if (topic_child.nodeType === 1 && topic_child.tagName === 'richcontent') {
-            node_topic = topic_child.textContent;
+          if (topicChild.nodeType === 1 && topicChild.tagName === 'richcontent') {
+            nodeTopic = topicChild.textContent;
             break;
           }
         }
       }
-      const node_data: { expanded?: string } = df._loadAttributes(xml_node);
-      const node_expanded = 'expanded' in node_data ? node_data.expanded === 'true' : true;
-      delete node_data.expanded;
+      const nodeData: { expanded?: string } = df._loadAttributes(xmlNode);
+      const nodeExpanded = 'expanded' in nodeData ? nodeData.expanded === 'true' : true;
+      delete nodeData.expanded;
 
-      const node_position = xml_node.getAttribute('POSITION');
-      let node_direction = null;
-      if (!!node_position) {
-        node_direction = node_position === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
+      const nodePosition = xmlNode.getAttribute('POSITION');
+      let nodeDirection = null;
+      if (nodePosition) {
+        nodeDirection = nodePosition === 'left' ? MindMapMain.direction.left : MindMapMain.direction.right;
       }
-      // logger.debug(node_position +':'+ node_direction);
-      if (!!parent_id) {
+      // logger.debug(node_position +':'+ nodeDirection);
+      if (parentId) {
         mind.addNode(
-          parent_id,
-          node_id,
-          node_topic,
-          node_data,
+          parentId,
+          nodeId,
+          nodeTopic,
+          nodeData,
           null,
-          node_direction,
-          node_expanded,
+          nodeDirection,
+          nodeExpanded,
           null,
           null,
-          node_interest,
-          node_investment,
-          node_distribution
+          nodeInterest,
+          nodeInvestment,
+          nodeDistribution
         );
       } else {
-        mind.setRoot(node_id, node_topic, node_data, node_interest, node_distribution);
+        mind.setRoot(nodeId, nodeTopic, nodeData, nodeInterest, nodeDistribution);
       }
-      const children = xml_node.childNodes;
+      const children = xmlNode.childNodes;
       let child = null;
       for (let i = 0; i < children.length; i++) {
         child = children[i];
         if (child.nodeType === 1 && child.tagName === 'node') {
-          df._loadNode(mind, node_id, child);
+          df._loadNode(mind, nodeId, child);
         }
       }
     },
 
-    _loadAttributes: function(xml_node) {
-      const children = xml_node.childNodes;
+    _loadAttributes(xmlNode) {
+      const children = xmlNode.childNodes;
       let attr = null;
-      let attr_data = {};
+      const attrData = {};
       for (let i = 0; i < children.length; i++) {
         attr = children[i];
         if (attr.nodeType === 1 && attr.tagName === 'attribute') {
-          attr_data[attr.getAttribute('NAME')] = attr.getAttribute('VALUE');
+          attrData[attr.getAttribute('NAME')] = attr.getAttribute('VALUE');
         }
       }
-      return attr_data;
+      return attrData;
     },
 
-    _buildMap: function(node, xmllines) {
+    _buildMap(node, xmllines) {
       const df = customizeFormat.freemind;
       let pos = null;
-      if (!!node.parent && node.parent.isroot) {
+      if (node.parent && node.parent.isroot) {
         pos = node.direction === MindMapMain.direction.left ? 'left' : 'right';
       }
       xmllines.push('<node');
       xmllines.push('ID="' + node.id + '"');
-      if (!!pos) {
+      if (pos) {
         xmllines.push('POSITION="' + pos + '"');
       }
       xmllines.push('INTEREST="' + node.interest + '"');
@@ -515,10 +517,11 @@ export const customizeFormat = {
       xmllines.push('<attribute NAME="expanded" VALUE="' + node.expanded + '"/>');
 
       // for attributes
-      const node_data = node.data;
-      if (node_data != null) {
-        for (const k in node_data) {
-          xmllines.push('<attribute NAME="' + k + '" VALUE="' + node_data[k] + '"/>');
+      const nodeData = node.data;
+      if (nodeData != null) {
+        for (const k in nodeData) {
+          if(k)
+            xmllines.push('<attribute NAME="' + k + '" VALUE="' + nodeData[k] + '"/>');
         }
       }
 

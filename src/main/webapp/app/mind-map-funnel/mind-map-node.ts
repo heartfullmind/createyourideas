@@ -1,5 +1,7 @@
 import { logger } from './config';
 import { FinanceService } from 'app/finance.service';
+import {CurrencyPipe} from '@angular/common';
+import {PercentPipe} from '@angular/common';
 
 interface NodeData {
   view?: NodeView;
@@ -36,6 +38,11 @@ export class MindMapNode {
   selectable: boolean;
   private _data: NodeData;
   financeService: FinanceService;
+  profitToSpend: number;
+  netProfit: number;
+  cPipe: CurrencyPipe;
+  pPipe: PercentPipe;
+
 
   constructor(
     sId,
@@ -53,7 +60,6 @@ export class MindMapNode {
     sInvestment?,
     sDistribution?,
     sProfit?
-
   ) {
 
     if (!sId) {
@@ -88,6 +94,8 @@ export class MindMapNode {
     if (this.isroot) {
       this.level = 1;
     }
+    this.cPipe = new CurrencyPipe('en-US');
+    this.pPipe = new PercentPipe('en-US');
   }
 
   show() {
@@ -101,19 +109,25 @@ export class MindMapNode {
         this.topic +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
-        this.interest +
+        this.pPipe.transform(this.interest) +
         '</td></tr>' +
         '<tr><td>Distribution:</td><td>' +
-        this.distribution +
+        this.pPipe.transform(this.distribution) +
         '</td></tr>' +
         '<tr><td>Investment:</td><td>' +
-        this.investment +
+        this.cPipe.transform(this.investment) +
         '</td></tr>' +
         '<tr><td>Daily Balance:</td><td>' +
-        this.dailyBalance +
+        this.cPipe.transform(this.dailyBalance) +
         '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
-        this.profit +
+        this.cPipe.transform(this.profit) +
+        '</td></tr>' +
+        '<tr><td>3/4 of the profit:</td><td>' +
+        this.cPipe.transform(this.profitToSpend) +
+        '</td></tr>' +
+        '<tr><td>Net-Profit:</td><td>' +
+        this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
         '</table>'
       );
@@ -125,16 +139,22 @@ export class MindMapNode {
         this.topic +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
-        this.interest +
+        this.pPipe.transform(this.interest) +
         '</td></tr>' +
         '<tr><td>Distribution:</td><td>' +
-        this.distribution +
+        this.pPipe.transform(this.distribution) +
         '</td></tr>' +
         '<tr><td>Daily Balance:</td><td>' +
-        this.dailyBalance +
+        this.cPipe.transform(this.dailyBalance) +
         '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
-        this.profit +
+        this.cPipe.transform(this.profit) +
+        '</td></tr>' +
+        '<tr><td>3/4 of the profit:</td><td>' +
+        this.cPipe.transform(this.profitToSpend) +
+        '</td></tr>' +
+        '<tr><td>Net-Profit:</td><td>' +
+        this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
         '</table>'
       );
@@ -145,23 +165,33 @@ export class MindMapNode {
         this.topic +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
-        this.interest +
+        this.pPipe.transform(this.interest) +
         '</td></tr>' +
         '<tr><td>Distribution:</td><td>' +
-        this.distribution +
+        this.pPipe.transform(this.distribution) +
         '</td></tr>' +
         '<tr><td>Investment:</td><td>' +
-        this.investment +
+        this.cPipe.transform(this.investment) +
         '</td></tr>' +
         '<tr><td>Daily Balance:</td><td>' +
-        this.dailyBalance +
+        this.cPipe.transform(this.dailyBalance) +
         '</td></tr>' +
         '<tr><td>Profit:</td><td>' +
-        this.profit +
+        this.cPipe.transform(this.profit) +
+        '</td></tr>' +
+        '<tr><td>3/4 of the profit:</td><td>' +
+        this.cPipe.transform(this.profitToSpend) +
+        '</td></tr>' +
+        '<tr><td>Net-Profit:</td><td>' +
+        this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
         '</table>'
       );
     }
+  }
+
+  getThreeOfFour(value) {
+    return 0.75*value;
   }
 
   getLocation() {
@@ -181,6 +211,8 @@ export class MindMapNode {
   }
 
   setProfit(profit: number) {
+    this.profitToSpend = 0.75*profit;
+    this.netProfit = profit - this.profitToSpend;
     this.profit = profit;
   }
 

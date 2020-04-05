@@ -1,7 +1,7 @@
 import { CalcProvider } from './mind-map-calc';
 import { logger } from './config';
 import { customizeFormat } from './customize-format';
-import { MindMapModuleOpts, MindMapMain } from './mind-map-main';
+import { MindMapModuleOpts } from './mind-map-main';
 import { MIND_TYPE } from './constants';
 import { MindMapMind } from './mind-map-mind';
 
@@ -22,42 +22,42 @@ export class MindMapDataProvider {
     logger.debug('data.reset');
   }
 
-  load(mind_data, opts: MindMapModuleOpts, calc: CalcProvider) {
-      let df = null;
-      let mind = null;
-      if (typeof mind_data === 'object') {
-        if (!!mind_data.format) {
-          df = mind_data.format;
+  load(mindData, opts: MindMapModuleOpts, calc: CalcProvider) {
+        let df = null;
+        let mind = null;
+        if (typeof mindData === 'object') {
+          if (mindData.format) {
+            df = mindData.format;
+          } else {
+            df = MIND_TYPE.NODE_TREE;
+          }
         } else {
-          df = MIND_TYPE.NODE_TREE;
+          df = MIND_TYPE.FREE_MIND;
         }
-      } else {
-        df = MIND_TYPE.FREE_MIND;
-      }
-      customizeFormat.setSelectable(opts.selectable);
+        customizeFormat.setSelectable(opts.selectable);
 
-      if (df === MIND_TYPE.NODE_ARRAY) {
-        mind = customizeFormat.node_array.getMind(mind_data, calc);
-      } else if (df === MIND_TYPE.NODE_TREE) {
-        mind = customizeFormat.nodeTree.getMind(mind_data, calc);
-      } else if (df === MIND_TYPE.FREE_MIND) {
-        mind = customizeFormat.freemind.getMind(mind_data, calc);
-      } else {
-        logger.warn('unsupported format');
-      }
-      return mind;
+        if (df === MIND_TYPE.nodeArray) {
+          mind = customizeFormat.nodeArray.getMind(mindData, calc, this.jm);
+        } else if (df === MIND_TYPE.NODE_TREE) {
+          mind = customizeFormat.nodeTree.getMind(mindData, calc);
+        } else if (df === MIND_TYPE.FREE_MIND) {
+          mind = customizeFormat.freemind.getMind(mindData, calc);
+        } else {
+          logger.warn('unsupported format');
+        }
+        return mind;
   }
 
-  getData(data_format) {
+  getData(dataFormat) {
     let data = null;
-    if (data_format === MIND_TYPE.NODE_ARRAY) {
-      data = customizeFormat.node_array.getData(this.jm.mind);
-    } else if (data_format === MIND_TYPE.NODE_TREE) {
+    if (dataFormat === MIND_TYPE.nodeArray) {
+      data = customizeFormat.nodeArray.getData(this.jm.mind);
+    } else if (dataFormat === MIND_TYPE.NODE_TREE) {
       data = customizeFormat.nodeTree.getData(this.jm.mind);
-    } else if (data_format === MIND_TYPE.FREE_MIND) {
+    } else if (dataFormat === MIND_TYPE.FREE_MIND) {
       data = customizeFormat.freemind.getData(this.jm.mind);
     } else {
-      logger.error('unsupported ' + data_format + ' format');
+      logger.error('unsupported ' + dataFormat + ' format');
     }
     return data;
   }

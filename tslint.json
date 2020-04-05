@@ -11,6 +11,14 @@
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": false,
     "component-class-suffix": true,
-    "directive-class-suffix": true
+    "directive-class-suffix": true,
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    }
   }
 }
