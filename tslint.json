@@ -1,6 +1,7 @@
 {
   "rulesDirectory": ["node_modules/codelyzer"],
   "rules": {
+      "no-inferrable-types": false,
     "directive-selector": [true, "attribute", "jhi", "camelCase"],
     "component-selector": [true, "element", "jhi", "kebab-case"],
     "no-use-before-define": ["error", { "functions": false, "classes": false }],
@@ -13,6 +14,7 @@
     "use-pipe-transform-interface": false,
     "component-class-suffix": true,
     "directive-class-suffix": true,
+    "no-use-before-declare": false,
     "variable-name": {
       "options": [
         "ban-keywords",
