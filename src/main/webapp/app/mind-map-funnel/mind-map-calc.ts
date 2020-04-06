@@ -41,9 +41,9 @@ export class CalcProvider {
     for (let index = 1; index <= depth; index++) {
       if(depth%2 === 0) {
         const pm = div/depth;
-        for (let i = 1; i <= depth/2; i++){
+        for (let i = 1; i <= depth/2; i=i+2){
           collectionLevel[i] = (100/depth)+pm;
-          collectionLevel[i] = (100/depth)-pm;
+          collectionLevel[i+1] = (100/depth)-pm;
         }
       }
     }
