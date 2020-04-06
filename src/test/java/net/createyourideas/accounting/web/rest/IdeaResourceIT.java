@@ -48,8 +48,8 @@ public class IdeaResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Ideatype DEFAULT_IDEATYPE = Ideatype.PRODUCTION;
-    private static final Ideatype UPDATED_IDEATYPE = Ideatype.SERVICE;
+    private static final Ideatype DEFAULT_IDEATYPE = Ideatype.LEVEL1;
+    private static final Ideatype UPDATED_IDEATYPE = Ideatype.LEVEL3;
 
     private static final Float DEFAULT_INTEREST = 1F;
     private static final Float UPDATED_INTEREST = 2F;
