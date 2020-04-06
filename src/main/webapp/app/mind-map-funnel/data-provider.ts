@@ -3,7 +3,6 @@ import { logger } from './config';
 import { customizeFormat } from './customize-format';
 import { MindMapModuleOpts } from './mind-map-main';
 import { MIND_TYPE } from './constants';
-import { MindMapMind } from './mind-map-mind';
 
 export class MindMapDataProvider {
   jm: any;

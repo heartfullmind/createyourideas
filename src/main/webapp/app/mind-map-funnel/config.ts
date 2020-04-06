@@ -1,8 +1,8 @@
 import { MindMapModuleOpts } from './mind-map-main';
 export const $win: { [propName: string]: any } = window;
 
-export const NAME: string = 'jsMind';
-export const VERSION: string = '0.0.7';
+export const NAME = 'jsMind';
+export const VERSION = '0.0.7';
 export const AUTHOR = 'wfsovereign';
 
 export const logger = console;

@@ -1,5 +1,3 @@
-import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
-import { IncomeService } from 'app/entities/income/income.service';
 import { Injectable } from '@angular/core';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 import { SERVER_API_URL } from './app.constants';
