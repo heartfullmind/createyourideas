@@ -78,7 +78,7 @@ public class Node {
     this.type = type;
   }
 
-  public void getType() {
+  public String getType() {
     return this.type;
   }
 
