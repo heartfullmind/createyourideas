@@ -58,7 +58,7 @@ export class ShortcutProvider {
     }
   }
 
-  handleAddChild(_jm, e) {
+  handleAddChild(_jm) {
     const selectedNode = _jm.getSelectedNode();
     if (selectedNode) {
       const nodeid = customizeUtil.uuid.newid();
@@ -70,7 +70,7 @@ export class ShortcutProvider {
     }
   }
 
-  handleAddBrother(_jm, e) {
+  handleAddBrother(_jm) {
     const selectedNode = _jm.getSelectedNode();
     if (selectedNode && !selectedNode.isroot) {
       const nodeid = customizeUtil.uuid.newid();
@@ -82,14 +82,14 @@ export class ShortcutProvider {
     }
   }
 
-  handleEditNode(_jm, e) {
+  handleEditNode(_jm) {
     const selectedNode = _jm.getSelectedNode();
     if (selectedNode) {
       _jm.beginEdit(selectedNode);
     }
   }
 
-  handleDelNode(_jm, e) {
+  handleDelNode(_jm) {
     const selectedNode = _jm.getSelectedNode();
     if (selectedNode && !selectedNode.isroot) {
       _jm.selectNode(selectedNode.parent);

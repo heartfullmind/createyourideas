@@ -122,7 +122,7 @@ export const customizeUtil = {
     save(fileData, type, name) {
       let blob;
       if (typeof $win.Blob === 'function') {
-        blob = new Blob([fileData], { type: type });
+        blob = new Blob([fileData], { type });
       } else {
         const BlobBuilder = $win.BlobBuilder || $win.MozBlobBuilder || $win.WebKitBlobBuilder || $win.MSBlobBuilder;
         const bb = new BlobBuilder();
