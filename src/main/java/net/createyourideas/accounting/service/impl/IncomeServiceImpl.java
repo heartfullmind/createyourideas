@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -53,7 +55,6 @@ public class IncomeServiceImpl implements IncomeService {
         return incomeRepository.findAll(pageable);
     }
 
-
     /**
      * Get one income by id.
      *
@@ -81,5 +82,15 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public Page<Income> findAllByIdeaId(Long ideaId, Pageable pageable) {
         return incomeRepository.findAllByIdeaId(ideaId, pageable);
+    }
+
+    @Override
+    public Page<Income> findAllByDate(Date date, Pageable pageable) {
+        return incomeRepository.findAllByDate(date, pageable);
+    }
+
+    @Override
+    public Page<Income> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable) {
+        return incomeRepository.findAllByDateAndIdeaId(date, ideaId, pageable);
     }
 }

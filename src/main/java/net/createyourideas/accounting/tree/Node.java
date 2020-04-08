@@ -8,13 +8,15 @@ public class Node {
   private String parentId;     //Parent node id
 
   private String value;
-  private Float rate;
+  private Float interest;
   private Float distribution;
   private Float investment;
   private Float profit;
   private Node parent;
   private String type;
-
+  private byte[] logo;
+  private String description;
+  private Boolean active;
 
   private List<Node> children;
 
@@ -23,15 +25,18 @@ public class Node {
       this.children = new ArrayList<>();
   }
 
-  public Node(String value, Float rate, Float distribution, Float investment, String type, String childId, String parentId) {
+  public Node(String value, Float interest, Float distribution, Float investment, String type, String childId, String parentId, String description, byte[] logo, Boolean active) {
       this.value = value;
-      this.rate = rate;
+      this.interest = interest;
       this.distribution = distribution;
       this.investment = investment;
       this.id = childId;
       this.parentId = parentId;
       this.children = new ArrayList<>();
       this.type = type;
+      this.logo = logo;
+      this.description = description;
+      this.active = active;
   }
 
   public String getValue() {
@@ -42,12 +47,12 @@ public class Node {
       this.value = value;
   }
 
-  public Float getRate() {
-      return rate;
+  public Float getInterest() {
+      return interest;
   }
 
-  public void setRate(Float rate) {
-      this.rate = rate;
+  public void setInterest(Float interest) {
+      this.interest = interest;
   }
 
   public Float getDistribution() {
@@ -81,6 +86,30 @@ public class Node {
   public String getType() {
     return this.type;
   }
+
+  public byte[] getLogo() {
+    return logo;
+}
+
+public void setLogo(byte[] logo) {
+    this.logo = logo;
+}
+
+public String getDescription() {
+    return description;
+}
+
+public void setDescription(String description) {
+    this.description = description;
+}
+
+public Boolean getActive() {
+    return active;
+}
+
+public void setActive(Boolean active) {
+    this.active = active;
+}
 
   public String getId() {
       return id;
@@ -124,7 +153,7 @@ public class Node {
       return "{ \n" +
                "\"id\": \"" + id + "\", \n" +
                "\"topic\": \"" + value + "\", \n" +
-               "\"interest\": \"" + rate + "\", \n" +
+               "\"interest\": \"" + interest + "\", \n" +
                "\"distribution\": \"" + distribution + "\", \n" +
                "\"investment\": \"" + investment + "\", \n" +
                "\"profit\": \"" + profit + "\", \n" +

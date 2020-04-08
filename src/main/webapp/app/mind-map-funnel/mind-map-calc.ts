@@ -33,20 +33,15 @@ export class CalcProvider {
   }
 
   calcCollection() {
-    // const root = this.mindMap.mind.root;
-    // const takenProfit = root.profitToSpend;
-    const depth = this.mindMap.getDepth();
-    const div = 100/depth;
-    const collectionLevel = [];
-    for (let index = 1; index <= depth; index++) {
-      if(depth%2 === 0) {
-        const pm = div/depth;
-        for (let i = 1; i <= depth/2; i=i+2){
-          collectionLevel[i] = (100/depth)+pm;
-          collectionLevel[i+1] = (100/depth)-pm;
-        }
-      }
-    }
+    const root = this.mindMap.mind.root;
+    const rootChildren = this.getChildren(root);
+    const partNode = root.profitToSpend/rootChildren.length;
+    rootChildren.forEach(child => {
+      child.profit += partNode;
+      this.mindMap.view.updateNode(child);
+    });
+    root.profitToSpend = 0;
+    this.mindMap.view.updateNode(root);
   }
 
 
@@ -93,6 +88,22 @@ export class CalcProvider {
       });
     });
   }
+
+  calculateDailyBalancePerDate() {
+    const date = new Date().toISOString().substring(0,10);
+    this.financeService.getDailyBalancePerDate(Number(this.mindMap.mind.root.id), date).subscribe(db => {
+      this.mindMap.mind.root.setDailyBalance(db.body);
+      this.mindMap.view.updateNode(this.mindMap.mind.root);
+    });
+    const nodes = this.getChildren(this.mindMap.mind.root);
+    nodes.forEach(node => {
+      this.financeService.getDailyBalancePerDate(Number(node.id), date).subscribe(db => {
+        node.setDailyBalance(db.body);
+        this.mindMap.view.updateNode(node);
+      });
+    });
+  }
+
 
   calculateDistribution() {
     const lastChildren = this.getLastChildren();

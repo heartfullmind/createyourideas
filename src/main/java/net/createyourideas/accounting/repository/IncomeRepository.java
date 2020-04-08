@@ -1,5 +1,9 @@
 package net.createyourideas.accounting.repository;
+
 import net.createyourideas.accounting.domain.Income;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +19,8 @@ import org.springframework.stereotype.Repository;
 public interface IncomeRepository extends JpaRepository<Income, Long> {
 
     Page<Income> findAllByIdeaId(Long ideaId, Pageable pageable);
+
+    Page<Income> findAllByDate(Date date, Pageable pageable);
+
+    Page<Income> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable);
 }

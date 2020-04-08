@@ -38,7 +38,7 @@ export const customizeFormat = {
         version: VERSION
       },
       format: 'nodeTree',
-      data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000' }
+      data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000', description: 'Muster muster muster...' }
     },
     getMind(source, calc?: CalcProvider, opts?: MindMapModuleOpts) {
       return getBasicMind(source, 'nodeTree', calc, opts);

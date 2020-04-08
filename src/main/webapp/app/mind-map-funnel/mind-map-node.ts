@@ -228,6 +228,18 @@ export class MindMapNode {
     return this.dailyBalance;
   }
 
+  toJSON() {
+    const json = {
+         id: this.id,
+         topic: this.topic,
+         interest: this.interest,
+         distribution: this.distribution,
+         investment: this.investment,
+         selectedType: this.selectedType
+       }
+    return json;
+  }
+
 
 }
 

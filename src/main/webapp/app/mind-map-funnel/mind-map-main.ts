@@ -249,6 +249,10 @@ export class MindMapMain {
     this.calc.calculateDailyBalance();
   }
 
+  calculateDailyBalancePerDate() {
+    this.calc.calculateDailyBalancePerDate();
+  }
+
   calculateAllLevels() {
     this.calc.calculateAllLevels();
   }
@@ -601,6 +605,7 @@ export class MindMapMain {
         node.distribution = distribution;
         node.investment = investment;
         node.selectedType = selectedType;
+
         this.view.updateNode(node);
         this.layout.layout();
         this.view.show(false);

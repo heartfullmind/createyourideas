@@ -143,6 +143,10 @@ export class IdeaFunnelComponent implements OnInit {
     this.mindMap.calculateDailyBalance();
   }
 
+  calculateDailyBalancePerDate() {
+    this.mindMap.calculateDailyBalancePerDate();
+  }
+
   calculateAllLevels() {
     this.mindMap.calculateAllLevels();
   }

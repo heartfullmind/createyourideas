@@ -25,7 +25,6 @@
                     <div>
                         <img [src]="'data:' + editForm.get('logoContentType').value + ';base64,' + editForm.get('logo').value" style="max-height: 100px;" *ngIf="editForm.get('logo').value" alt="idea image"/>
                         <div *ngIf="editForm.get('logo').value" class="form-text text-danger clearfix">
-                            <span class="pull-left">{{editForm.get('logoContentType').value}}, {{byteSize(editForm.get('logo').value)}}</span>
                             <button type="button" (click)="clearInputImage('logo', 'logoContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
                                 <fa-icon [icon]="'times'"></fa-icon>
                             </button>
@@ -120,28 +119,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.active" for="field_active">Active</label>
-                    <input type="checkbox" class="form-control" name="active" id="field_active"
-                           formControlName="active"/>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.nodeId" for="field_nodeId">Node Id</label>
-                    <input type="number" class="form-control" name="nodeId" id="field_nodeId"
-                           formControlName="nodeId"/>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.user" for="field_user">User</label>
-                    <select class="form-control" id="field_user" name="user" formControlName="user">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="homeApp.idea.idea" for="field_idea">Idea</label>
+                    <label class="form-control-label" jhiTranslate="homeApp.idea.parentidea" for="field_idea">Parentidea</label>
                     <select class="form-control" id="field_idea" name="idea" formControlName="idea">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.id}}</option>
+                        <option [ngValue]="null">{{'homeApp.Ideatype.select-parentidea' | translate}}</option>
+                        <option [ngValue]="ideaOption.id === editForm.get('idea').value?.id ? editForm.get('idea').value : ideaOption" *ngFor="let ideaOption of ideas; trackBy: trackIdeaById">{{ideaOption.title}}</option>
                     </select>
                 </div>
             </div>

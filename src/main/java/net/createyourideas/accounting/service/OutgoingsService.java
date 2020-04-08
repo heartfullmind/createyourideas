@@ -5,6 +5,8 @@ import net.createyourideas.accounting.domain.Outgoings;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -44,6 +46,9 @@ public interface OutgoingsService {
      */
     void delete(Long id);
 
-
     Page<Outgoings> findAllByIdeaId(Long ideaId, Pageable pageable);
+
+    Page<Outgoings> findAllByDate(Date date, Pageable pageable);
+
+    Page<Outgoings> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package net.createyourideas.accounting.service.impl;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -33,6 +34,23 @@ public class CalcServiceImpl implements CalcService {
     public Float getDailyBalance(Long id, Pageable pageable) {
         Page<Income> incomes = incomeRepository.findAllByIdeaId(id, pageable);
         Page<Outgoings> outgoings = outgoingsRepository.findAllByIdeaId(id, pageable);
+        Float totalIncomes = 0F;
+        Float totalOutgoings = 0F;
+        for (Income i : incomes) {
+            totalIncomes += i.getValue();
+        }
+        for (Outgoings o : outgoings) {
+            totalOutgoings += o.getValue();
+        }
+
+        return totalIncomes - totalOutgoings;
+    }
+
+    @Override
+    public Float getDailyBalancePerDate(Long id, LocalDate date, Pageable pageable) {
+
+        Page<Income> incomes = incomeRepository.findAllByDateAndIdeaId(date, id, pageable);
+        Page<Outgoings> outgoings = outgoingsRepository.findAllByDateAndIdeaId(date, id, pageable);
         Float totalIncomes = 0F;
         Float totalOutgoings = 0F;
         for (Income i : incomes) {

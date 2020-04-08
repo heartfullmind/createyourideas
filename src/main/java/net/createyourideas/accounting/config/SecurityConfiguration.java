@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
             .antMatchers("/test/**")
-            .antMatchers("/ideafunnel");
+            .antMatchers("/api/ideas/ideafunnel");
     }
 
     @Override
@@ -85,8 +85,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/ideafunnel").permitAll()
             .antMatchers("/api/ideas/ideafunnel").permitAll()
-            .antMatchers("/ideafunnel/**").permitAll()
-            .antMatchers("/api/ideas/ideafunnel/**").permitAll()
+            .antMatchers("/ideafunnel").permitAll()
+            .antMatchers("/api/ideas/ideafunnel").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()

@@ -49,6 +49,8 @@ public class IdeaFunnelResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+
+
     @GetMapping("/ideas/ideafunnel")
     public ResponseEntity<String> getIdeafunnel(Pageable pageable) {
         log.debug("REST get ideafunnel");
@@ -59,9 +61,9 @@ public class IdeaFunnelResource {
         try {
             for(Idea idea : ideas) {
                 if(idea.getIdea() == null)
-                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), null));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), null, idea.getDescription(), idea.getLogo(), idea.isActive()));
                 else
-                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), idea.getIdea().getId().toString()));
+                    nodes.add(new Node(idea.getTitle(), idea.getInterest(), idea.getDistribution(), idea.getInvestment(), idea.getIdeatype().toString(), idea.getId().toString(), idea.getIdea().getId().toString(), idea.getDescription(), idea.getLogo(), idea.isActive()));
             }
             json = "{\n" +
                         "\"format\":\"nodeTree\",\n" +

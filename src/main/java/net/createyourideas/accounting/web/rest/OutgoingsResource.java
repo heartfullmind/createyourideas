@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -131,6 +130,22 @@ public class OutgoingsResource {
     public ResponseEntity<List<Outgoings>> getAllOutgoingsByIdeaId(@PathVariable Long id, Pageable pageable) {
         log.debug("REST request to get a page of Outgoings by ideaId");
         Page<Outgoings> page = outgoingsService.findAllByIdeaId(id, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/outgoings/{date}")
+    public ResponseEntity<List<Outgoings>> getAllOutgoingsByDate(@PathVariable Date date, Pageable pageable) {
+        log.debug("REST request to get a page of Outgoings by a given date.");
+        Page<Outgoings> page = outgoingsService.findAllByDate(date, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/outgoings/{id}/{date}")
+    public ResponseEntity<List<Outgoings>> getAllOutgoingsByDateAndIdeaId(@PathVariable Date date, @PathVariable Long id, Pageable pageable) {
+        log.debug("REST request to get a page of Outgoings by a given date.");
+        Page<Outgoings> page = outgoingsService.findAllByDate(date, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
