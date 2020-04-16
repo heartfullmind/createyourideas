@@ -2,16 +2,16 @@
     <div class="row">
             <div class="col-md-4">
               <div class="container-select-idea">
-                    <div id="select-idea">     
+                    <div id="select-idea">
                     <form [formGroup]="selectIdeaForm" >
                         <label for="changeIdea" jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</label>
-                        <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()">
-                        <option value="" disabled>Choose your idea</option>
-                        <option *ngFor="let idea of ideas" [ngValue]="idea.id">{{idea.title}}</option>
+                        <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()" [(ngModel)]='paramId'>
+                        <option value="0" disabled>Choose your idea</option>
+                        <option *ngFor="let idea of ideas" [value]="idea.id">{{idea.title}}</option>
                         </select>
-                    </form>	
+                    </form>
                     </div>
-                </div>                  
+                </div>
             </div>
             <div class="col-xs-12 col-md-8" *ngIf="selectedIdea">
                     <h2 id="page-heading">
@@ -20,7 +20,7 @@
                                 <span  jhiTranslate="homeApp.outgoings.home.createLabel">
                                 Create a new Outgoings
                                 </span>
-                            </button>            
+                            </button>
             </div>
     </div>
 

@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(IdeaService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Idea(0, 'AAAAAAA', 'image/png', 'AAAAAAA', 'AAAAAAA', Ideatype.PRODUCTION, 0, 0, 0, false, 0);
+      elemDefault = new Idea(0, 'AAAAAAA', 'image/png', 'AAAAAAA', 'AAAAAAA', Ideatype.LEVEL1, 0, 0, 0, false);
     });
 
     describe('Service methods', () => {
@@ -64,8 +64,7 @@ describe('Service Tests', () => {
             interest: 1,
             distribution: 1,
             investment: 1,
-            active: true,
-            nodeId: 1
+            active: true
           },
           elemDefault
         );
@@ -90,8 +89,7 @@ describe('Service Tests', () => {
             interest: 1,
             distribution: 1,
             investment: 1,
-            active: true,
-            nodeId: 1
+            active: true
           },
           elemDefault
         );

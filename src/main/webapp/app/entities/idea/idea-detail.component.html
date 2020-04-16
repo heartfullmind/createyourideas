@@ -15,6 +15,7 @@
                         <a (click)="openFile(idea.logoContentType, idea.logo)">
                             <img [src]="'data:' + idea.logoContentType + ';base64,' + idea.logo" style="max-width: 100%;" alt="idea image"/>
                         </a>
+                        {{idea.logoContentType}}, {{byteSize(idea.logo)}}
                     </div>
                 </dd>
                 <dt><span jhiTranslate="homeApp.idea.description">Description</span></dt>
@@ -27,20 +28,28 @@
                 </dd>
                 <dt><span jhiTranslate="homeApp.idea.interest">Interest</span></dt>
                 <dd>
-                    <span>{{idea.interest | percent}}</span>
+                    <span>{{idea.interest}}</span>
                 </dd>
                 <dt><span jhiTranslate="homeApp.idea.distribution">Distribution</span></dt>
                 <dd>
-                    <span>{{idea.distribution | percent}}</span>
+                    <span>{{idea.distribution}}</span>
                 </dd>
                 <dt><span jhiTranslate="homeApp.idea.investment">Investment</span></dt>
                 <dd>
-                    <span>{{idea.investment | currency}}</span>
+                    <span>{{idea.investment}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.active">Active</span></dt>
+                <dd>
+                    <span>{{idea.active}}</span>
+                </dd>
+                <dt><span jhiTranslate="homeApp.idea.user">User</span></dt>
+                <dd>
+                    {{idea.user?.id}}
                 </dd>
                 <dt><span jhiTranslate="homeApp.idea.idea">Idea</span></dt>
                 <dd>
                     <div *ngIf="idea.idea">
-                        <a [routerLink]="['/idea', idea.idea?.id, 'view']">{{idea.idea?.title}}</a>
+                        <a [routerLink]="['/idea', idea.idea?.id, 'view']">{{idea.idea?.id}}</a>
                     </div>
                 </dd>
             </dl>

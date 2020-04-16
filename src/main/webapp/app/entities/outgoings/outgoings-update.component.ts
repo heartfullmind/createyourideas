@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiAlertService } from 'ng-jhipster';
 import { IOutgoings, Outgoings } from 'app/shared/model/outgoings.model';
@@ -37,7 +37,8 @@ export class OutgoingsUpdateComponent implements OnInit {
     protected outgoingsService: OutgoingsService,
     protected ideaService: IdeaService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -66,7 +67,7 @@ export class OutgoingsUpdateComponent implements OnInit {
   }
 
   previousState() {
-    window.history.back();
+    this.router.navigate(['/outgoings', { id: this.ideaId}]);
   }
 
   save() {

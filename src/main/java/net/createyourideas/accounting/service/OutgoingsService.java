@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -48,7 +47,5 @@ public interface OutgoingsService {
 
     Page<Outgoings> findAllByIdeaId(Long ideaId, Pageable pageable);
 
-    Page<Outgoings> findAllByDate(Date date, Pageable pageable);
-
-    Page<Outgoings> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable);
+    Page<Outgoings> findAllByIdeaIdAndDate(Long id, LocalDate date, Pageable pageable);
 }

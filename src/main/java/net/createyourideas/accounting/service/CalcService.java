@@ -1,13 +1,10 @@
 package net.createyourideas.accounting.service;
 
-import java.time.LocalDate;
-
-import org.springframework.data.domain.Pageable;
-
 public interface CalcService {
 
-    Float getDailyBalance(Long id, Pageable pageable);
+    Float getDailyBalance(Long id);
 
-    Float getDailyBalancePerDate(Long id, LocalDate date, Pageable pageable);
+    Float getProfitFromRoot();
 
+    Float getProfitFromNode(Long id);
 }

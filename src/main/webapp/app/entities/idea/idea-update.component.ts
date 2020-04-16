@@ -28,12 +28,11 @@ export class IdeaUpdateComponent implements OnInit {
     logo: [null, [Validators.required]],
     logoContentType: [],
     description: [null, [Validators.required]],
-    ideatype: [null, [Validators.required]],
+    ideatype: [],
     interest: [null, [Validators.required]],
     distribution: [null, [Validators.required]],
     investment: [null, [Validators.required]],
     active: [],
-    nodeId: [],
     user: [],
     idea: []
   });
@@ -73,7 +72,6 @@ export class IdeaUpdateComponent implements OnInit {
       distribution: idea.distribution,
       investment: idea.investment,
       active: idea.active,
-      nodeId: idea.nodeId,
       user: idea.user,
       idea: idea.idea
     });
@@ -149,7 +147,6 @@ export class IdeaUpdateComponent implements OnInit {
       distribution: this.editForm.get(['distribution']).value,
       investment: this.editForm.get(['investment']).value,
       active: this.editForm.get(['active']).value,
-      nodeId: this.editForm.get(['nodeId']).value,
       user: this.editForm.get(['user']).value,
       idea: this.editForm.get(['idea']).value
     };

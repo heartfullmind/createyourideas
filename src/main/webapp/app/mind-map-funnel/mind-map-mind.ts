@@ -29,7 +29,7 @@ export class MindMapMind {
     }
   }
 
-  setRoot(nodeid, topic, data, interest?, distribution?) {
+  setRoot(nodeid, topic, data, interest?, distribution?, description?, logo?, logoContentType?) {
       if (this.root == null) {
         this.root = new MindMapNode(
           nodeid,
@@ -44,8 +44,11 @@ export class MindMapMind {
           null,
           null,
           interest,
-          null,
-          distribution
+          distribution,
+          description,
+          true,
+          logo,
+          logoContentType
         );
         this.putNode(this.root);
       } else {
@@ -75,10 +78,15 @@ export class MindMapMind {
     direction?,
     expanded?,
     selectedType?,
+    level?,
     selectable?,
     interest?,
     investment?,
-    distribution?
+    distribution?,
+    description?,
+    active?,
+    logo?,
+    logoContentType?
   ) {
     if (!customizeUtil.isNode(parentNode)) {
       return this.addNode(
@@ -91,9 +99,14 @@ export class MindMapMind {
         expanded,
         null,
         null,
+        null,
         interest,
         investment,
-        distribution
+        distribution,
+        description,
+        active,
+        logo,
+        logoContentType
       );
     }
     const nodeindex = idx || -1;
@@ -145,7 +158,12 @@ export class MindMapMind {
           selectable,
           interest,
           investment,
-          distribution
+          distribution,
+          description,
+          active,
+          logo,
+          logoContentType
+
         );
       } else {
         node = new MindMapNode(
@@ -163,6 +181,10 @@ export class MindMapMind {
           interest,
           investment,
           distribution,
+          description,
+          active,
+          logo,
+          logoContentType
         );
       }
       if (this.putNode(node)) {

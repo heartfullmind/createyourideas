@@ -1,0 +1,40 @@
+{
+    "name": "ProfitBalance",
+    "fields": [
+        {
+            "fieldName": "profit",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "profitToSpend",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "netProfit",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "profitBalance",
+            "relationshipName": "idea",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200412073726",
+    "entityTableName": "profit_balance",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

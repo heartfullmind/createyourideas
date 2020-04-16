@@ -5,6 +5,7 @@ import net.createyourideas.accounting.domain.Idea;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,6 +30,7 @@ public interface IdeaService {
     Page<Idea> findAll(Pageable pageable);
 
 
+    List<Idea> findAll();
     /**
      * Get the "id" idea.
      *
@@ -43,6 +45,4 @@ public interface IdeaService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    Optional<Idea> findOneByNodeId(Long nodeId);
 }

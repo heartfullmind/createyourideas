@@ -41,8 +41,8 @@ public class IdeaResource {
     private String applicationName;
 
     private final IdeaService ideaService;
-
     private final UserService userService;
+
 
     public IdeaResource(IdeaService ideaService, UserService userService) {
         this.ideaService = ideaService;
@@ -122,19 +122,6 @@ public class IdeaResource {
         return ResponseUtil.wrapOrNotFound(idea);
     }
 
-        /**
-     * {@code GET  /ideas/:nodeid} : get the idea with nodeid.
-     *
-     * @param nodeid the id of the idea to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the idea, or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/ideas/{nodeId}/allByNodeId")
-    public ResponseEntity<Idea> getIdeaByNode(@PathVariable Long nodeId) {
-        log.debug("REST request to get Idea with nodeId : {}", nodeId);
-        Optional<Idea> idea = ideaService.findOne(nodeId);
-        return ResponseUtil.wrapOrNotFound(idea);
-    }
-
     /**
      * {@code DELETE  /ideas/:id} : delete the "id" idea.
      *
@@ -146,5 +133,18 @@ public class IdeaResource {
         log.debug("REST request to delete Idea : {}", id);
         ideaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+     /**
+     * {@code GET  /ideas/:nodeid} : get the idea with nodeid.
+     *
+     * @param nodeid the id of the idea to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the idea, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/ideas/{nodeId}/allByNodeId")
+    public ResponseEntity<Idea> getIdeaByNode(@PathVariable Long nodeId) {
+        log.debug("REST request to get Idea with nodeId : {}", nodeId);
+        Optional<Idea> idea = ideaService.findOne(nodeId);
+        return ResponseUtil.wrapOrNotFound(idea);
     }
 }

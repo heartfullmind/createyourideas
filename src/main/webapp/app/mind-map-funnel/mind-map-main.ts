@@ -7,7 +7,6 @@ import { LayoutProvider } from './layout-provider';
 import { customizeFormat } from './customize-format';
 import { ViewProvider } from './view-provider';
 import { Subject } from 'rxjs';
-import { MindMapMind } from './mind-map-mind';
 import { Draggable } from './plugin/draggable';
 import { CalcProvider } from './mind-map-calc';
 import { OutgoingsService } from './../entities/outgoings/outgoings.service';
@@ -60,7 +59,7 @@ export class MindMapMain {
   opts: MindMapModuleOpts = {};
   options = this.opts;
   inited = false;
-  mind: MindMapMind;
+  mind: any;
   eventHandles = [];
   data: MindMapDataProvider;
   layout: LayoutProvider;
@@ -114,7 +113,6 @@ export class MindMapMain {
     this.view = new ViewProvider(this, optsView, this.calc);
     this.shortcut = new ShortcutProvider(this, opts.shortcut);
 
-    this.calc.init();
     this.data.init();
     this.layout.init();
     this.view.init();
@@ -241,28 +239,12 @@ export class MindMapMain {
     return _.compact(types);
   }
 
-  calculateProfit() {
-    this.calc.calculateProfit();
-  }
-
-  calculateDailyBalance() {
-    this.calc.calculateDailyBalance();
-  }
-
-  calculateDailyBalancePerDate() {
-    this.calc.calculateDailyBalancePerDate();
-  }
-
-  calculateAllLevels() {
-    this.calc.calculateAllLevels();
-  }
-
-  calculateDistribution() {
-    this.calc.calculateDistribution();
-  }
-
-  calcCollection() {
-    this.calc.calcCollection();
+  async calculateAll() {
+      await this.calc.calculateDailyBalance();
+      await this.calc.calculateProfitFromNodes();
+      await this.calc.calculateProfitToSpend();
+      await this.calc.calculateNetProfit();
+      await this.calc.calculateCollection();
   }
 
   getParent(node) {
@@ -368,14 +350,6 @@ export class MindMapMain {
   }
 
   _show(mind) {
-    const m = mind || customizeFormat.nodeArray.example;
-    this.mind = this.data.load(m, this.opts, this.calc);
-    if (!this.mind) {
-      logger.error('data.load error');
-      return;
-    } else {
-      logger.debug('data.load ok');
-    }
 
     this.view.load();
     logger.debug('view.load ok');
@@ -391,9 +365,26 @@ export class MindMapMain {
 
   // show entrance
   show(mind) {
-    this._reset();
-    this._show(mind);
+      this._reset();
+      this._show(mind);
   }
+
+  fetchData(mind): Promise<any> {
+    return new Promise<any>((resolve) => {
+      const m = mind || customizeFormat.nodeArray.example;
+      this.data.load(m, this.opts, this.calc).then(value => {
+        this.mind = value;
+        if (!this.mind) {
+          logger.error('data.load error');
+          return;
+        } else {
+          logger.debug('data.load ok');
+        }
+        resolve(this.mind);
+      });
+    });
+  }
+
 
   getMeta() {
     return {
@@ -876,9 +867,11 @@ MindMapMain.initPlugins = function(sender) {
   }
 };
 
+/*
 // quick way
 MindMapMain.show = function(options, mind) {
   const _jm = new MindMapMain(options);
   _jm.show(mind);
   return _jm;
 };
+*/

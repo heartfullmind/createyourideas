@@ -1,3 +1,4 @@
+import { MindMapMind } from './../mind-map-funnel/mind-map-mind';
 import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
 import { IncomeService } from './../entities/income/income.service';
 
@@ -6,6 +7,7 @@ import { customizeUtil, MindMapMain } from '../mind-map-funnel';
 import { IdeaService } from 'app/entities/idea/idea.service';
 import { HttpResponse } from '@angular/common/http';
 import { IdeaFunnelService } from './idea-funnel.service';
+
 
 const HIERARCHY_RULES = {
   ROOT: {
@@ -72,10 +74,10 @@ const HIERARCHY_RULES = {
 const option = {
   container: 'jsmind_container',
   theme: 'primary',
-  editable: true,
+  editable: false,
   depth: 10,
   hierarchyRule: HIERARCHY_RULES,
-  enableDraggable: true
+  enableDraggable: false
 };
 
 @Component({
@@ -87,6 +89,7 @@ export class IdeaFunnelComponent implements OnInit {
   title = 'Idea Funnel';
   mindMap;
   mind2: string;
+  m: MindMapMind;
 
   constructor(
     protected ideaService: IdeaService,
@@ -97,12 +100,49 @@ export class IdeaFunnelComponent implements OnInit {
 
   ngOnInit() {
     this.loadIdeaFunnel();
+    this.loadContextMenu();
+  }
+
+  loadContextMenu() {
+    $(function() {
+      $.contextMenu({
+          selector: '.jmnode',
+          callback(key, options) {
+              const m = "clicked: " + key + " on " + $(this).attr('id');
+              alert(m);
+          },
+          items: {
+              "edit": {name: "Edit", icon: "edit"},
+              "cut": {name: "Cut", icon: "cut"},
+             copy: {name: "Copy", icon: "copy"},
+              "paste": {name: "Paste", icon: "paste"},
+              "delete": {name: "Delete", icon: "delete"},
+              "sep1": "---------",
+              "quit": {name: "Quit", icon(){
+                  return 'context-menu-icon context-menu-icon-quit';
+              }}
+          }
+      });
+
+      $('.jmnode').on('click', function(e){
+          console.log('clicked', $(this));
+      })
+  });
   }
 
   loadIdeaFunnel() {
     this.ideaFunnelService.getIdeaFunnel().subscribe((res: HttpResponse<any>) => {
       this.mind2 = res.body;
-      this.mindMap = MindMapMain.show(option, this.mind2);
+      const _jm = new MindMapMain(option);
+      _jm.fetchData(this.mind2).then((value) => {
+         this.m = value;
+      }).then(() => {
+        _jm.calculateAll();
+      }).then(() => {
+        _jm.show(this.m);
+      });
+
+      // this.mindMap = MindMapMain.show(option, this.mind2);
     });
   }
 

@@ -49,7 +49,7 @@ public class IdeaResourceIT {
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
     private static final Ideatype DEFAULT_IDEATYPE = Ideatype.LEVEL1;
-    private static final Ideatype UPDATED_IDEATYPE = Ideatype.LEVEL3;
+    private static final Ideatype UPDATED_IDEATYPE = Ideatype.LEVEL2;
 
     private static final Float DEFAULT_INTEREST = 1F;
     private static final Float UPDATED_INTEREST = 2F;
@@ -62,9 +62,6 @@ public class IdeaResourceIT {
 
     private static final Boolean DEFAULT_ACTIVE = false;
     private static final Boolean UPDATED_ACTIVE = true;
-
-    private static final Integer DEFAULT_NODE_ID = 1;
-    private static final Integer UPDATED_NODE_ID = 2;
 
     @Autowired
     private IdeaRepository ideaRepository;
@@ -122,8 +119,7 @@ public class IdeaResourceIT {
             .interest(DEFAULT_INTEREST)
             .distribution(DEFAULT_DISTRIBUTION)
             .investment(DEFAULT_INVESTMENT)
-            .active(DEFAULT_ACTIVE)
-            .nodeId(DEFAULT_NODE_ID);
+            .active(DEFAULT_ACTIVE);
         return idea;
     }
     /**
@@ -142,8 +138,7 @@ public class IdeaResourceIT {
             .interest(UPDATED_INTEREST)
             .distribution(UPDATED_DISTRIBUTION)
             .investment(UPDATED_INVESTMENT)
-            .active(UPDATED_ACTIVE)
-            .nodeId(UPDATED_NODE_ID);
+            .active(UPDATED_ACTIVE);
         return idea;
     }
 
@@ -176,7 +171,6 @@ public class IdeaResourceIT {
         assertThat(testIdea.getDistribution()).isEqualTo(DEFAULT_DISTRIBUTION);
         assertThat(testIdea.getInvestment()).isEqualTo(DEFAULT_INVESTMENT);
         assertThat(testIdea.isActive()).isEqualTo(DEFAULT_ACTIVE);
-        assertThat(testIdea.getNodeId()).isEqualTo(DEFAULT_NODE_ID);
     }
 
     @Test
@@ -308,8 +302,7 @@ public class IdeaResourceIT {
             .andExpect(jsonPath("$.[*].interest").value(hasItem(DEFAULT_INTEREST.doubleValue())))
             .andExpect(jsonPath("$.[*].distribution").value(hasItem(DEFAULT_DISTRIBUTION.doubleValue())))
             .andExpect(jsonPath("$.[*].investment").value(hasItem(DEFAULT_INVESTMENT.doubleValue())))
-            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
-            .andExpect(jsonPath("$.[*].nodeId").value(hasItem(DEFAULT_NODE_ID)));
+            .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())));
     }
 
     @Test
@@ -331,8 +324,7 @@ public class IdeaResourceIT {
             .andExpect(jsonPath("$.interest").value(DEFAULT_INTEREST.doubleValue()))
             .andExpect(jsonPath("$.distribution").value(DEFAULT_DISTRIBUTION.doubleValue()))
             .andExpect(jsonPath("$.investment").value(DEFAULT_INVESTMENT.doubleValue()))
-            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
-            .andExpect(jsonPath("$.nodeId").value(DEFAULT_NODE_ID));
+            .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()));
     }
 
     @Test
@@ -364,8 +356,7 @@ public class IdeaResourceIT {
             .interest(UPDATED_INTEREST)
             .distribution(UPDATED_DISTRIBUTION)
             .investment(UPDATED_INVESTMENT)
-            .active(UPDATED_ACTIVE)
-            .nodeId(UPDATED_NODE_ID);
+            .active(UPDATED_ACTIVE);
 
         restIdeaMockMvc.perform(put("/api/ideas")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -385,7 +376,6 @@ public class IdeaResourceIT {
         assertThat(testIdea.getDistribution()).isEqualTo(UPDATED_DISTRIBUTION);
         assertThat(testIdea.getInvestment()).isEqualTo(UPDATED_INVESTMENT);
         assertThat(testIdea.isActive()).isEqualTo(UPDATED_ACTIVE);
-        assertThat(testIdea.getNodeId()).isEqualTo(UPDATED_NODE_ID);
     }
 
     @Test

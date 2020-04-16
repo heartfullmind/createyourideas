@@ -27,10 +27,7 @@
         {
             "fieldName": "ideatype",
             "fieldType": "Ideatype",
-            "fieldValues": "PRODUCTION,SERVICE,PURCHASE",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValues": "LEVEL1,LEVEL2,LEVEL3,LEVEL4,LEVEL5,LEVEL6,LEVEL7,LEVEL8,LEVEL9"
         },
         {
             "fieldName": "interest",
@@ -56,10 +53,6 @@
         {
             "fieldName": "active",
             "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "nodeId",
-            "fieldType": "Integer"
         }
     ],
     "relationships": [
@@ -86,6 +79,12 @@
             "otherEntityName": "idea",
             "otherEntityRelationshipName": "idea",
             "relationshipName": "parent"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "profitBalance",
+            "otherEntityRelationshipName": "idea",
+            "relationshipName": "profitBalance"
         },
         {
             "relationshipType": "many-to-one",

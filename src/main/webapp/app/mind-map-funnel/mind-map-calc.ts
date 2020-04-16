@@ -1,16 +1,12 @@
 import { IOutgoings } from './../shared/model/outgoings.model';
 import { IIncome } from './../shared/model/income.model';
 import { MindMapMain } from './mind-map-main';
-import { IncomeService } from 'app/entities/income/income.service';
-import { OutgoingsService } from 'app/entities/outgoings/outgoings.service';
 import { ServiceLocator } from 'app/locale.service';
-import { FinanceService } from 'app/finance.service';
+import { ServiceProvider } from 'app/services.service';
 
 export class CalcProvider {
   mindMap: MindMapMain;
-  incomeService: IncomeService = ServiceLocator.injector.get(IncomeService);
-  outgoingsService: OutgoingsService = ServiceLocator.injector.get(OutgoingsService);
-  financeService: FinanceService;
+  serviceProvider: ServiceProvider = ServiceLocator.injector.get(ServiceProvider);
 
   incomes: IIncome[];
   outgoings: IOutgoings[];
@@ -19,97 +15,115 @@ export class CalcProvider {
     this.mindMap = mindMap;
   }
 
-  fetchFinanceService(): Promise<FinanceService> {
-    return new Promise<FinanceService>(function(resolve) {
-      const os: FinanceService = ServiceLocator.injector.get(FinanceService);
-      resolve(os);
-    });
-  }
-
-  init() {
-    this.fetchFinanceService().then(value => {
-      this.financeService = value;
-    });
-  }
-
-  calcCollection() {
-    const root = this.mindMap.mind.root;
-    const rootChildren = this.getChildren(root);
-    const partNode = root.profitToSpend/rootChildren.length;
-    rootChildren.forEach(child => {
-      child.profit += partNode;
-      this.mindMap.view.updateNode(child);
-    });
-    root.profitToSpend = 0;
-    this.mindMap.view.updateNode(root);
-  }
-
-
-  calculateProfit() {
-    const childrenRoot = this.getChildren(this.mindMap.mind.root);
-    let totalDailyBalance = 0;
-    childrenRoot.forEach(child => {
-      totalDailyBalance += child.getDailyBalance();
-    });
-    this.mindMap.mind.root.setProfit(totalDailyBalance * this.mindMap.mind.root.interest);
-    this.mindMap.view.updateNode(this.mindMap.mind.root);
-  }
-
-  calculateAllLevels() {
-    for (let level = 1; level < 10; level++){
-      this.calculateProfitFromLevel(level);
-    }
-  }
-
-  calculateProfitFromLevel(level) {
-    let levelNodes = [];
-    levelNodes = this.getAllChildrenWithLevel(level, this.getChildren(this.mindMap.mind.root));
-    levelNodes.forEach(node => {
-      const children = this.getChildren(node);
-      let totalProfit = 0;
-      children.forEach(child => {
-        totalProfit += child.getDailyBalance();
+  calculateCollection() {
+    return new Promise(resolve => {
+      const root = this.mindMap.mind.root;
+      const rootChildren = this.getChildren(root);
+      const partNode = root.getProfitToSpend()/rootChildren.length;
+      let i = 0;
+      rootChildren.forEach(child => {
+        child.setProfit(child.getProfit() + partNode);
+        this.mindMap.view.updateNode(child);
+        i++;
+        if(i === rootChildren.length) {
+          root.setProfitToSpend(0);
+          this.mindMap.view.updateNode(root);
+          resolve(true);
+        }
       });
-      node.setProfit(node.interest * totalProfit);
-      this.mindMap.view.updateNode(node);
     });
   }
 
   calculateDailyBalance() {
-    this.financeService.getDailyBalance(Number(this.mindMap.mind.root.id)).subscribe(db => {
-      this.mindMap.mind.root.setDailyBalance(db.body);
-      this.mindMap.view.updateNode(this.mindMap.mind.root);
-    });
-    const nodes = this.getChildren(this.mindMap.mind.root);
-    nodes.forEach(node => {
-      this.financeService.getDailyBalance(Number(node.id)).subscribe(db => {
-        node.setDailyBalance(db.body);
-        this.mindMap.view.updateNode(node);
+    return new Promise(resolve => {
+      this.serviceProvider.getFinanceService().getDailyBalance(Number(this.mindMap.mind.root.id)).subscribe(db => {
+        this.mindMap.mind.root.dailyBalance = db.body;
+        this.mindMap.view.updateNode(this.mindMap.mind.root);
+      });
+      const nodes = this.getChildren(this.mindMap.mind.root);
+      let i = 0;
+      nodes.forEach(node => {
+        this.serviceProvider.getFinanceService().getDailyBalance(Number(node.id)).subscribe(db => {
+          node.dailyBalance = db.body;
+          this.mindMap.view.updateNode(node);
+          i++;
+          if(nodes.length === i)
+            resolve(true);
+        });
       });
     });
   }
 
-  calculateDailyBalancePerDate() {
-    const date = new Date().toISOString().substring(0,10);
-    this.financeService.getDailyBalancePerDate(Number(this.mindMap.mind.root.id), date).subscribe(db => {
-      this.mindMap.mind.root.setDailyBalance(db.body);
-      this.mindMap.view.updateNode(this.mindMap.mind.root);
-    });
-    const nodes = this.getChildren(this.mindMap.mind.root);
-    nodes.forEach(node => {
-      this.financeService.getDailyBalancePerDate(Number(node.id), date).subscribe(db => {
-        node.setDailyBalance(db.body);
-        this.mindMap.view.updateNode(node);
+  calculateProfitFromNodes() {
+    return new Promise<boolean>(resolve => {
+      const root = this.mindMap.mind.root;
+      this.calculateProfitFromNode(root.id);
+      const children = this.getChildren(root);
+      let i = 0;
+      children.forEach(child => {
+        this.calculateProfitFromNode(child.id);
+        i++;
+        if(children.length === i)
+          resolve(true);
       });
     });
   }
 
+  calculateProfitFromNode(id: number) {
+    const node = this.mindMap.mind.getNode(id);
+    const children = this.getChildren(node);
+    let profit = 0;
+    children.forEach(child => {
+      profit += (Number(node.interest) * child.dailyBalance);
+    });
+    node.setProfit(profit);
+    this.mindMap.view.updateNode(node);
+  }
+
+  calculateProfitToSpend() {
+    return new Promise<boolean>(resolve => {
+      const root = this.mindMap.mind.root;
+      root.setProfitToSpend(0.75*root.getProfit());
+      this.mindMap.view.updateNode(root);
+      const children = this.getChildren(root);
+      let i = 0;
+      children.forEach(child => {
+        child.setProfitToSpend(0.75*child.getProfit());
+        this.mindMap.view.updateNode(child);
+        i++;
+        if(children.length === i)
+          resolve(true);
+      });
+    });
+  }
+
+  calculateNetProfit() {
+    return new Promise<boolean>(resolve => {
+      const root = this.mindMap.mind.root;
+      const netRoot = root.getProfit()-root.getProfitToSpend();
+      root.setNetProfit(netRoot);
+      this.mindMap.view.updateNode(root);
+      const children = this.getChildren(root);
+      let i = 0;
+      children.forEach(child => {
+        const net = child.getProfit()-child.getProfitToSpend();
+        child.setNetProfit(net);
+        this.mindMap.view.updateNode(child);
+        i++;
+        if(children.length === i)
+          resolve(true);
+      });
+    });
+  }
 
   calculateDistribution() {
-    const lastChildren = this.getLastChildren();
-    lastChildren.forEach(child => {
-      child.profit += this.mindMap.mind.root.profit * this.mindMap.mind.root.distribution;
-      this.mindMap.view.updateNode(child);
+    return new Promise(resolve => {
+      const lastChildren = this.getLastChildren();
+      lastChildren.forEach(child => {
+        child.profit += this.mindMap.mind.root.profit * this.mindMap.mind.root.distribution;
+        this.mindMap.view.updateNode(child);
+      });
+      resolve(true);
     });
   }
 

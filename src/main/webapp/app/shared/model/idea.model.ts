@@ -2,6 +2,7 @@ import { IIncome } from 'app/shared/model/income.model';
 import { IOutgoings } from 'app/shared/model/outgoings.model';
 import { IWorksheet } from 'app/shared/model/worksheet.model';
 import { IIdea } from 'app/shared/model/idea.model';
+import { IProfitBalance } from 'app/shared/model/profit-balance.model';
 import { IUser } from 'app/core/user/user.model';
 import { Ideatype } from 'app/shared/model/enumerations/ideatype.model';
 
@@ -16,11 +17,11 @@ export interface IIdea {
   distribution?: number;
   investment?: number;
   active?: boolean;
-  nodeId?: number;
   incomes?: IIncome[];
   outgoings?: IOutgoings[];
   worksheets?: IWorksheet[];
   parents?: IIdea[];
+  profitBalances?: IProfitBalance[];
   user?: IUser;
   idea?: IIdea;
 }
@@ -37,11 +38,11 @@ export class Idea implements IIdea {
     public distribution?: number,
     public investment?: number,
     public active?: boolean,
-    public nodeId?: number,
     public incomes?: IIncome[],
     public outgoings?: IOutgoings[],
     public worksheets?: IWorksheet[],
     public parents?: IIdea[],
+    public profitBalances?: IProfitBalance[],
     public user?: IUser,
     public idea?: IIdea
   ) {

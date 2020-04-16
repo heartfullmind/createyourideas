@@ -4,6 +4,7 @@ import net.createyourideas.accounting.domain.Income;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +21,9 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 
     Page<Income> findAllByIdeaId(Long ideaId, Pageable pageable);
 
-    Page<Income> findAllByDate(Date date, Pageable pageable);
+    Page<Income> findAllByIdeaIdAndDate(Long id, LocalDate date, Pageable pageable);
 
-    Page<Income> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable);
+    List<Income> findAllByIdeaId(Long ideaId);
+
+    List<Income> findAllByIdeaIdAndDate(Long id, LocalDate date);
 }

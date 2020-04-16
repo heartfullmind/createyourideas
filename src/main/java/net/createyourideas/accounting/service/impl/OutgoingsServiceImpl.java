@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -85,12 +84,7 @@ public class OutgoingsServiceImpl implements OutgoingsService {
     }
 
     @Override
-    public Page<Outgoings> findAllByDate(Date date, Pageable pageable) {
-        return outgoingsRepository.findAllByDate(date, pageable);
-    }
-
-    @Override
-    public Page<Outgoings> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable) {
-        return outgoingsRepository.findAllByDateAndIdeaId(date, ideaId, pageable);
+    public Page<Outgoings> findAllByIdeaIdAndDate(Long id, LocalDate date, Pageable pageable) {
+        return outgoingsRepository.findAllByIdeaIdAndDate(id, date, pageable);
     }
 }

@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -48,7 +47,5 @@ public interface IncomeService {
 
     Page<Income> findAllByIdeaId(Long ideaId, Pageable pageable);
 
-    Page<Income> findAllByDate(Date date, Pageable pageable);
-
-    Page<Income> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable);
+    Page<Income> findAllByIdeaIdAndDate(Long ideaId, LocalDate date, Pageable pageable);
 }

@@ -26,7 +26,20 @@
         }
       },
       "prefix": "jhi",
-      "architect": {}
+      "architect": {
+        "build":    {
+          "options": {
+            "styles": [
+              "./node_modules/jquery-contextmenu/dist/jquery.contextMenu.css"
+            ],
+            "scripts": [
+              "./node_modules/jquery-contextmenu/dist/jquery.contextMenu.js",
+              "./node_modules/jquery-contextmenu/dist/jquery.ui.position.js",
+              "./node_modules/jquery/dist/jquery.js"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "home",

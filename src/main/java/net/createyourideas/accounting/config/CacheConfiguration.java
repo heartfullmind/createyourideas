@@ -53,6 +53,9 @@ public class CacheConfiguration {
             createCache(cm, net.createyourideas.accounting.domain.Worksheet.class.getName());
             createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".incomes");
             createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".outgoings");
+            createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".profitBalances");
+            createCache(cm, net.createyourideas.accounting.domain.ProfitBalance.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.ProfitBalance.class.getName() + ".ideas");
             // jhipster-needle-ehcache-add-entry
         };
     }

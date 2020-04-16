@@ -1,7 +1,11 @@
+import { IProfitBalance } from 'app/shared/model/profit-balance.model';
 import { logger } from './config';
 import { FinanceService } from 'app/finance.service';
 import {CurrencyPipe} from '@angular/common';
 import {PercentPipe} from '@angular/common';
+import { ServiceLocator } from 'app/locale.service';
+import { IIdea } from 'app/shared/model/idea.model';
+import { ServiceProvider } from 'app/services.service';
 
 interface NodeData {
   view?: NodeView;
@@ -18,6 +22,8 @@ export class MindMapNode {
   static compare;
   static inherited;
 
+  serviceProvider: ServiceProvider = ServiceLocator.injector.get(ServiceProvider);
+
   id: string;
   index: any;
   topic: string;
@@ -27,6 +33,10 @@ export class MindMapNode {
   dailyBalance: number;
   profit: number;
   selectedType: string;
+  description: string;
+  active: boolean;
+  logo: Blob;
+  logoContentType: string;
   data: { isCreated?: boolean };
   isroot: boolean;
   level: number;
@@ -42,7 +52,8 @@ export class MindMapNode {
   netProfit: number;
   cPipe: CurrencyPipe;
   pPipe: PercentPipe;
-
+  idea: IIdea;
+  profitBalance: IProfitBalance;
 
   constructor(
     sId,
@@ -59,7 +70,10 @@ export class MindMapNode {
     sInterest?,
     sInvestment?,
     sDistribution?,
-    sProfit?
+    sDescription?,
+    bActive?,
+    logo?,
+    logoContentType?
   ) {
 
     if (!sId) {
@@ -79,8 +93,9 @@ export class MindMapNode {
     this.interest = sInterest;
     this.distribution = sDistribution;
     this.investment = sInvestment;
-    this.profit = sProfit;
     this.selectedType = selectedType;
+    this.description = sDescription;
+    this.active = bActive;
     this.selectable = selectable;
     this.data = oData || {};
     this.isroot = sRoot;
@@ -96,17 +111,33 @@ export class MindMapNode {
     }
     this.cPipe = new CurrencyPipe('en-US');
     this.pPipe = new PercentPipe('en-US');
+    this.logo = logo;
+    this.logoContentType = logoContentType;
+  }
+
+  init() {
+    return new Promise<MindMapNode>(resolve => {
+      this.serviceProvider.ideaService.find(Number(this.id)).subscribe(db => {
+        this.idea = db.body;
+        this.serviceProvider.profitBalanceService.find(Number(this.id)).subscribe(db1 => {
+          this.profitBalance = db1.body;
+          resolve(this);
+        });
+      });
+    });
   }
 
   show() {
     if (this.selectedType && this.selectable !== false) {
       return (
-        '[' +
+        /* '[' +
         this.selectedType +
-        ']' +
+        ']' + */
         "<table id='calcinfo'>" +
         '<tr><td>Idea:</td><td>' +
+        '<a href="/idea-pinwall;id=' + this.id + '">' +
         this.topic +
+        '</a>' +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
         this.pPipe.transform(this.interest) +
@@ -129,6 +160,7 @@ export class MindMapNode {
         '<tr><td>Net-Profit:</td><td>' +
         this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
+        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
         '</table>'
       );
     }
@@ -136,13 +168,12 @@ export class MindMapNode {
       return (
         "<table id='calcinfo'>" +
         '<tr><td>Idea:</td><td>' +
+        '<a href="/idea-pinwall;id=' + this.id + '">' +
         this.topic +
+        '</a>' +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
         this.pPipe.transform(this.interest) +
-        '</td></tr>' +
-        '<tr><td>Distribution:</td><td>' +
-        this.pPipe.transform(this.distribution) +
         '</td></tr>' +
         '<tr><td>Daily Balance:</td><td>' +
         this.cPipe.transform(this.dailyBalance) +
@@ -156,13 +187,16 @@ export class MindMapNode {
         '<tr><td>Net-Profit:</td><td>' +
         this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
+        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
         '</table>'
       );
     } else {
       return (
         "<table id='calcinfo'>" +
         '<tr><td>Idea:</td><td>' +
+        '<a href="/idea-pinwall;id=' + this.id + '">' +
         this.topic +
+        '</a>' +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
         this.pPipe.transform(this.interest) +
@@ -185,14 +219,12 @@ export class MindMapNode {
         '<tr><td>Net-Profit:</td><td>' +
         this.cPipe.transform(this.netProfit) +
         '</td></tr>' +
+        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
         '</table>'
       );
     }
   }
 
-  getThreeOfFour(value) {
-    return 0.75*value;
-  }
 
   getLocation() {
     const vd = this._data.view;
@@ -211,13 +243,27 @@ export class MindMapNode {
   }
 
   setProfit(profit: number) {
-    this.profitToSpend = 0.75*profit;
-    this.netProfit = profit - this.profitToSpend;
     this.profit = profit;
   }
 
   getProfit() {
     return this.profit;
+  }
+
+  setProfitToSpend(profit: number) {
+    this.profitToSpend = profit;
+  }
+
+  getProfitToSpend() {
+    return this.profitToSpend;
+  }
+
+  setNetProfit(profit: number) {
+    this.netProfit = profit;
+  }
+
+  getNetProfit() {
+    return this.netProfit;
   }
 
   setDailyBalance(dailyBalance: number) {

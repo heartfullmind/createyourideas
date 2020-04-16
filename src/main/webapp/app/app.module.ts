@@ -1,4 +1,4 @@
-import { NgModule, Injector } from '@angular/core';
+import { NgModule, Injector, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import './vendor';
@@ -25,6 +25,8 @@ import { FooterModule } from './layouts/footer/footer.module';
 import { HomeWorksheetModule } from './entities/worksheet/worksheet.module';
 import { HomeIdeaPinwallModule } from './idea-pinwall/idea-pinwall.module';
 import { HomeTotalModule } from './total/total.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 // Import angular-fusioncharts
 import { FusionChartsModule } from 'angular-fusioncharts';
 // Import FusionCharts library and chart modules
@@ -32,8 +34,13 @@ import * as FusionCharts from 'fusioncharts';
 import * as TimeSeries from 'fusioncharts/fusioncharts.timeseries'; // Import timeseries
 import { PledgeModule } from './pledge/pledge.module';
 import { ServiceLocator } from './locale.service';
+import { ServiceProvider } from './services.service';
 
 FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
+
+export function serviceProviderFactory(provider: ServiceProvider) {
+  return () => provider.fetchAll();
+}
 
 @NgModule({
   imports: [
@@ -56,9 +63,14 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
     HomeAppRoutingModule,
     BrowserAnimationsModule,
     FooterModule,
-    HomeWorksheetModule
+    HomeWorksheetModule,
+    NgSelectModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    ServiceProvider,
+    { provide: APP_INITIALIZER, useFactory: serviceProviderFactory, deps: [ServiceProvider], multi: true }
+  ],
   declarations: [
     JhiMainComponent,
     NavbarComponent,
@@ -69,6 +81,7 @@ FusionChartsModule.fcRoot(FusionCharts, TimeSeries);
   ],
   bootstrap: [JhiMainComponent]
 })
+
 export class HomeAppModule {
   constructor(private injector: Injector) {
     ServiceLocator.injector = injector;

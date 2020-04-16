@@ -3,6 +3,9 @@ package net.createyourideas.accounting.service.impl;
 import net.createyourideas.accounting.service.IdeaAdditionService;
 import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.repository.IdeaRepository;
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

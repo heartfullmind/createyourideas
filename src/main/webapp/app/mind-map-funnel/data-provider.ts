@@ -21,30 +21,32 @@ export class MindMapDataProvider {
     logger.debug('data.reset');
   }
 
-  load(mindData, opts: MindMapModuleOpts, calc: CalcProvider) {
-        let df = null;
-        let mind = null;
-        if (typeof mindData === 'object') {
-          if (mindData.format) {
-            df = mindData.format;
-          } else {
-            df = MIND_TYPE.NODE_TREE;
-          }
+  load(mindData, opts: MindMapModuleOpts, calc: CalcProvider): Promise<any> {
+    return new Promise<any>(resolve => {
+      let df = null;
+      let mind = null;
+      if (typeof mindData === 'object') {
+        if (mindData.format) {
+          df = mindData.format;
         } else {
-          df = MIND_TYPE.FREE_MIND;
+          df = MIND_TYPE.NODE_TREE;
         }
-        customizeFormat.setSelectable(opts.selectable);
+      } else {
+        df = MIND_TYPE.FREE_MIND;
+      }
+      customizeFormat.setSelectable(opts.selectable);
 
-        if (df === MIND_TYPE.nodeArray) {
-          mind = customizeFormat.nodeArray.getMind(mindData, calc, this.jm);
-        } else if (df === MIND_TYPE.NODE_TREE) {
-          mind = customizeFormat.nodeTree.getMind(mindData, calc, opts);
-        } else if (df === MIND_TYPE.FREE_MIND) {
-          mind = customizeFormat.freemind.getMind(mindData, calc);
-        } else {
-          logger.warn('unsupported format');
-        }
-        return mind;
+      if (df === MIND_TYPE.nodeArray) {
+        mind = customizeFormat.nodeArray.getMind(mindData, calc, this.jm);
+      } else if (df === MIND_TYPE.NODE_TREE) {
+        mind = customizeFormat.nodeTree.getMind(mindData, calc, opts);
+      } else if (df === MIND_TYPE.FREE_MIND) {
+        mind = customizeFormat.freemind.getMind(mindData, calc);
+      } else {
+        logger.warn('unsupported format');
+      }
+      resolve(mind);
+    });
   }
 
   getData(dataFormat) {

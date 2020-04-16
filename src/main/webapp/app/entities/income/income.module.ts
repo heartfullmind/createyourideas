@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { HomeSharedModule } from 'app/shared/shared.module';
@@ -13,6 +13,7 @@ export { IncomeComponent } from './income.component';
   imports: [HomeSharedModule, RouterModule.forChild(incomeRoute)],
   declarations: [IncomeComponent, IncomeDetailComponent, IncomeUpdateComponent, IncomeDeleteDialogComponent],
   entryComponents: [IncomeDeleteDialogComponent],
-  exports: [IncomeComponent]
+  exports: [IncomeComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomeIncomeModule {}

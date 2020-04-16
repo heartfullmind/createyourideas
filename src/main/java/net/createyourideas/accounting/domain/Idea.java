@@ -45,9 +45,8 @@ public class Idea implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "ideatype", nullable = false)
+    @Column(name = "ideatype")
     private Ideatype ideatype;
 
     @NotNull
@@ -65,9 +64,6 @@ public class Idea implements Serializable {
     @Column(name = "active")
     private Boolean active;
 
-    @Column(name = "node_id")
-    private Integer nodeId;
-
     @OneToMany(mappedBy = "idea")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Income> incomes = new HashSet<>();
@@ -83,6 +79,10 @@ public class Idea implements Serializable {
     @OneToMany(mappedBy = "idea")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Idea> parents = new HashSet<>();
+
+    @OneToMany(mappedBy = "idea")
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<ProfitBalance> profitBalances = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("ideas")
@@ -218,19 +218,6 @@ public class Idea implements Serializable {
         this.active = active;
     }
 
-    public Integer getNodeId() {
-        return nodeId;
-    }
-
-    public Idea nodeId(Integer nodeId) {
-        this.nodeId = nodeId;
-        return this;
-    }
-
-    public void setNodeId(Integer nodeId) {
-        this.nodeId = nodeId;
-    }
-
     public Set<Income> getIncomes() {
         return incomes;
     }
@@ -331,6 +318,31 @@ public class Idea implements Serializable {
         this.parents = ideas;
     }
 
+    public Set<ProfitBalance> getProfitBalances() {
+        return profitBalances;
+    }
+
+    public Idea profitBalances(Set<ProfitBalance> profitBalances) {
+        this.profitBalances = profitBalances;
+        return this;
+    }
+
+    public Idea addProfitBalance(ProfitBalance profitBalance) {
+        this.profitBalances.add(profitBalance);
+        profitBalance.setIdea(this);
+        return this;
+    }
+
+    public Idea removeProfitBalance(ProfitBalance profitBalance) {
+        this.profitBalances.remove(profitBalance);
+        profitBalance.setIdea(null);
+        return this;
+    }
+
+    public void setProfitBalances(Set<ProfitBalance> profitBalances) {
+        this.profitBalances = profitBalances;
+    }
+
     public User getUser() {
         return user;
     }
@@ -387,7 +399,6 @@ public class Idea implements Serializable {
             ", distribution=" + getDistribution() +
             ", investment=" + getInvestment() +
             ", active='" + isActive() + "'" +
-            ", nodeId=" + getNodeId() +
             "}";
     }
 }

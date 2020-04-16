@@ -64,7 +64,11 @@ export const customizeFormat = {
         nodeRoot.topic,
         data,
         nodeRoot.interest,
-        nodeRoot.distribution
+        nodeRoot.distribution,
+        nodeRoot.description,
+        nodeRoot.active,
+        nodeRoot.logo,
+        nodeRoot.logoContentType
       );
       if ('children' in nodeRoot) {
         const children = nodeRoot.children;
@@ -86,7 +90,11 @@ export const customizeFormat = {
           k === 'children' ||
           k === 'direction' ||
           k === 'expanded' ||
-          k === 'selectedType'
+          k === 'selectedType' ||
+          k === 'description' ||
+          k === 'active' ||
+          k === 'logo' ||
+          k === 'logoContentType'
         ) {
           continue;
         }
@@ -120,10 +128,15 @@ export const customizeFormat = {
         d,
         nodeJson.expanded,
         nodeJson.selectedType,
+        null,
         customizeFormat.config.selectable,
         nodeJson.interest,
         nodeJson.investment,
-        nodeJson.distribution
+        nodeJson.distribution,
+        nodeJson.description,
+        nodeJson.active,
+        nodeJson.logo,
+        nodeJson.logoContentType
       );
 
       if ('children' in nodeJson) {

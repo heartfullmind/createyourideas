@@ -18,9 +18,13 @@ export class FinanceService {
       .get<number>(`${this.resourceUrl}/${id}/dailyBalance`, { params: options, observe: 'response' });
   }
 
-  getDailyBalancePerDate(id: number, date: String, req?: any): Observable<HttpResponse<number>> {
+  getProfitFromRoot(): Observable<HttpResponse<number>> {
+    return this.http.get<number>(`${this.resourceUrl}/profitFromRoot`, { observe: 'response'});
+  }
+
+  getProfitFromNode(id: number, req?: any): Observable<HttpResponse<number>> {
     const options = createRequestOption(req);
     return this.http
-      .get<number>(`${this.resourceUrl}/${id}/${date}/dailyBalance`, { params: options, observe: 'response' });
+      .get<number>(`${this.resourceUrl}/${id}/profitFromNode`, { params: options, observe: 'response' });
   }
 }

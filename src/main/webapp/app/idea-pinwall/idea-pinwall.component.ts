@@ -4,6 +4,7 @@ import { IdeaService } from 'app/entities/idea/idea.service';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { JhiDataUtils } from 'ng-jhipster';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-idea-pinwall',
@@ -14,6 +15,7 @@ export class IdeaPinwallComponent implements OnInit {
 
   ideas: IIdea[];
   selectedIdea: IIdea;
+  paramId: number;
 
   selectIdeaForm = this.fb.group({
     ideaName: ['']
@@ -22,9 +24,15 @@ export class IdeaPinwallComponent implements OnInit {
   constructor(
     protected ideaService: IdeaService,
     protected dataUtils: JhiDataUtils,
-    public fb: FormBuilder) {}
+    public fb: FormBuilder,
+    protected activatedRoute: ActivatedRoute) {}
 
   ngOnInit() {
+    if(!this.activatedRoute.snapshot.params.id) {
+      this.paramId = 0;
+    } else {
+      this.paramId = this.activatedRoute.snapshot.params.id;
+    }
     this.loadAll();
   }
 

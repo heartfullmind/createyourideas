@@ -18,13 +18,7 @@ import java.util.Optional;
 public interface IdeaRepository extends JpaRepository<Idea, Long> {
 
     @Query("select idea from Idea idea where idea.user.login = ?#{principal.username}")
-    List<Idea> findByUserIsCurrentUser();
-
-    @Query("select idea from Idea idea where idea.user.login = ?#{principal.username}")
     Page<Idea> findByUserIsCurrentUser(Pageable pageable);
 
     Page<Idea> findAllById(Long id, Pageable pageable);
-
-    Optional<Idea> findOneByNodeId(Long nodeId);
-
 }

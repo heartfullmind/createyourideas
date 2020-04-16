@@ -12,6 +12,7 @@ import { IncomeDeleteDialogComponent } from './income-delete-dialog.component';
 import { IIdea } from 'app/shared/model/idea.model';
 import { IdeaService } from '../idea/idea.service';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'jhi-income',
@@ -28,20 +29,23 @@ export class IncomeComponent implements OnInit, OnDestroy {
   totalItems: number;
   ideas: IIdea[];
   selectedIdea: IIdea;
+  paramId: number;
 
   selectIdeaForm = this.fb.group({
-    ideaName: ['']	
+    ideaName: ['']
   });
 
   constructor(
     protected incomeService: IncomeService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
-    protected ideaService: IdeaService, 
+    protected ideaService: IdeaService,
     protected parseLinks: JhiParseLinks,
+    protected activatedRoute: ActivatedRoute,
     public fb: FormBuilder
   ) {
     this.incomes = [];
+
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
@@ -56,7 +60,7 @@ export class IncomeComponent implements OnInit, OnDestroy {
     if(this.selectedIdea) {
       this.incomeService
         .queryByIdeaId(
-          this.selectedIdea.id,  
+          this.selectedIdea.id,
         {
           page: this.page,
           size: this.itemsPerPage,
@@ -78,6 +82,11 @@ export class IncomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if(!this.activatedRoute.snapshot.params.id) {
+      this.paramId = 0;
+    } else {
+      this.paramId = this.activatedRoute.snapshot.params.id;
+    }
     this.loadAll();
     this.registerChangeInIncomes();
   }
@@ -108,18 +117,18 @@ export class IncomeComponent implements OnInit, OnDestroy {
   }
 
   changeIdea() {
-    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) => 
+    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) =>
       { this.selectedIdea = res.body;
         this.reset();
       })
-      
+
   }
 
   loadSelect() {
 	  this.ideaService.queryByUser().subscribe((res: HttpResponse<IIdea[]>) => {
           this.ideas = res.body;
-    }); 
-  }	
+    });
+  }
 
   protected paginateIncomes(data: IIncome[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));

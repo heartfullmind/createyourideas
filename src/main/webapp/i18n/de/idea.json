@@ -24,11 +24,11 @@
       "distribution": "Distribution",
       "investment": "Investment",
       "active": "Active",
-      "nodeId": "Node Id",
       "incomes": "Incomes",
       "outgoings": "Outgoings",
       "worksheet": "Worksheet",
       "parent": "Parent",
+      "profitBalance": "Profit Balance",
       "user": "User",
       "idea": "Idea"
     }

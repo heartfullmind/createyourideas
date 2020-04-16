@@ -81,7 +81,7 @@ export class ViewProvider {
     this.initSelect();
     this.initEditor();
     this.initInterestEditor();
-    this.initDistributionEdito();
+    this.initDistributionEditor();
     this.initInvestmentEditor();
 
     this.container.appendChild(this.ePanel);
@@ -116,7 +116,7 @@ export class ViewProvider {
     this.addEventToREditor(this.eInterestEditor);
   }
 
-  initDistributionEdito() {
+  initDistributionEditor() {
     this.eDistributionEditor = $create('input');
     this.eDistributionEditor.id = 'distributionEditor';
     this.eDistributionEditor.className = 'jsmind-editor';
@@ -373,6 +373,8 @@ export class ViewProvider {
     }
 
     const d = $create('jmnode');
+    d.setAttribute('class', 'jmnode');
+    d.setAttribute('id', 'jmnode-' + node.id);
     if (node.isroot) {
       d.className = 'root';
     } else {
@@ -723,8 +725,10 @@ export class ViewProvider {
     for (const nodeid in nodes) {
       if(nodeid) {
         node = nodes[nodeid];
-        node._data.view.element = null;
-        node._data.view.expander = null;
+        if(node._data.view) {
+          node._data.view.element = null;
+          node._data.view.expander = null;
+        }
       }
     }
     this.eNodes.innerHTML = '';

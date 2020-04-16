@@ -1,0 +1,26 @@
+{
+  "homeApp": {
+    "profitBalance": {
+      "home": {
+        "title": "Profit Balances",
+        "createLabel": "Profit Balance erstellen",
+        "createOrEditLabel": "Profit Balance erstellen oder bearbeiten",
+        "notFound": "No Profit Balances found"
+      },
+      "created": "Profit Balance erstellt mit ID {{ param }}",
+      "updated": "Profit Balance aktualisiert mit ID {{ param }}",
+      "deleted": "Profit Balance gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Profit Balance {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Profit Balance"
+      },
+      "profit": "Profit",
+      "profitToSpend": "Profit To Spend",
+      "netProfit": "Net Profit",
+      "date": "Date",
+      "idea": "Idea"
+    }
+  }
+}

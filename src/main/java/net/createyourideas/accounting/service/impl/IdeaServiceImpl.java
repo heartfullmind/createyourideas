@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,6 +54,18 @@ public class IdeaServiceImpl implements IdeaService {
         return ideaRepository.findAll(pageable);
     }
 
+        /**
+     * Get all the ideas as list.
+     *
+     * @param pageable the pagination information.
+     * @return the list of entities.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Idea> findAll() {
+        log.debug("Request to get all Ideas");
+        return ideaRepository.findAll();
+    }
 
     /**
      * Get one idea by id.
@@ -65,10 +78,6 @@ public class IdeaServiceImpl implements IdeaService {
     public Optional<Idea> findOne(Long id) {
         log.debug("Request to get Idea : {}", id);
         return ideaRepository.findById(id);
-    }
-
-    public Optional<Idea> findOneByNodeId(Long nodeId) {
-        return ideaRepository.findOneByNodeId(nodeId);
     }
 
     /**

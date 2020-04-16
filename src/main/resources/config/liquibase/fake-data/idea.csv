@@ -1,11 +1,11 @@
-id;title;logo;logo_content_type;description;ideatype;interest;distribution;investment;active;node_id
-1;mobile Fish;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;45924;86617;33370;true;14286
-2;deposit Tasty Metal Bacon Implementation;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;61748;30424;61165;true;706
-3;Home Namibia;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;SERVICE;23277;45606;9060;true;61838
-4;syndicate;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;1326;94888;94220;true;56328
-5;envisioneer Music Public-key;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;60999;49517;83319;false;17336
-6;incentivize Tuna copy;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;3131;96958;84228;true;44975
-7;e-enable Communications capacitor;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;52083;4522;96117;false;84453
-8;compress South Georgia and the South Sandwich Islands;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;SERVICE;27599;14092;29627;true;16526
-9;Industrial;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;PRODUCTION;1407;81546;19884;true;71134
-10;1080p Checking Account Identity;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;SERVICE;44945;33089;9541;false;37081
+id;title;logo;logo_content_type;description;ideatype;interest;distribution;investment;active
+1;mobile Fish;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL1;45924;86617;33370;true
+2;alarm;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL9;21233;77;18182;true
+3;Money Market Account;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL3;52477;61185;39986;false
+4;zero administration;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL6;19967;38246;51423;true
+5;Canyon HDD;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL8;38541;30461;1596;false
+6;Nakfa;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL8;3438;17336;90932;false
+7;Tuna;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL2;3131;96958;84228;true
+8;Markets Chief;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL6;19598;52083;4522;true
+9;navigating;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL3;60703;54269;27599;false
+10;back-end;../fake-data/blob/hipster.png;image/png;../fake-data/blob/hipster.txt;LEVEL4;77224;39488;19871;false

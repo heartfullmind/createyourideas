@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -85,12 +84,7 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     @Override
-    public Page<Income> findAllByDate(Date date, Pageable pageable) {
-        return incomeRepository.findAllByDate(date, pageable);
-    }
-
-    @Override
-    public Page<Income> findAllByDateAndIdeaId(LocalDate date, Long ideaId, Pageable pageable) {
-        return incomeRepository.findAllByDateAndIdeaId(date, ideaId, pageable);
+    public Page<Income> findAllByIdeaIdAndDate(Long ideaId, LocalDate date, Pageable pageable) {
+        return incomeRepository.findAllByIdeaIdAndDate(ideaId, date, pageable);
     }
 }

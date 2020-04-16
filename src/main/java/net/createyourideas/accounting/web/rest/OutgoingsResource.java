@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -134,18 +134,10 @@ public class OutgoingsResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/outgoings/{date}")
-    public ResponseEntity<List<Outgoings>> getAllOutgoingsByDate(@PathVariable Date date, Pageable pageable) {
-        log.debug("REST request to get a page of Outgoings by a given date.");
-        Page<Outgoings> page = outgoingsService.findAllByDate(date, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
     @GetMapping("/outgoings/{id}/{date}")
-    public ResponseEntity<List<Outgoings>> getAllOutgoingsByDateAndIdeaId(@PathVariable Date date, @PathVariable Long id, Pageable pageable) {
+    public ResponseEntity<List<Outgoings>> getAllOutgoingsByDateAndIdeaId(@PathVariable LocalDate date, @PathVariable Long id, Pageable pageable) {
         log.debug("REST request to get a page of Outgoings by a given date.");
-        Page<Outgoings> page = outgoingsService.findAllByDate(date, pageable);
+        Page<Outgoings> page = outgoingsService.findAllByIdeaIdAndDate(id, date, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

@@ -1,7 +1,7 @@
 package net.createyourideas.accounting.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +13,8 @@ import net.createyourideas.accounting.domain.Outgoings;
 import net.createyourideas.accounting.repository.IncomeRepository;
 import net.createyourideas.accounting.repository.OutgoingsRepository;
 import net.createyourideas.accounting.service.CalcService;
+import net.createyourideas.accounting.tree.Node;
+import net.createyourideas.accounting.tree.TreeUtils;
 
 
 /**
@@ -21,6 +23,7 @@ import net.createyourideas.accounting.service.CalcService;
 @Service
 @Transactional
 public class CalcServiceImpl implements CalcService {
+
 
     private final IncomeRepository incomeRepository;
     private final OutgoingsRepository outgoingsRepository;
@@ -31,9 +34,10 @@ public class CalcServiceImpl implements CalcService {
     }
 
     @Override
-    public Float getDailyBalance(Long id, Pageable pageable) {
-        Page<Income> incomes = incomeRepository.findAllByIdeaId(id, pageable);
-        Page<Outgoings> outgoings = outgoingsRepository.findAllByIdeaId(id, pageable);
+    public Float getDailyBalance(Long id) {
+
+        List<Income> incomes = incomeRepository.findAllByIdeaId(id);
+        List<Outgoings> outgoings = outgoingsRepository.findAllByIdeaId(id);
         Float totalIncomes = 0F;
         Float totalOutgoings = 0F;
         for (Income i : incomes) {
@@ -42,25 +46,27 @@ public class CalcServiceImpl implements CalcService {
         for (Outgoings o : outgoings) {
             totalOutgoings += o.getValue();
         }
-
         return totalIncomes - totalOutgoings;
     }
 
-    @Override
-    public Float getDailyBalancePerDate(Long id, LocalDate date, Pageable pageable) {
-
-        Page<Income> incomes = incomeRepository.findAllByDateAndIdeaId(date, id, pageable);
-        Page<Outgoings> outgoings = outgoingsRepository.findAllByDateAndIdeaId(date, id, pageable);
-        Float totalIncomes = 0F;
-        Float totalOutgoings = 0F;
-        for (Income i : incomes) {
-            totalIncomes += i.getValue();
+    public Float getProfitFromRoot() {
+        Node root = TreeUtils.getRoot();
+        List<Node> childrenOfRoot = TreeUtils.getAllChild(root.getId());
+        Float profit = 0f;
+        for(Node child : childrenOfRoot) {
+            profit += (this.getDailyBalance(Long.parseLong(child.getId())) * root.getInterest());
         }
-        for (Outgoings o : outgoings) {
-            totalOutgoings += o.getValue();
-        }
+        return profit;
+    }
 
-        return totalIncomes - totalOutgoings;
+    public Float getProfitFromNode(Long id) {
+        Node node = TreeUtils.getNode(id);
+        List<Node> childrenOfNode = TreeUtils.getAllChild(node.getId());
+        Float profit = 0f;
+        for(Node child : childrenOfNode) {
+            profit += child.getDailyBalance() * node.getInterest();
+        }
+        return profit;
     }
 
 }

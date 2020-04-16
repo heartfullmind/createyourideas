@@ -20,6 +20,7 @@
         "outgoings": "Outgoings",
         "worksheet": "Worksheet",
         "ideapinwall": "Ideapinwall",
+        "profitBalance": "Profit Balance",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

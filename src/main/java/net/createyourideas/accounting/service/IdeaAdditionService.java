@@ -2,6 +2,7 @@ package net.createyourideas.accounting.service;
 
 import net.createyourideas.accounting.domain.Idea;
 
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

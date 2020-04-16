@@ -29,7 +29,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="ideatype" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="true" />
             </column>
             <column name="interest" type="${floatType}">
                 <constraints nullable="false" />
@@ -41,9 +41,6 @@
                 <constraints nullable="false" />
             </column>
             <column name="active" type="boolean">
-                <constraints nullable="true" />
-            </column>
-            <column name="node_id" type="integer">
                 <constraints nullable="true" />
             </column>
             <column name="user_id" type="bigint">
@@ -84,7 +81,6 @@
             <column name="distribution" type="numeric"/>
             <column name="investment" type="numeric"/>
             <column name="active" type="boolean"/>
-            <column name="node_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

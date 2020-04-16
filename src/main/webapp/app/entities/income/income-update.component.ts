@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiAlertService } from 'ng-jhipster';
 import { IIncome, Income } from 'app/shared/model/income.model';
@@ -23,6 +23,9 @@ export class IncomeUpdateComponent implements OnInit {
   dateDp: any;
   selectedIdea: IIdea;
 
+
+
+
   editForm = this.fb.group({
     id: [],
     title: [null, [Validators.required]],
@@ -37,8 +40,11 @@ export class IncomeUpdateComponent implements OnInit {
     protected incomeService: IncomeService,
     protected ideaService: IdeaService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
-  ) {}
+    private fb: FormBuilder,
+    private router: Router
+
+  ) {
+  }
 
   ngOnInit() {
     this.isSaving = false;
@@ -66,7 +72,7 @@ export class IncomeUpdateComponent implements OnInit {
   }
 
   previousState() {
-    window.history.back();
+    this.router.navigate(['/income', { id: this.ideaId}]);
   }
 
   save() {

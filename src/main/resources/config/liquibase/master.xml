@@ -18,10 +18,12 @@
     <include file="config/liquibase/changelog/20191216151545_added_entity_Income.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191216151546_added_entity_Outgoings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191216151547_added_entity_Worksheet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200412073726_added_entity_ProfitBalance.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20191216151543_added_entity_constraints_Idea.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191216151545_added_entity_constraints_Income.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191216151546_added_entity_constraints_Outgoings.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191216151547_added_entity_constraints_Worksheet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200412073726_added_entity_constraints_ProfitBalance.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

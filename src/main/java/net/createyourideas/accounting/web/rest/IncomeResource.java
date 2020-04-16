@@ -13,18 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -138,18 +135,10 @@ public class IncomeResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/incomes/{date}")
-    public ResponseEntity<List<Income>> getAllIncomesByDate(@PathVariable Date date, Pageable pageable) {
-        log.debug("REST request to get a page of Incomes with given date");
-        Page<Income> page = incomeService.findAllByDate(date, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
     @GetMapping("/incomes/{id}/{date}")
     public ResponseEntity<List<Income>> getAllIncomesByDateAndIdeaId(@PathVariable LocalDate date, @PathVariable Long id, Pageable pageable) {
         log.debug("REST request to get a page of Incomes with given date");
-        Page<Income> page = incomeService.findAllByDateAndIdeaId(date, id, pageable);
+        Page<Income> page = incomeService.findAllByIdeaIdAndDate(id, date, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
