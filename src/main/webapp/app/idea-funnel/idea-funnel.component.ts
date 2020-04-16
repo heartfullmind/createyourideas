@@ -100,9 +100,10 @@ export class IdeaFunnelComponent implements OnInit {
 
   ngOnInit() {
     this.loadIdeaFunnel();
-    this.loadContextMenu();
+    //this.loadContextMenu();
   }
 
+  /*
   loadContextMenu() {
     $(function() {
       $.contextMenu({
@@ -129,6 +130,8 @@ export class IdeaFunnelComponent implements OnInit {
       })
   });
   }
+  */
+
 
   loadIdeaFunnel() {
     this.ideaFunnelService.getIdeaFunnel().subscribe((res: HttpResponse<any>) => {
