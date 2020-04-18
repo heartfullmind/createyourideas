@@ -21,6 +21,7 @@
         "worksheet": "Worksheet",
         "ideapinwall": "Ideapinwall",
         "profitBalance": "Profit Balance",
+        "balance": "Balance",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

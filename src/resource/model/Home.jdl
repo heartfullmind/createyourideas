@@ -8,8 +8,8 @@ entity Idea {
     logo ImageBlob required
 	description TextBlob required
     ideatype Ideatype
-    interest Float required
-    distribution Float required
+    interest Float required min(0) max(1)
+    distribution Float required min(0) max(1)
 	investment Float required
     active Boolean
 }
@@ -28,7 +28,8 @@ entity Outgoings {
 	value Float required
 }
 
-entity ProfitBalance {
+entity Balance {
+    dailyBalance Float
     profit Float
     profitToSpend Float
     netProfit Float
@@ -54,7 +55,7 @@ relationship OneToMany {
     Idea{outgoings} to Outgoings
     Idea{worksheet} to Worksheet
     Idea{parent} to Idea
-    Idea{profitBalance} to ProfitBalance
+    Idea{balance} to Balance
 }
 
 relationship ManyToOne {
@@ -64,7 +65,7 @@ relationship ManyToOne {
 
 // Set pagination options
 paginate Idea with pagination
-paginate Income, Outgoings, ProfitBalance with infinite-scroll
+paginate Income, Outgoings, Balance with infinite-scroll
 
 //dto * with mapstruct
 

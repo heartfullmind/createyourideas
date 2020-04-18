@@ -68,7 +68,12 @@ export const customizeFormat = {
         nodeRoot.description,
         nodeRoot.active,
         nodeRoot.logo,
-        nodeRoot.logoContentType
+        nodeRoot.logoContentType,
+        nodeRoot.balances.balance.dailyBalance,
+        nodeRoot.balances.balance.profit,
+        nodeRoot.balances.balance.profitToSpend,
+        nodeRoot.balances.balance.netProfit,
+        nodeRoot.investment
       );
       if ('children' in nodeRoot) {
         const children = nodeRoot.children;
@@ -94,7 +99,11 @@ export const customizeFormat = {
           k === 'description' ||
           k === 'active' ||
           k === 'logo' ||
-          k === 'logoContentType'
+          k === 'logoContentType' ||
+          k === 'dailyBalance' ||
+          k === 'profit' ||
+          k === 'profitToSpend' ||
+          k === 'netProfit'
         ) {
           continue;
         }
@@ -136,7 +145,11 @@ export const customizeFormat = {
         nodeJson.description,
         nodeJson.active,
         nodeJson.logo,
-        nodeJson.logoContentType
+        nodeJson.logoContentType,
+        nodeJson.balances.balance.dailyBalance,
+        nodeJson.balances.balance.profit,
+        nodeJson.balances.balance.profitToSpend,
+        nodeJson.balances.balance.netProfit
       );
 
       if ('children' in nodeJson) {

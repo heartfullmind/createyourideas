@@ -50,10 +50,14 @@ public class Idea implements Serializable {
     private Ideatype ideatype;
 
     @NotNull
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "1")
     @Column(name = "interest", nullable = false)
     private Float interest;
 
     @NotNull
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "1")
     @Column(name = "distribution", nullable = false)
     private Float distribution;
 
@@ -82,7 +86,7 @@ public class Idea implements Serializable {
 
     @OneToMany(mappedBy = "idea")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ProfitBalance> profitBalances = new HashSet<>();
+    private Set<Balance> balances = new HashSet<>();
 
     @ManyToOne
     @JsonIgnoreProperties("ideas")
@@ -318,29 +322,29 @@ public class Idea implements Serializable {
         this.parents = ideas;
     }
 
-    public Set<ProfitBalance> getProfitBalances() {
-        return profitBalances;
+    public Set<Balance> getBalances() {
+        return balances;
     }
 
-    public Idea profitBalances(Set<ProfitBalance> profitBalances) {
-        this.profitBalances = profitBalances;
+    public Idea balances(Set<Balance> balances) {
+        this.balances = balances;
         return this;
     }
 
-    public Idea addProfitBalance(ProfitBalance profitBalance) {
-        this.profitBalances.add(profitBalance);
-        profitBalance.setIdea(this);
+    public Idea addBalance(Balance balance) {
+        this.balances.add(balance);
+        balance.setIdea(this);
         return this;
     }
 
-    public Idea removeProfitBalance(ProfitBalance profitBalance) {
-        this.profitBalances.remove(profitBalance);
-        profitBalance.setIdea(null);
+    public Idea removeBalance(Balance balance) {
+        this.balances.remove(balance);
+        balance.setIdea(null);
         return this;
     }
 
-    public void setProfitBalances(Set<ProfitBalance> profitBalances) {
-        this.profitBalances = profitBalances;
+    public void setBalances(Set<Balance> balances) {
+        this.balances = balances;
     }
 
     public User getUser() {

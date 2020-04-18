@@ -103,7 +103,6 @@ export class IdeaFunnelComponent implements OnInit {
     //this.loadContextMenu();
   }
 
-  /*
   loadContextMenu() {
     $(function() {
       $.contextMenu({
@@ -130,7 +129,6 @@ export class IdeaFunnelComponent implements OnInit {
       })
   });
   }
-  */
 
 
   loadIdeaFunnel() {
@@ -140,7 +138,7 @@ export class IdeaFunnelComponent implements OnInit {
       _jm.fetchData(this.mind2).then((value) => {
          this.m = value;
       }).then(() => {
-        _jm.calculateAll();
+        // _jm.calculateAll();
       }).then(() => {
         _jm.show(this.m);
       });

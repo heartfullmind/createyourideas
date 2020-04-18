@@ -26,8 +26,6 @@
             <th scope="col"  jhiSortBy="interest"><span jhiTranslate="homeApp.idea.interest">Interest</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="distribution"><span jhiTranslate="homeApp.idea.distribution">Distribution</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="investment"><span jhiTranslate="homeApp.idea.investment">Investment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="active"><span jhiTranslate="homeApp.idea.active">Active</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="user.id"><span jhiTranslate="homeApp.idea.user">User</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="idea.id"><span jhiTranslate="homeApp.idea.idea">Idea</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
@@ -40,20 +38,15 @@
                     <a *ngIf="idea.logo" (click)="openFile(idea.logoContentType, idea.logo)">
                         <img [src]="'data:' + idea.logoContentType + ';base64,' + idea.logo" style="max-height: 30px;" alt="idea image"/>
                     </a>
-                    <span *ngIf="idea.logo">{{idea.logoContentType}}, {{byteSize(idea.logo)}}</span>
                 </td>
-                <td>{{idea.description}}</td>
+                <td><div [innerHtml]="idea.description"></div></td>
                 <td jhiTranslate="{{'homeApp.Ideatype.' + idea.ideatype}}">{{idea.ideatype}}</td>
                 <td>{{idea.interest}}</td>
                 <td>{{idea.distribution}}</td>
                 <td>{{idea.investment}}</td>
-                <td>{{idea.active}}</td>
-                <td>
-                    {{idea.user?.id}}
-                </td>
                 <td>
                     <div *ngIf="idea.idea">
-                        <a [routerLink]="['/idea', idea.idea?.id, 'view' ]" >{{idea.idea?.id}}</a>
+                        <a [routerLink]="['/idea', idea.idea?.id, 'view' ]" >{{idea.idea?.title}}</a>
                     </div>
                 </td>
                 <td class="text-right">

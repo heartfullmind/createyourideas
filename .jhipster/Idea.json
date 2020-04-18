@@ -33,15 +33,23 @@
             "fieldName": "interest",
             "fieldType": "Float",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
         },
         {
             "fieldName": "distribution",
             "fieldType": "Float",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
         },
         {
             "fieldName": "investment",
@@ -82,9 +90,9 @@
         },
         {
             "relationshipType": "one-to-many",
-            "otherEntityName": "profitBalance",
+            "otherEntityName": "balance",
             "otherEntityRelationshipName": "idea",
-            "relationshipName": "profitBalance"
+            "relationshipName": "balance"
         },
         {
             "relationshipType": "many-to-one",

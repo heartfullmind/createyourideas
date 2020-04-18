@@ -1,0 +1,27 @@
+{
+  "homeApp": {
+    "balance": {
+      "home": {
+        "title": "Balances",
+        "createLabel": "Balance erstellen",
+        "createOrEditLabel": "Balance erstellen oder bearbeiten",
+        "notFound": "No Balances found"
+      },
+      "created": "Balance erstellt mit ID {{ param }}",
+      "updated": "Balance aktualisiert mit ID {{ param }}",
+      "deleted": "Balance gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Balance {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Balance"
+      },
+      "dailyBalance": "Daily Balance",
+      "profit": "Profit",
+      "profitToSpend": "Profit To Spend",
+      "netProfit": "Net Profit",
+      "date": "Date",
+      "idea": "Idea"
+    }
+  }
+}

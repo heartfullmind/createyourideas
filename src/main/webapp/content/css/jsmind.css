@@ -1,7 +1,7 @@
 /*
  * Released under BSD License
  * Copyright (c) 2014-2015 hizzgdev@163.com
- * 
+ *
  * Project Home:
  *   https://github.com/hizzgdev/jsmind/
  */
@@ -22,6 +22,25 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+
+
+.title {
+  font-size: large;
+  color: #fff;
+}
+
+.title a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: .1em dashed yellowgreen;
+}
+
+.title a:hover {
+  color: yellow;
+  text-decoration: none;
+}
+
 
 /* z-index:1 */
 canvas {
@@ -391,3 +410,5 @@ jmnodes.theme-asbestos jmexpander {
 }
 jmnodes.theme-asbestos jmexpander:hover {
 }
+
+

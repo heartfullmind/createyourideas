@@ -2,12 +2,10 @@ package net.createyourideas.accounting.service.impl;
 
 import java.util.List;
 
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.createyourideas.accounting.domain.Balance;
 import net.createyourideas.accounting.domain.Income;
 import net.createyourideas.accounting.domain.Outgoings;
 import net.createyourideas.accounting.repository.IncomeRepository;
@@ -64,9 +62,37 @@ public class CalcServiceImpl implements CalcService {
         List<Node> childrenOfNode = TreeUtils.getAllChild(node.getId());
         Float profit = 0f;
         for(Node child : childrenOfNode) {
+            Balance[] balanceArray = child.getIdea().getBalances().toArray(new Balance[child.getIdea().getBalances().size()]);
+            Balance balance = balanceArray[child.getIdea().getBalances().size()-1];
+            profit +=  balance.getDailyBalance() * node.getIdea().getInterest();
+        }
+        return profit;
+    }
+
+    @Override
+    public Float getProfitFromNode(Node node) {
+        List<Node> childrenOfNode = TreeUtils.getAllChild(node.getId());
+        Float profit = 0f;
+        for(Node child : childrenOfNode) {
             profit += child.getDailyBalance() * node.getInterest();
         }
         return profit;
+    }
+
+    @Override
+    public Float getProfitToSpend(Long id) {
+        Node node = TreeUtils.getNode(id);
+        Balance[] balanceArray = node.getIdea().getBalances().toArray(new Balance[node.getIdea().getBalances().size()]);
+        Balance balance = balanceArray[node.getIdea().getBalances().size()-1];
+        return 0.75f * balance.getProfit();
+    }
+
+    @Override
+    public Float getNetProfit(Long id) {
+        Node node = TreeUtils.getNode(id);
+        Balance[] balanceArray = node.getIdea().getBalances().toArray(new Balance[node.getIdea().getBalances().size()]);
+        Balance balance = balanceArray[node.getIdea().getBalances().size()-1];
+        return balance.getProfit() - balance.getProfitToSpend();
     }
 
 }

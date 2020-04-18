@@ -32,4 +32,6 @@ public class CalculationsManager {
     public Float getProfitFromNode(@PathVariable Long id, Pageable pageable) {
         return this.calcService.getProfitFromNode(id);
     }
+
+
 }

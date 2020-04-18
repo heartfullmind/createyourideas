@@ -1,10 +1,8 @@
-import { IProfitBalance } from 'app/shared/model/profit-balance.model';
 import { logger } from './config';
 import { FinanceService } from 'app/finance.service';
 import {CurrencyPipe} from '@angular/common';
 import {PercentPipe} from '@angular/common';
 import { ServiceLocator } from 'app/locale.service';
-import { IIdea } from 'app/shared/model/idea.model';
 import { ServiceProvider } from 'app/services.service';
 
 interface NodeData {
@@ -52,8 +50,7 @@ export class MindMapNode {
   netProfit: number;
   cPipe: CurrencyPipe;
   pPipe: PercentPipe;
-  idea: IIdea;
-  profitBalance: IProfitBalance;
+
 
   constructor(
     sId,
@@ -73,7 +70,11 @@ export class MindMapNode {
     sDescription?,
     bActive?,
     logo?,
-    logoContentType?
+    logoContentType?,
+    dailyBalance?,
+    profit?,
+    profitToSpend?,
+    netProfit?
   ) {
 
     if (!sId) {
@@ -113,18 +114,13 @@ export class MindMapNode {
     this.pPipe = new PercentPipe('en-US');
     this.logo = logo;
     this.logoContentType = logoContentType;
+    this.dailyBalance = dailyBalance;
+    this.profit = profit;
+    this.profitToSpend = profitToSpend;
+    this.netProfit = netProfit;
   }
 
   init() {
-    return new Promise<MindMapNode>(resolve => {
-      this.serviceProvider.ideaService.find(Number(this.id)).subscribe(db => {
-        this.idea = db.body;
-        this.serviceProvider.profitBalanceService.find(Number(this.id)).subscribe(db1 => {
-          this.profitBalance = db1.body;
-          resolve(this);
-        });
-      });
-    });
   }
 
   show() {
@@ -134,10 +130,10 @@ export class MindMapNode {
         this.selectedType +
         ']' + */
         "<table id='calcinfo'>" +
-        '<tr><td>Idea:</td><td>' +
-        '<a href="/idea-pinwall;id=' + this.id + '">' +
+        '<tr><td><span class="title">Idea:</span></td><td>' +
+        '<span class="title"><a href="/idea-pinwall;id=' + this.id + '">' +
         this.topic +
-        '</a>' +
+        '</a></span>' +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
         this.pPipe.transform(this.interest) +
@@ -163,40 +159,13 @@ export class MindMapNode {
         // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
         '</table>'
       );
-    }
-    if (this.isroot) {
-      return (
-        "<table id='calcinfo'>" +
-        '<tr><td>Idea:</td><td>' +
-        '<a href="/idea-pinwall;id=' + this.id + '">' +
-        this.topic +
-        '</a>' +
-        '</td></tr>' +
-        '<tr><td>Interest:</td><td>' +
-        this.pPipe.transform(this.interest) +
-        '</td></tr>' +
-        '<tr><td>Daily Balance:</td><td>' +
-        this.cPipe.transform(this.dailyBalance) +
-        '</td></tr>' +
-        '<tr><td>Profit:</td><td>' +
-        this.cPipe.transform(this.profit) +
-        '</td></tr>' +
-        '<tr><td>3/4 of the profit:</td><td>' +
-        this.cPipe.transform(this.profitToSpend) +
-        '</td></tr>' +
-        '<tr><td>Net-Profit:</td><td>' +
-        this.cPipe.transform(this.netProfit) +
-        '</td></tr>' +
-        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
-        '</table>'
-      );
     } else {
       return (
         "<table id='calcinfo'>" +
-        '<tr><td>Idea:</td><td>' +
-        '<a href="/idea-pinwall;id=' + this.id + '">' +
+        '<tr><td><span class="title">Idea:</span></td><td>' +
+        '<span class="title"><a href="/idea-pinwall;id=' + this.id + '">' +
         this.topic +
-        '</a>' +
+        '</a></span>' +
         '</td></tr>' +
         '<tr><td>Interest:</td><td>' +
         this.pPipe.transform(this.interest) +
@@ -273,20 +242,6 @@ export class MindMapNode {
   getDailyBalance() {
     return this.dailyBalance;
   }
-
-  toJSON() {
-    const json = {
-         id: this.id,
-         topic: this.topic,
-         interest: this.interest,
-         distribution: this.distribution,
-         investment: this.investment,
-         selectedType: this.selectedType
-       }
-    return json;
-  }
-
-
 }
 
 MindMapNode.compare = (node1, node2) => {

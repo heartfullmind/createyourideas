@@ -1,0 +1,69 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="homeApp.balance.home.title">Balances</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-balance" [routerLink]="['/balance/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="homeApp.balance.home.createLabel">
+            Create a new Balance
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="balances?.length === 0">
+        <span jhiTranslate="homeApp.balance.home.notFound">No balances found</span>
+    </div>
+    <div class="table-responsive" *ngIf="balances?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="dailyBalance"><span jhiTranslate="homeApp.balance.dailyBalance">Daily Balance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="profit"><span jhiTranslate="homeApp.balance.profit">Profit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="profitToSpend"><span jhiTranslate="homeApp.balance.profitToSpend">Profit To Spend</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="netProfit"><span jhiTranslate="homeApp.balance.netProfit">Net Profit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="date"><span jhiTranslate="homeApp.balance.date">Date</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="idea.id"><span jhiTranslate="homeApp.balance.idea">Idea</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let balance of balances ;trackBy: trackId">
+                <td><a [routerLink]="['/balance', balance.id, 'view' ]">{{balance.id}}</a></td>
+                <td>{{balance.dailyBalance}}</td>
+                <td>{{balance.profit}}</td>
+                <td>{{balance.profitToSpend}}</td>
+                <td>{{balance.netProfit}}</td>
+                <td>{{balance.date | date:'mediumDate'}}</td>
+                <td>
+                    <div *ngIf="balance.idea">
+                        <a [routerLink]="['/idea', balance.idea?.id, 'view' ]" >{{balance.idea?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/balance', balance.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/balance', balance.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(balance)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

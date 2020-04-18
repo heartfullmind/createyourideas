@@ -1,0 +1,44 @@
+{
+    "name": "Balance",
+    "fields": [
+        {
+            "fieldName": "dailyBalance",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "profit",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "profitToSpend",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "netProfit",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "date",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "idea",
+            "otherEntityRelationshipName": "balance",
+            "relationshipName": "idea",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200417073836",
+    "entityTableName": "balance",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

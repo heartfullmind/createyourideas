@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class TreeUtils {
 
     private static Map<String, Node> nodeTree = new HashMap<>();
@@ -13,9 +14,8 @@ public class TreeUtils {
         return nodeTree;
     }
 
-     //Private method to create the ideafunnel-tree (node-tree)
-     public static String createTree(List<Node> nodes) {
-
+     //Public method to create the ideafunnel-tree (node-tree)
+     public static void createTree(List<Node> nodes) {
 
         //Save all nodes to a map
         for (Node current : nodes) {
@@ -37,15 +37,10 @@ public class TreeUtils {
             }
 
         }
-        //get the root
-        Node root = null;
-        for (Node node : nodeTree.values()) {
-            if(node.getParent() == null) {
-                root = node;
-                break;
-            }
-        }
+    }
 
+    public static String getIdeaFunnelJSON() {
+        Node root = getRoot();
         return root.toString();
     }
 
