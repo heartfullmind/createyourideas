@@ -100,14 +100,14 @@ export class IdeaFunnelComponent implements OnInit {
 
   ngOnInit() {
     this.loadIdeaFunnel();
-    //this.loadContextMenu();
+    // this.loadContextMenu();
   }
 
   loadContextMenu() {
     $(function() {
       $.contextMenu({
           selector: '.jmnode',
-          callback(key, options) {
+          callback(key) {
               const m = "clicked: " + key + " on " + $(this).attr('id');
               alert(m);
           },
@@ -124,7 +124,7 @@ export class IdeaFunnelComponent implements OnInit {
           }
       });
 
-      $('.jmnode').on('click', function(e){
+      $('.jmnode').on('click', function(){
           console.log('clicked', $(this));
       })
   });
@@ -177,6 +177,7 @@ export class IdeaFunnelComponent implements OnInit {
   }
 
   calculateProfit() {
+    alert("Hallo");
     this.ideaFunnelService.calculateProfit().subscribe(res => {
       console.log(res.body);
     })
