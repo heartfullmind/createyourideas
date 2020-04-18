@@ -4,5 +4,7 @@
       Welcome to {{ title }}!
     </h1>
   </div>
-
+  <div *jhiHasAnyAuthority="'ROLE_ADMIN'">
+    <button id="calculateProfit" ng-click="calculateProfit()">Calculate Profit</button>
+  </div>
   <div id="jsmind_container"></div>

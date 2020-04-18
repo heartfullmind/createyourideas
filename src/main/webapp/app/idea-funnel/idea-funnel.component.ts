@@ -177,27 +177,9 @@ export class IdeaFunnelComponent implements OnInit {
   }
 
   calculateProfit() {
-    this.mindMap.calculateProfit();
-  }
-
-  calculateDailyBalance() {
-    this.mindMap.calculateDailyBalance();
-  }
-
-  calculateDailyBalancePerDate() {
-    this.mindMap.calculateDailyBalancePerDate();
-  }
-
-  calculateAllLevels() {
-    this.mindMap.calculateAllLevels();
-  }
-
-  calculateDistribution() {
-    this.mindMap.calculateDistribution();
-  }
-
-  calcCollection() {
-    this.mindMap.calcCollection();
+    this.ideaFunnelService.calculateProfit().subscribe(res => {
+      console.log(res.body);
+    })
   }
 
   getMindMapData() {

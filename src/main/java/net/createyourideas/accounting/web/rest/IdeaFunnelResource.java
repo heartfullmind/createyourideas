@@ -2,7 +2,6 @@ package net.createyourideas.accounting.web.rest;
 
 import net.createyourideas.accounting.domain.Balance;
 import net.createyourideas.accounting.domain.Idea;
-import net.createyourideas.accounting.service.BalanceService;
 import net.createyourideas.accounting.service.CalcService;
 import net.createyourideas.accounting.service.IdeaAdditionService;
 import net.createyourideas.accounting.service.IdeaService;
@@ -23,9 +22,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -50,15 +48,11 @@ public class IdeaFunnelResource {
 
     private final CalcService calcService;
 
-    private final BalanceService balanceService;
-
-    public IdeaFunnelResource(IdeaService ideaService, IdeaAdditionService ideaAdditionService, CalcService calcService, BalanceService balanceService) {
+    public IdeaFunnelResource(IdeaService ideaService, IdeaAdditionService ideaAdditionService, CalcService calcService) {
         this.ideaService = ideaService;
         this.ideaAdditionService = ideaAdditionService;
         this.calcService = calcService;
-        this.balanceService = balanceService;
         this.loadNodes();
-        this.calculateProfit();
     }
 
     @GetMapping("/ideas/user")
@@ -87,6 +81,14 @@ public class IdeaFunnelResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/ideas/calculateProfit")
+    public ResponseEntity<String> calculateProfitFromButton() {
+        this.calculateProfit();
+        String json = "";
+        json = getIdeaFunnelJSON();
+        return ResponseEntity.ok(json);
+    }
+
     private void loadNodes() {
         List<Idea> ideas = ideaService.findAll();
         for (Idea idea : ideas) {
@@ -102,7 +104,6 @@ public class IdeaFunnelResource {
     private void calculateProfit() {
 
         List<Idea> ideas = ideaService.findAll();
-        Map<String, Node> treeNode = TreeUtils.getNodeTree();
 
         for(Idea idea : ideas) {
             Balance balance = new Balance();
@@ -111,22 +112,29 @@ public class IdeaFunnelResource {
             Float dailyBalance = this.calcService.getDailyBalance(idea.getId());
             balance.setDailyBalance(dailyBalance);
             balance.setIdea(idea);
-            Set<Balance> balances = new HashSet<Balance>();
+            Set<Balance> balances = idea.getBalances();
             balances.add(balance);
-            treeNode.get(idea.getId().toString()).getIdea().setBalances(balances);
 
         }
         for(Idea idea : ideas) {
-            Set<Balance> balances = treeNode.get(idea.getId().toString()).getIdea().getBalances();
-            Balance[] balanceArray = balances.toArray(new Balance[balances.size()]);
-            Balance balance = balanceArray[balances.size()-1];
+            Iterator<Balance> iterator = idea.getBalances().iterator();
+            Balance balance = null;
+            while(iterator.hasNext()) {
+                balance = iterator.next();
+                LocalDate now = LocalDate.now();
+                if(balance.getDate() == now) {
+                    break;
+                }
+            }
             Float profit = this.calcService.getProfitFromNode(idea.getId());
             balance.setProfit(profit);
             Float profitToSpend = this.calcService.getProfitToSpend(idea.getId());
             balance.setProfitToSpend(profitToSpend);
             Float netProfit = this.calcService.getNetProfit(idea.getId());
             balance.setNetProfit(netProfit);
-            balanceService.save(balance);
+            Float collectionRoot = this.calcService.getCollectionFromRoot();
+            balance.setNetProfit(balance.getNetProfit() + collectionRoot);
+            ideaService.save(idea);
         }
     }
 
@@ -138,7 +146,7 @@ public class IdeaFunnelResource {
         return json;
     }
 
-    @Scheduled(cron = "0 */10 * * * ?")
+    @Scheduled(cron = "0 57 23 * * ?")
     public void scheduleTaskCalculateProfit() {
         this.calculateProfit();
     }

@@ -32,7 +32,7 @@ public class Idea implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    
+
     @Lob
     @Column(name = "logo", nullable = false)
     private byte[] logo;
@@ -40,7 +40,7 @@ public class Idea implements Serializable {
     @Column(name = "logo_content_type", nullable = false)
     private String logoContentType;
 
-    
+
     @Lob
     @Column(name = "description", nullable = false)
     private String description;
@@ -84,7 +84,7 @@ public class Idea implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Idea> parents = new HashSet<>();
 
-    @OneToMany(mappedBy = "idea")
+    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Balance> balances = new HashSet<>();
 

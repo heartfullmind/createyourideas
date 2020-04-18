@@ -15,6 +15,10 @@ export class CalcProvider {
     this.mindMap = mindMap;
   }
 
+  calculateProfit() {
+
+  }
+
   calculateCollection() {
     return new Promise(resolve => {
       const root = this.mindMap.mind.root;
