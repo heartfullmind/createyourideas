@@ -67,6 +67,7 @@ public class IdeaFunnelResource {
     @GetMapping("/ideas/ideafunnel")
     public ResponseEntity<String> getIdeafunnel(Pageable pageable) {
         log.debug("REST get ideafunnel");
+        this.loadNodes();
         String json = "";
         json = getIdeaFunnelJSON();
         return ResponseEntity.ok(json);
