@@ -59,6 +59,24 @@ export const customizeFormat = {
     _parse(mind, nodeRoot, calc: CalcProvider) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(nodeRoot);
+
+      let dailyBalance;
+      let profit;
+      let profitToSpend;
+      let netProfit;
+      if(nodeRoot.balances.balance == null){
+        dailyBalance = 0;
+        profit = 0;
+        profitToSpend = 0;
+        netProfit = 0;
+      }
+      else {
+        dailyBalance = nodeRoot.balances.balance.dailyBalance;
+        profit = nodeRoot.balances.balance.profit;
+        profitToSpend = nodeRoot.balances.balance.profitToSpend;
+        netProfit = nodeRoot.balances.balance.netProfit;
+      }
+
       mind.setRoot(
         nodeRoot.id,
         nodeRoot.topic,
@@ -69,10 +87,10 @@ export const customizeFormat = {
         nodeRoot.active,
         nodeRoot.logo,
         nodeRoot.logoContentType,
-        nodeRoot.balances.balance.dailyBalance,
-        nodeRoot.balances.balance.profit,
-        nodeRoot.balances.balance.profitToSpend,
-        nodeRoot.balances.balance.netProfit,
+        dailyBalance,
+        profit,
+        profitToSpend,
+        netProfit,
         nodeRoot.investment
       );
       if ('children' in nodeRoot) {
