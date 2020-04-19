@@ -177,7 +177,6 @@ export class IdeaFunnelComponent implements OnInit {
   }
 
   calculateProfit() {
-    alert("Hallo");
     this.ideaFunnelService.calculateProfit().subscribe(res => {
       console.log(res.body);
     })

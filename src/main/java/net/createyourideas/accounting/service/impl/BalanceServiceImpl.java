@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -53,7 +54,6 @@ public class BalanceServiceImpl implements BalanceService {
         return balanceRepository.findAll(pageable);
     }
 
-
     /**
      * Get one balance by id.
      *
@@ -76,5 +76,12 @@ public class BalanceServiceImpl implements BalanceService {
     public void delete(Long id) {
         log.debug("Request to delete Balance : {}", id);
         balanceRepository.deleteById(id);
+    }
+
+
+    @Override
+    public List<Balance> findAllByIdeaId(Long ideaId) {
+        log.debug("Request to get all Balances from specific idea");
+        return balanceRepository.findAllByIdeaId(ideaId);
     }
 }

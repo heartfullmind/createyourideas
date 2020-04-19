@@ -61,6 +61,21 @@ public class TreeUtils {
         return node;
     }
 
+    public static Integer getDepth(Long id) {
+        Integer depth = 0;
+        Node node = getNode(id);
+        if(node.getIdea().getId() == 1) {
+            depth = 0;
+        } else {
+            Node parent = node;
+            while(parent.getParent() != null) {
+                depth++;
+                parent = parent.getParent();
+            }
+        }
+        return depth;
+    }
+
     public static List<Node> getDeepestChildren() {
         //get the root
         Node root = null;

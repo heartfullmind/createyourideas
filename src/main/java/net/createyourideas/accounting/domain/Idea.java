@@ -84,7 +84,7 @@ public class Idea implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Idea> parents = new HashSet<>();
 
-    @OneToMany(mappedBy = "idea", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "idea")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Balance> balances = new HashSet<>();
 

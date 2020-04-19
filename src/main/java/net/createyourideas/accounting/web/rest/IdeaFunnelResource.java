@@ -2,6 +2,7 @@ package net.createyourideas.accounting.web.rest;
 
 import net.createyourideas.accounting.domain.Balance;
 import net.createyourideas.accounting.domain.Idea;
+import net.createyourideas.accounting.service.BalanceService;
 import net.createyourideas.accounting.service.CalcService;
 import net.createyourideas.accounting.service.IdeaAdditionService;
 import net.createyourideas.accounting.service.IdeaService;
@@ -37,8 +38,6 @@ public class IdeaFunnelResource {
 
     private final Logger log = LoggerFactory.getLogger(IdeaResource.class);
 
-    List<Node> nodes = new ArrayList<>();
-
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
@@ -48,38 +47,22 @@ public class IdeaFunnelResource {
 
     private final CalcService calcService;
 
-    public IdeaFunnelResource(IdeaService ideaService, IdeaAdditionService ideaAdditionService, CalcService calcService) {
+    private final BalanceService balanceService;
+
+    public IdeaFunnelResource(IdeaService ideaService, IdeaAdditionService ideaAdditionService, CalcService calcService, BalanceService balanceService) {
         this.ideaService = ideaService;
         this.ideaAdditionService = ideaAdditionService;
         this.calcService = calcService;
-        this.loadNodes();
-    }
-
-    @GetMapping("/ideas/user")
-    public ResponseEntity<List<Idea>> getAllIdeasByCurrentUser(Pageable pageable) {
-        log.debug("REST request to get a page of Ideas");
-        Page<Idea> page = ideaAdditionService.findByUserIsCurrentUser(pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        this.balanceService = balanceService;
     }
 
     @GetMapping("/ideas/ideafunnel")
     public ResponseEntity<String> getIdeafunnel(Pageable pageable) {
         log.debug("REST get ideafunnel");
-        this.loadNodes();
+        ideaAdditionService.loadNodes();
         String json = "";
         json = getIdeaFunnelJSON();
         return ResponseEntity.ok(json);
-    }
-
-    @GetMapping("/ideas/{id}/allById")
-    public ResponseEntity<List<Idea>> getAllIdeasById(@PathVariable Long id, Pageable pageable) {
-        log.debug("REST request to get a page of Ideas by id");
-        Page<Idea> page = ideaAdditionService.findAllById(id, pageable);
-        HttpHeaders headers = PaginationUtil
-                .generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     @GetMapping("/ideas/calculateProfit")
@@ -88,18 +71,6 @@ public class IdeaFunnelResource {
         String json = "";
         json = getIdeaFunnelJSON();
         return ResponseEntity.ok(json);
-    }
-
-    private void loadNodes() {
-        List<Idea> ideas = ideaService.findAll();
-        for (Idea idea : ideas) {
-                if (idea.getIdea() == null) {
-                    nodes.add(new Node(idea.getId().toString(), null, idea));
-                } else {
-                    nodes.add(new Node(idea.getId().toString(), idea.getIdea().getId().toString(), idea));
-                }
-        }
-        TreeUtils.createTree(nodes);
     }
 
     private void calculateProfit() {
@@ -117,7 +88,9 @@ public class IdeaFunnelResource {
             balances.add(balance);
 
         }
+        Integer count = 0;
         for(Idea idea : ideas) {
+            count++;
             Iterator<Balance> iterator = idea.getBalances().iterator();
             Balance balance = null;
             while(iterator.hasNext()) {
@@ -127,15 +100,30 @@ public class IdeaFunnelResource {
                     break;
                 }
             }
-            Float profit = this.calcService.getProfitFromNode(idea.getId());
+            Float profit = this.calcService.getProfitFromNode(idea.getId(), balance);
             balance.setProfit(profit);
-            Float profitToSpend = this.calcService.getProfitToSpend(idea.getId());
+            Float profitToSpend = this.calcService.getProfitToSpend(idea.getId(), balance);
             balance.setProfitToSpend(profitToSpend);
-            Float netProfit = this.calcService.getNetProfit(idea.getId());
+            Float netProfit = this.calcService.getNetProfit(idea.getId(), balance);
             balance.setNetProfit(netProfit);
-            Float collectionRoot = this.calcService.getCollectionFromRoot();
-            balance.setNetProfit(balance.getNetProfit() + collectionRoot);
-            ideaService.save(idea);
+            Float collectionRoot = this.calcService.getCollectionFromRoot(balance);
+            if(idea.getId() == 1 && count == ideas.size()) {
+                Idea root = this.ideaService.findOne(1l).get();
+                Iterator<Balance> iteratorRoot = root.getBalances().iterator();
+                Balance balanceRoot = null;
+                while(iteratorRoot.hasNext()) {
+                    balanceRoot = iterator.next();
+                    LocalDate now = LocalDate.now();
+                    if(balance.getDate() == now) {
+                        break;
+                    }
+                }
+                balanceRoot.setProfitToSpend(0f);
+            } else {
+                balance.setNetProfit(balance.getNetProfit() + collectionRoot);
+            }
+
+            balanceService.save(balance);
         }
     }
 

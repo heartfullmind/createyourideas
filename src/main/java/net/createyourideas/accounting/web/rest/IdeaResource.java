@@ -1,9 +1,14 @@
 package net.createyourideas.accounting.web.rest;
 
+import net.createyourideas.accounting.domain.Balance;
 import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.domain.User;
+import net.createyourideas.accounting.domain.enumeration.Ideatype;
+import net.createyourideas.accounting.service.BalanceService;
+import net.createyourideas.accounting.service.IdeaAdditionService;
 import net.createyourideas.accounting.service.IdeaService;
 import net.createyourideas.accounting.service.UserService;
+import net.createyourideas.accounting.tree.TreeUtils;
 import net.createyourideas.accounting.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -22,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,11 +47,15 @@ public class IdeaResource {
 
     private final IdeaService ideaService;
     private final UserService userService;
+    private final BalanceService balanceService;
+    private final IdeaAdditionService ideaAdditionService;
 
 
-    public IdeaResource(IdeaService ideaService, UserService userService) {
+    public IdeaResource(IdeaService ideaService, UserService userService, BalanceService balanceService, IdeaAdditionService ideaAdditionService) {
         this.ideaService = ideaService;
         this.userService = userService;
+        this.balanceService = balanceService;
+        this.ideaAdditionService = ideaAdditionService;
     }
 
     /**
@@ -65,6 +74,51 @@ public class IdeaResource {
         User user = userService.getUserWithAuthorities().get();
         idea.setUser(user);
         Idea result = ideaService.save(idea);
+        ideaAdditionService.loadNodes();
+        Ideatype type = null;
+        switch(TreeUtils.getDepth(result.getId())) {
+            case(0):
+                type = Ideatype.ROOT;
+                break;
+            case(1):
+                type = Ideatype.LEVEL1;
+                break;
+            case(2):
+                type = Ideatype.LEVEL2;
+                break;
+            case(3):
+                type = Ideatype.LEVEL3;
+                break;
+            case(4):
+                type = Ideatype.LEVEL4;
+                break;
+            case(5):
+                type = Ideatype.LEVEL5;
+                break;
+            case(6):
+                type = Ideatype.LEVEL6;
+                break;
+            case(7):
+                type = Ideatype.LEVEL7;
+                break;
+            case(8):
+                type = Ideatype.LEVEL8;
+                break;
+            case(9):
+                type = Ideatype.LEVEL9;
+                break;
+        }
+        idea.setIdeatype(type);
+        ideaService.save(idea);
+        Balance balance = new Balance();
+        balance.setDailyBalance(0f);
+        balance.setProfit(0f);
+        balance.setProfitToSpend(0f);
+        balance.setNetProfit(0f);
+        balance.setDate(LocalDate.now());
+        balance.setIdea(idea);
+        balanceService.save(balance);
+        ideaAdditionService.loadNodes();
         return ResponseEntity.created(new URI("/api/ideas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -88,6 +142,7 @@ public class IdeaResource {
         User user = userService.getUserWithAuthorities().get();
         idea.setUser(user);
         Idea result = ideaService.save(idea);
+        ideaAdditionService.loadNodes();
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, idea.getId().toString()))
             .body(result);
@@ -133,18 +188,5 @@ public class IdeaResource {
         log.debug("REST request to delete Idea : {}", id);
         ideaService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
-    }
-
-     /**
-     * {@code GET  /ideas/:nodeid} : get the idea with nodeid.
-     *
-     * @param nodeid the id of the idea to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the idea, or with status {@code 404 (Not Found)}.
-     */
-    @GetMapping("/ideas/{nodeId}/allByNodeId")
-    public ResponseEntity<Idea> getIdeaByNode(@PathVariable Long nodeId) {
-        log.debug("REST request to get Idea with nodeId : {}", nodeId);
-        Optional<Idea> idea = ideaService.findOne(nodeId);
-        return ResponseUtil.wrapOrNotFound(idea);
     }
 }

@@ -15,4 +15,5 @@ public interface IdeaAdditionService {
 
     Page<Idea> findAllById(Long id, Pageable pageable);
 
+    void loadNodes();
 }

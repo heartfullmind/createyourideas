@@ -3,6 +3,8 @@ package net.createyourideas.accounting.web.rest;
 import net.createyourideas.accounting.HomeApp;
 import net.createyourideas.accounting.domain.Idea;
 import net.createyourideas.accounting.repository.IdeaRepository;
+import net.createyourideas.accounting.service.BalanceService;
+import net.createyourideas.accounting.service.IdeaAdditionService;
 import net.createyourideas.accounting.service.IdeaService;
 import net.createyourideas.accounting.service.UserService;
 import net.createyourideas.accounting.web.rest.errors.ExceptionTranslator;
@@ -73,6 +75,12 @@ public class IdeaResourceIT {
     private UserService userService;
 
     @Autowired
+    private BalanceService balanceService;
+
+    @Autowired
+    private IdeaAdditionService ideaAdditionService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -94,7 +102,7 @@ public class IdeaResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final IdeaResource ideaResource = new IdeaResource(ideaService, userService);
+        final IdeaResource ideaResource = new IdeaResource(ideaService, userService, balanceService, ideaAdditionService);
         this.restIdeaMockMvc = MockMvcBuilders.standaloneSetup(ideaResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

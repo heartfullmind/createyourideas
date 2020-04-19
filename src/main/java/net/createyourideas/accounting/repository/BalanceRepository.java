@@ -1,5 +1,9 @@
 package net.createyourideas.accounting.repository;
+
 import net.createyourideas.accounting.domain.Balance;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +15,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
+    List<Balance> findAllByIdeaId(Long ideaId);
 }

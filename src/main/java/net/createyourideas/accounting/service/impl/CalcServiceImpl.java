@@ -49,68 +49,30 @@ public class CalcServiceImpl implements CalcService {
         return totalIncomes - totalOutgoings;
     }
 
-    public Float getProfitFromNode(Long id) {
+    public Float getProfitFromNode(Long id, Balance balance) {
         Node node = TreeUtils.getNode(id);
         List<Node> childrenOfNode = TreeUtils.getAllChild(node.getId());
         Float profit = 0f;
         for(Node child : childrenOfNode) {
-            Iterator<Balance> iterator = child.getIdea().getBalances().iterator();
-            Balance balance = null;
-            while(iterator.hasNext()) {
-                balance = iterator.next();
-                LocalDate now = LocalDate.now();
-                if(balance.getDate() == now) {
-                    break;
-                }
-            }
-            profit +=  balance.getDailyBalance() * node.getIdea().getInterest();
+            profit +=  balance.getDailyBalance() * child.getIdea().getInterest();
         }
         return profit;
     }
 
     @Override
-    public Float getProfitToSpend(Long id) {
-        Node node = TreeUtils.getNode(id);
-        Iterator<Balance> iterator = node.getIdea().getBalances().iterator();
-        Balance balance = null;
-        while(iterator.hasNext()) {
-            balance = iterator.next();
-            LocalDate now = LocalDate.now();
-            if(balance.getDate() == now) {
-                break;
-            }
-        }
+    public Float getProfitToSpend(Long id, Balance balance) {
         return 0.75f * balance.getProfit();
     }
 
     @Override
-    public Float getNetProfit(Long id) {
-        Node node = TreeUtils.getNode(id);
-        Iterator<Balance> iterator = node.getIdea().getBalances().iterator();
-        Balance balance = null;
-        while(iterator.hasNext()) {
-            balance = iterator.next();
-            LocalDate now = LocalDate.now();
-            if(balance.getDate() == now) {
-                break;
-            }
-        }
+    public Float getNetProfit(Long id, Balance balance) {
         return balance.getProfit() - balance.getProfitToSpend();
     }
 
     @Override
-    public Float getCollectionFromRoot() {
+    public Float getCollectionFromRoot(Balance balance) {
         Node root = TreeUtils.getRoot();
-        List<Node> children = root.getChildren();
-        Iterator<Balance> iterator = root.getIdea().getBalances().iterator();
-        Balance balance = null;
-        while(iterator.hasNext()) {
-            balance = iterator.next();
-            LocalDate now = LocalDate.now();
-            if(balance.getDate() == now) {
-                break;
-            }
-        }
+        List<Node> children = TreeUtils.getAllChild(root.getId());
         Float collection = balance.getProfitToSpend() / children.size();
         return collection;
     }

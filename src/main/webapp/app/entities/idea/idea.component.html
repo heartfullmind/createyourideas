@@ -22,7 +22,6 @@
             <th scope="col"  jhiSortBy="title"><span jhiTranslate="homeApp.idea.title">Title</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="logo"><span jhiTranslate="homeApp.idea.logo">Logo</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="description"><span jhiTranslate="homeApp.idea.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="ideatype"><span jhiTranslate="homeApp.idea.ideatype">Ideatype</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="interest"><span jhiTranslate="homeApp.idea.interest">Interest</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="distribution"><span jhiTranslate="homeApp.idea.distribution">Distribution</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="investment"><span jhiTranslate="homeApp.idea.investment">Investment</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -40,7 +39,6 @@
                     </a>
                 </td>
                 <td><div [innerHtml]="idea.description"></div></td>
-                <td jhiTranslate="{{'homeApp.Ideatype.' + idea.ideatype}}">{{idea.ideatype}}</td>
                 <td>{{idea.interest}}</td>
                 <td>{{idea.distribution}}</td>
                 <td>{{idea.investment}}</td>
