@@ -4,6 +4,8 @@ import net.createyourideas.accounting.domain.Balance;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Repository;
 @SuppressWarnings("unused")
 @Repository
 public interface BalanceRepository extends JpaRepository<Balance, Long> {
+
+    Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable);
 
     List<Balance> findAllByIdeaId(Long ideaId);
 }

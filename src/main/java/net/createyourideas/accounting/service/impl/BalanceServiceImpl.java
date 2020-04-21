@@ -77,11 +77,14 @@ public class BalanceServiceImpl implements BalanceService {
         log.debug("Request to delete Balance : {}", id);
         balanceRepository.deleteById(id);
     }
-
-
     @Override
     public List<Balance> findAllByIdeaId(Long ideaId) {
         log.debug("Request to get all Balances from specific idea");
         return balanceRepository.findAllByIdeaId(ideaId);
+    }
+    @Override
+    public Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable) {
+        log.debug("Request to get all Balances from specific idea");
+        return balanceRepository.findAllByIdeaId(ideaId, pageable);
     }
 }

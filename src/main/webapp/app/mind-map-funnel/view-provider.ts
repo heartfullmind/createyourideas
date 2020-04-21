@@ -419,6 +419,17 @@ export class ViewProvider {
     this._resetNodeCustomStyle(d, node.data);
     parentNode.appendChild(d);
     viewData.element = d;
+        let id;
+        const newResultBack = [];
+        node.readyFn().then((result) => {
+          result.forEach(balance => {
+            id = balance[0];
+            const newResult = [balance[1], balance[2], balance[3], balance[4], balance[5]];
+            newResultBack.push(newResult);
+          });
+          node.createBalanceTable(id, newResultBack);
+          this.resize();
+        });
   }
 
   removeNode(node) {

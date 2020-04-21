@@ -4,6 +4,10 @@ import {CurrencyPipe} from '@angular/common';
 import {PercentPipe} from '@angular/common';
 import { ServiceLocator } from 'app/locale.service';
 import { ServiceProvider } from 'app/services.service';
+import { BalanceService } from '../entities/balance/balance.service';
+import * as $ from 'jquery';
+import 'datatables.net';
+import 'datatables.net-dt';
 
 interface NodeData {
   view?: NodeView;
@@ -21,6 +25,7 @@ export class MindMapNode {
   static inherited;
 
   serviceProvider: ServiceProvider = ServiceLocator.injector.get(ServiceProvider);
+  balanceService: BalanceService = ServiceLocator.injector.get(BalanceService);
 
   id: string;
   index: any;
@@ -75,6 +80,7 @@ export class MindMapNode {
     profit?,
     profitToSpend?,
     netProfit?
+
   ) {
 
     if (!sId) {
@@ -118,14 +124,12 @@ export class MindMapNode {
     this.profit = profit;
     this.profitToSpend = profitToSpend;
     this.netProfit = netProfit;
-  }
 
-  init() {
   }
 
   show() {
-    if (this.selectedType && this.selectable !== false) {
-      return (
+      // this.init()
+      const nodeView =
         /* '[' +
         this.selectedType +
         ']' + */
@@ -144,55 +148,48 @@ export class MindMapNode {
         '<tr><td>Investment:</td><td>' +
         this.cPipe.transform(this.investment) +
         '</td></tr>' +
-        '<tr><td>Daily Balance:</td><td>' +
-        this.cPipe.transform(this.dailyBalance) +
-        '</td></tr>' +
-        '<tr><td>Profit:</td><td>' +
-        this.cPipe.transform(this.profit) +
-        '</td></tr>' +
-        '<tr><td>3/4 of the profit:</td><td>' +
-        this.cPipe.transform(this.profitToSpend) +
-        '</td></tr>' +
-        '<tr><td>Net-Profit:</td><td>' +
-        this.cPipe.transform(this.netProfit) +
-        '</td></tr>' +
-        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
-        '</table>'
-      );
-    } else {
-      return (
-        "<table id='calcinfo'>" +
-        '<tr><td><span class="title">Idea:</span></td><td>' +
-        '<span class="title"><a href="/idea-pinwall;id=' + this.id + '">' +
-        this.topic +
-        '</a></span>' +
-        '</td></tr>' +
-        '<tr><td>Interest:</td><td>' +
-        this.pPipe.transform(this.interest) +
-        '</td></tr>' +
-        '<tr><td>Distribution:</td><td>' +
-        this.pPipe.transform(this.distribution) +
-        '</td></tr>' +
-        '<tr><td>Investment:</td><td>' +
-        this.cPipe.transform(this.investment) +
-        '</td></tr>' +
-        '<tr><td>Daily Balance:</td><td>' +
-        this.cPipe.transform(this.dailyBalance) +
-        '</td></tr>' +
-        '<tr><td>Profit:</td><td>' +
-        this.cPipe.transform(this.profit) +
-        '</td></tr>' +
-        '<tr><td>3/4 of the profit:</td><td>' +
-        this.cPipe.transform(this.profitToSpend) +
-        '</td></tr>' +
-        '<tr><td>Net-Profit:</td><td>' +
-        this.cPipe.transform(this.netProfit) +
-        '</td></tr>' +
-        // '<tr><td><img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 70px;max-width: 200px;" alt="idea image"/></td></tr>' +
-        '</table>'
-      );
-    }
-  }
+        '</table>' +
+       '<div id="accordion-' + this.id + '">' +
+        '<h3>Balance</h3>' +
+        '<div>' +
+        '<table id="balance-' + this.id + '" class="display" width="530px"></table>' +
+        '</div>' +
+        '<h3>Logo</h3>' +
+        '<div>' +
+        '<img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 200px;max-width: 400px;" alt="idea image"/>' +
+        '</div>' +
+      '</div>';
+  return nodeView;
+}
+
+readyFn() {
+
+  return new Promise(resolve => {
+    let balance;
+    const dataset = [];
+    this.balanceService.queryByIdeaId(Number(this.id)).subscribe(res => {
+      balance = res.body;
+      balance.forEach(b => {
+        const data = [this.id.toString(), b.date._i, b.dailyBalance.toString(), b.profit.toString(), b.profitToSpend.toString(), b.netProfit.toString()];
+        dataset.push(data);
+        resolve(dataset);
+     });
+    });
+  })
+}
+
+createBalanceTable(id, dataset) {
+  $('#balance-' + id).DataTable( {
+    data: dataset,
+    columns: [
+        { title: "Date" },
+        { title: "Daily balance" },
+        { title: "Profit" },
+        { title: "Profiit to spend" },
+        { title: "Net profit" }
+    ]
+  } );
+}
 
 
   getLocation() {

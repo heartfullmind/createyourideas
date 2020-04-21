@@ -46,5 +46,7 @@ public interface BalanceService {
     void delete(Long id);
 
 
+    Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable);
+
     List<Balance> findAllByIdeaId(Long ideaId);
 }

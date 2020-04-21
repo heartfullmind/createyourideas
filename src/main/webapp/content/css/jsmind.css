@@ -23,7 +23,9 @@
   user-select: none;
 }
 
-
+.dataTables_wrapper {
+  color: #000;
+}
 
 .title {
   font-size: large;

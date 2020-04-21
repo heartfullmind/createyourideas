@@ -99,6 +99,14 @@ public class BalanceResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/balances/queryByIdeaId/{ideaId}")
+    public ResponseEntity<List<Balance>> getAllBalancesByIdeaId(@PathVariable Long ideaId, Pageable pageable) {
+        log.debug("REST request to get a page of Balances");
+        Page<Balance> page = balanceService.findAllByIdeaId(ideaId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
     /**
      * {@code GET  /balances/:id} : get the "id" balance.
      *
