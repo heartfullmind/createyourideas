@@ -1,7 +1,7 @@
 import { logger } from './config';
 import { FinanceService } from 'app/finance.service';
-import {CurrencyPipe} from '@angular/common';
-import {PercentPipe} from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
+import { PercentPipe } from '@angular/common';
 import { ServiceLocator } from 'app/locale.service';
 import { ServiceProvider } from 'app/services.service';
 import { BalanceService } from '../entities/balance/balance.service';
@@ -56,7 +56,6 @@ export class MindMapNode {
   cPipe: CurrencyPipe;
   pPipe: PercentPipe;
 
-
   constructor(
     sId,
     iIndex,
@@ -80,9 +79,7 @@ export class MindMapNode {
     profit?,
     profitToSpend?,
     netProfit?
-
   ) {
-
     if (!sId) {
       logger.error('invalid nodeid');
       return;
@@ -124,73 +121,90 @@ export class MindMapNode {
     this.profit = profit;
     this.profitToSpend = profitToSpend;
     this.netProfit = netProfit;
-
   }
 
   show() {
-      // this.init()
-      const nodeView =
-        /* '[' +
+    // this.init()
+    const nodeView =
+      /* '[' +
         this.selectedType +
         ']' + */
-        "<table id='calcinfo'>" +
-        '<tr><td><span class="title">Idea:</span></td><td>' +
-        '<span class="title"><a href="/idea-pinwall;id=' + this.id + '">' +
-        this.topic +
-        '</a></span>' +
-        '</td></tr>' +
-        '<tr><td>Interest:</td><td>' +
-        this.pPipe.transform(this.interest) +
-        '</td></tr>' +
-        '<tr><td>Distribution:</td><td>' +
-        this.pPipe.transform(this.distribution) +
-        '</td></tr>' +
-        '<tr><td>Investment:</td><td>' +
-        this.cPipe.transform(this.investment) +
-        '</td></tr>' +
-        '</table>' +
-       '<div id="accordion-' + this.id + '">' +
-        '<h3>Balance</h3>' +
-        '<div>' +
-        '<table id="balance-' + this.id + '" class="display" width="530px"></table>' +
-        '</div>' +
-        '<h3>Logo</h3>' +
-        '<div>' +
-        '<img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 200px;max-width: 550px;" alt="idea image"/>' +
-        '</div>' +
+      "<table id='calcinfo'>" +
+      '<tr><td><span class="title">Idea:</span></td><td>' +
+      '<span class="title"><a href="/idea-pinwall;id=' +
+      this.id +
+      '">' +
+      this.topic +
+      '</a></span>' +
+      '</td></tr>' +
+      '<tr><td>Interest:</td><td>' +
+      this.pPipe.transform(this.interest) +
+      '</td></tr>' +
+      '<tr><td>Distribution:</td><td>' +
+      this.pPipe.transform(this.distribution) +
+      '</td></tr>' +
+      '<tr><td>Investment:</td><td>' +
+      this.cPipe.transform(this.investment) +
+      '</td></tr>' +
+      '</table>' +
+      '<div id="accordion-' +
+      this.id +
+      '">' +
+      '<h3>Balance</h3>' +
+      '<div>' +
+      '<table id="balance-' +
+      this.id +
+      '" class="display" width="530px"></table>' +
+      '</div>' +
+      '<h3>Logo</h3>' +
+      '<div>' +
+      '<img src="data:' +
+      this.logoContentType +
+      ';base64,' +
+      this.logo +
+      '" style="max-height: 200px;max-width: 550px;" alt="idea image"/>' +
+      '</div>' +
       '</div>';
-  return nodeView;
-}
+    return nodeView;
+  }
 
-readyFn() {
-
-  return new Promise(resolve => {
-    let balance;
-    const dataset = [];
-    this.balanceService.queryByIdeaId(Number(this.id)).subscribe(res => {
-      balance = res.body;
-      balance.forEach(b => {
-        const data = [this.id.toString(), b.date._i, b.dailyBalance.toString(), b.profit.toString(), b.profitToSpend.toString(), b.netProfit.toString()];
-        dataset.push(data);
-        resolve(dataset);
-     });
+  readyFn() {
+    return new Promise(resolve => {
+      let balance;
+      const dataset = [];
+      this.balanceService.queryByIdeaId(Number(this.id)).subscribe(res => {
+        balance = res.body;
+        balance.forEach(b => {
+          const data = [
+            this.id.toString(),
+            b.date._i,
+            b.dailyBalance.toString(),
+            b.profit.toString(),
+            b.profitToSpend.toString(),
+            b.netProfit.toString()
+          ];
+          dataset.push(data);
+          resolve(dataset);
+        });
+      });
     });
-  })
-}
+  }
 
-createBalanceTable(id, dataset) {
-  $('#balance-' + id).DataTable( {
-    data: dataset,
-    columns: [
-        { title: "Date" },
-        { title: "Daily balance" },
-        { title: "Profit" },
-        { title: "Profiit to spend" },
-        { title: "Net profit" }
-    ]
-  } );
-}
-
+  createBalanceTable(id, dataset) {
+    return new Promise(resolve => {
+      $('#balance-' + id).DataTable({
+        data: dataset,
+        columns: [
+          { title: 'Date' },
+          { title: 'Daily balance' },
+          { title: 'Profit' },
+          { title: 'Profiit to spend' },
+          { title: 'Net profit' }
+        ]
+      });
+      resolve(true);
+    });
+  }
 
   getLocation() {
     const vd = this._data.view;

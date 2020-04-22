@@ -2,6 +2,7 @@ package net.createyourideas.accounting.repository;
 
 import net.createyourideas.accounting.domain.Balance;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +21,6 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> {
     Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable);
 
     List<Balance> findAllByIdeaId(Long ideaId);
+
+    Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date);
 }

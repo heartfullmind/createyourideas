@@ -5,6 +5,7 @@ import net.createyourideas.accounting.domain.Balance;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,4 +50,6 @@ public interface BalanceService {
     Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable);
 
     List<Balance> findAllByIdeaId(Long ideaId);
+
+    Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date);
 }

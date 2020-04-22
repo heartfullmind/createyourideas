@@ -86,10 +86,12 @@ public class IdeaFunnelResource {
             balance.setIdea(idea);
             Set<Balance> balances = idea.getBalances();
             balances.add(balance);
+            balanceService.save(balance);
 
         }
         Integer count = 0;
         for(Idea idea : ideas) {
+            /*
             count++;
             Iterator<Balance> iterator = idea.getBalances().iterator();
             Balance balance = null;
@@ -100,19 +102,21 @@ public class IdeaFunnelResource {
                     break;
                 }
             }
+            */
+            Balance balance = balanceService.findOneByIdeaIdAndDate(idea.getId(), LocalDate.now());
             Float profit = this.calcService.getProfitFromNode(idea.getId(), balance);
             balance.setProfit(profit);
             Float profitToSpend = this.calcService.getProfitToSpend(idea.getId(), balance);
             balance.setProfitToSpend(profitToSpend);
             Float netProfit = this.calcService.getNetProfit(idea.getId(), balance);
             balance.setNetProfit(netProfit);
-            Float collectionRoot = this.calcService.getCollectionFromRoot(balance);
-            if(idea.getId() == 1 && count == ideas.size()) {
+            //Float collectionRoot = this.calcService.getCollectionFromRoot(balance);
+            /*if(idea.getId() == 1 && count == ideas.size()) {
                 Idea root = this.ideaService.findOne(1l).get();
                 Iterator<Balance> iteratorRoot = root.getBalances().iterator();
                 Balance balanceRoot = null;
                 while(iteratorRoot.hasNext()) {
-                    balanceRoot = iterator.next();
+                    balanceRoot = iteratorRoot.next();
                     LocalDate now = LocalDate.now();
                     if(balance.getDate() == now) {
                         break;
@@ -121,9 +125,9 @@ public class IdeaFunnelResource {
                 balanceRoot.setProfitToSpend(0f);
             } else {
                 balance.setNetProfit(balance.getNetProfit() + collectionRoot);
-            }
+            } */
 
-            balanceService.save(balance);
+
         }
     }
 

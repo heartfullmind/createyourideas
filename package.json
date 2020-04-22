@@ -47,7 +47,7 @@
     "igniteui-angular": "^8.2.13",
     "jquery": "^3.4.1",
     "jquery-contextmenu": "^2.9.0",
-    "jquery-ui": "^1.12.1",
+    "jquery-ui-dist": "^1.12.1",
     "mdbootstrap": "^4.10.1",
     "moment": "2.24.0",
     "ng-jhipster": "0.11.4",

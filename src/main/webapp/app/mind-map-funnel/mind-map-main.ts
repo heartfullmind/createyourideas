@@ -240,11 +240,11 @@ export class MindMapMain {
   }
 
   async calculateAll() {
-      await this.calc.calculateDailyBalance();
-      await this.calc.calculateProfitFromNodes();
-      await this.calc.calculateProfitToSpend();
-      await this.calc.calculateNetProfit();
-      await this.calc.calculateCollection();
+    await this.calc.calculateDailyBalance();
+    await this.calc.calculateProfitFromNodes();
+    await this.calc.calculateProfitToSpend();
+    await this.calc.calculateNetProfit();
+    await this.calc.calculateCollection();
   }
 
   getParent(node) {
@@ -309,8 +309,6 @@ export class MindMapMain {
     }
   }
 
-
-
   collapseNode(node) {
     if (!customizeUtil.isNode(node)) {
       return this.collapseNode(this.getNode(node));
@@ -350,27 +348,30 @@ export class MindMapMain {
   }
 
   _show(mind) {
-
-    this.view.load();
-    logger.debug('view.load ok');
-
-    this.layout.layout();
-    logger.debug('layout.layout ok');
-
-    this.view.show(true);
-    logger.debug('view.show ok');
-
+    this.view
+      .load()
+      .then(() => {
+        logger.debug('view.load ok');
+      })
+      .then(() => {
+        this.layout.layout();
+        logger.debug('layout.layout ok');
+      })
+      .then(() => {
+        this.view.show(true);
+        logger.debug('view.show ok');
+      });
     this.invokeEventHandleNextTick(MindMapMain.eventType.show, { data: [mind] });
   }
 
   // show entrance
   show(mind) {
-      this._reset();
-      this._show(mind);
+    this._reset();
+    this._show(mind);
   }
 
   fetchData(mind): Promise<any> {
-    return new Promise<any>((resolve) => {
+    return new Promise<any>(resolve => {
       const m = mind || customizeFormat.nodeArray.example;
       this.data.load(m, this.opts, this.calc).then(value => {
         this.mind = value;
@@ -384,7 +385,6 @@ export class MindMapMain {
       });
     });
   }
-
 
   getMeta() {
     return {
@@ -430,21 +430,7 @@ export class MindMapMain {
     return _.find(this.options.hierarchyRule, { name: parentNode.selectedType }).getChildren()[0];
   }
 
-  addNode(
-    parentNode,
-    nodeid,
-    topic,
-    data,
-    idx,
-    direction?,
-    expanded?,
-    selectedType?,
-    selectable?,
-    interest?,
-    investment?,
-    distribution?
-  ) {
-
+  addNode(parentNode, nodeid, topic, data, idx, direction?, expanded?, selectedType?, selectable?, interest?, investment?, distribution?) {
     data = data || {};
     data.isCreated = true;
     if (this.options.depth && parentNode.level >= this.options.depth) {
@@ -866,12 +852,3 @@ MindMapMain.initPlugins = function(sender) {
     }
   }
 };
-
-/*
-// quick way
-MindMapMain.show = function(options, mind) {
-  const _jm = new MindMapMain(options);
-  _jm.show(mind);
-  return _jm;
-};
-*/

@@ -312,14 +312,17 @@ export class ViewProvider {
   resetCustomStyle() {
     const nodes = this.jm.mind.nodes;
     for (const nodeid in nodes) {
-      if(nodeid)
-        this.resetNodeCustomStyle(nodes[nodeid]);
+      if (nodeid) this.resetNodeCustomStyle(nodes[nodeid]);
     }
   }
 
   load() {
-    logger.debug('view.load');
-    this.initNodes();
+    return new Promise(resolve => {
+      logger.debug('view.load');
+      this.initNodes().then(() => {
+        resolve(true);
+      });
+    });
   }
 
   expandSize() {
@@ -338,24 +341,26 @@ export class ViewProvider {
     this.size.h = clientH;
   }
 
-  initNodesSize(node) {
+  initNodesSize(node, table?) {
     const viewData = node._data.view;
     viewData.width = viewData.element.clientWidth;
-    viewData.height = viewData.element.clientHeight;
+    if (table) viewData.height = viewData.element.clientHeight + table;
+    else viewData.height = viewData.element.clientHeight;
   }
 
   initNodes() {
-    const nodes = this.jm.mind.nodes;
-    const docFrag = $document.createDocumentFragment();
-    for (const nodeid in nodes) {
-      if(nodeid)
-        this.createNodeElement(nodes[nodeid], docFrag);
-    }
-    this.eNodes.appendChild(docFrag);
-    for (const nodeid in nodes) {
-      if(nodeid)
-        this.initNodesSize(nodes[nodeid]);
-    }
+    return new Promise(resolve => {
+      const nodes = this.jm.mind.nodes;
+      const docFrag = $document.createDocumentFragment();
+      for (const nodeid in nodes) {
+        if (nodeid) this.createNodeElement(nodes[nodeid], docFrag);
+      }
+      this.eNodes.appendChild(docFrag);
+      for (const nodeid in nodes) {
+        if (nodeid) this.initNodesSize(nodes[nodeid]);
+      }
+      resolve(true);
+    });
   }
 
   addNode(node) {
@@ -414,21 +419,26 @@ export class ViewProvider {
         $text(d, node.show());
       }
     }
-    let id;
-    const newResultBack = [];
-    node.readyFn().then((result) => {
-      result.forEach(balance => {
-        id = balance[0];
-        const newResult = [balance[1], balance[2], balance[3], balance[4], balance[5]];
-        newResultBack.push(newResult);
-      });
-      node.createBalanceTable(id, newResultBack);
-    });
+
     d.setAttribute('nodeid', node.id);
     d.style.visibility = 'hidden';
     this._resetNodeCustomStyle(d, node.data);
     parentNode.appendChild(d);
     viewData.element = d;
+    let id;
+    const newResultBack = [];
+    node.readyFn().then(result => {
+      result.forEach(balance => {
+        id = balance[0];
+        const newResult = [balance[1], balance[2], balance[3], balance[4], balance[5]];
+        newResultBack.push(newResult);
+      });
+      node.createBalanceTable(id, newResultBack).then(() => {
+        const i = document.getElementById('balance-' + id);
+        this.initNodesSize(node, i.clientHeight);
+        this._show();
+      });
+    });
   }
 
   removeNode(node) {
@@ -733,9 +743,9 @@ export class ViewProvider {
     const nodes = mind.nodes;
     let node = null;
     for (const nodeid in nodes) {
-      if(nodeid) {
+      if (nodeid) {
         node = nodes[nodeid];
-        if(node._data.view) {
+        if (node._data.view) {
           node._data.view.element = null;
           node._data.view.expander = null;
         }
@@ -756,7 +766,7 @@ export class ViewProvider {
     let viewData = null;
     const _offset = this.getViewOffset();
     for (const nodeid in nodes) {
-      if(nodeid){
+      if (nodeid) {
         node = nodes[nodeid];
         viewData = node._data.view;
         nodeElement = viewData.element;
@@ -875,7 +885,7 @@ export class ViewProvider {
     let pout = null;
     const _offset = this.getViewOffset();
     for (const nodeid in nodes) {
-      if(nodeid) {
+      if (nodeid) {
         node = nodes[nodeid];
         if (node.isroot) {
           continue;

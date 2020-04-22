@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,5 +87,10 @@ public class BalanceServiceImpl implements BalanceService {
     public Page<Balance> findAllByIdeaId(Long ideaId, Pageable pageable) {
         log.debug("Request to get all Balances from specific idea");
         return balanceRepository.findAllByIdeaId(ideaId, pageable);
+    }
+
+    public Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date) {
+        log.debug("Request to get one Balances from specific idea and date");
+        return balanceRepository.findOneByIdeaIdAndDate(ideaId, date);
     }
 }
