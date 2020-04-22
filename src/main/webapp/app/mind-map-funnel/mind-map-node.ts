@@ -156,7 +156,7 @@ export class MindMapNode {
         '</div>' +
         '<h3>Logo</h3>' +
         '<div>' +
-        '<img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 200px;max-width: 400px;" alt="idea image"/>' +
+        '<img src="data:' + this.logoContentType + ';base64,' + this.logo + '" style="max-height: 200px;max-width: 550px;" alt="idea image"/>' +
         '</div>' +
       '</div>';
   return nodeView;

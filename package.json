@@ -20,7 +20,6 @@
     "@angular/platform-browser": "8.2.4",
     "@angular/platform-browser-dynamic": "8.2.4",
     "@angular/router": "8.2.4",
-    "@bit/valor-software.ngx-bootstrap.accordion": "^5.1.1",
     "@ckeditor/ckeditor5-angular": "^1.2.3",
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@fortawesome/angular-fontawesome": "0.5.0",

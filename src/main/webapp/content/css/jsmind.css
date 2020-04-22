@@ -59,7 +59,7 @@ jmnodes {
 jmnode {
   position: absolute;
   cursor: default;
-  max-width: 400px;
+  width: 600px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -98,9 +98,7 @@ jmnode.selected {
   color: #fff;
   box-shadow: 2px 2px 8px #000;
 }
-jmnode.root {
-  font-size: 24px;
-}
+
 jmexpander {
   border-color: gray;
 }
