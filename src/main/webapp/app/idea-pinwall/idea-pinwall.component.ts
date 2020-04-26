@@ -12,7 +12,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['idea-pinwall.scss']
 })
 export class IdeaPinwallComponent implements OnInit {
-
   ideas: IIdea[];
   selectedIdea: IIdea;
   paramId: number;
@@ -25,30 +24,30 @@ export class IdeaPinwallComponent implements OnInit {
     protected ideaService: IdeaService,
     protected dataUtils: JhiDataUtils,
     public fb: FormBuilder,
-    protected activatedRoute: ActivatedRoute) {}
+    protected activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    if(!this.activatedRoute.snapshot.params.id) {
-      this.paramId = 0;
-    } else {
-      this.paramId = this.activatedRoute.snapshot.params.id;
-    }
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (!params) this.paramId = 0;
+      else this.paramId = params['id'];
+    });
     this.loadAll();
   }
 
   loadAll() {
-    this.ideaService
-      .query()
-      .subscribe((res: HttpResponse<IIdea[]>) => { this.ideas = res.body; });
+    this.ideaService.query().subscribe((res: HttpResponse<IIdea[]>) => {
+      this.ideas = res.body;
+    });
   }
 
   changeIdea() {
-    this.ideaService.find(parseInt(this.selectIdeaForm.get("ideaName").value, 10)).subscribe((res: HttpResponse<IIdea>) =>
-      { this.selectedIdea = res.body; })
+    this.ideaService.find(parseInt(this.selectIdeaForm.get('ideaName').value, 10)).subscribe((res: HttpResponse<IIdea>) => {
+      this.selectedIdea = res.body;
+    });
   }
 
   openFile(contentType, field) {
     return this.dataUtils.openFile(contentType, field);
   }
-
 }

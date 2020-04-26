@@ -4,7 +4,7 @@
         <form [formGroup]="selectIdeaForm" >
                 <h1 jhiTranslate="homeapp.selectIdea.main.selectIdea">Select idea</h1>
                 <select id="changeIdea" class="custom-select"  formControlName="ideaName" (ngModelChange)="changeIdea()" [(ngModel)]='paramId'>
-                    <option value="0" disabled>Choose your idea</option>
+                    <option [value]="0" disabled>Choose your idea</option>
                     <option *ngFor="let idea of ideas" [value]="idea.id">{{idea.title}}</option>
                 </select>
             </form>

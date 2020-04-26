@@ -112,21 +112,21 @@ export class MindMapNode {
         ']' + */
       '<table id="balanceinfo-' +
       this.id +
-      '">' +
+      '" class="calcinfo">' +
       '<tr><td><span class="title-mindmap-funnel">Idea:</span></td><td>' +
-      '<span class="title-link-mindmap-funnel"><a href="/idea-pinwall?id=' +
+      '<span class="title-mindmap-funnel"><a href="/idea-pinwall?id=' +
       this.id +
       '">' +
       this.topic +
       '</a></span>' +
       '</td></tr>' +
-      '<tr><td><span class="title-mindmap-funnel">Interest:</span></td><td>' +
+      '<tr><td><span class="calcinfo-mindmap-funnel">Interest:</span></td><td>' +
       this.pPipe.transform(this.interest) +
       '</td></tr>' +
-      '<tr><td><span class="title-mindmap-funnel">Distribution:</span></td><td>' +
+      '<tr><td><span class="calcinfo-mindmap-funnel">Distribution:</span></td><td>' +
       this.pPipe.transform(this.distribution) +
       '</td></tr>' +
-      '<tr><td><span class="title-mindmap-funnel">Investment:</span></td><td>' +
+      '<tr><td><span class="calcinfo-mindmap-funnel">Investment:</span></td><td>' +
       this.cPipe.transform(this.investment) +
       '</td></tr>' +
       '</table>' +

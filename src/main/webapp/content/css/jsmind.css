@@ -24,25 +24,39 @@
 }
 
 .dataTables_wrapper {
+  border: 1px solid #fff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.dataTables_wrapper {
   color: #000;
 }
 
-.title {
-  font-size: large;
+.title-mindmap-funnel {
+  font-size: x-large;
   color: #fff;
 }
 
-.title a {
+.title-mindmap-funnel a {
   color: #fff;
   text-decoration: none;
-  border-bottom: .1em dashed yellowgreen;
+  border-bottom: 0.1em dashed yellowgreen;
 }
 
-.title a:hover {
+.title-mindmap-funnel a:hover {
   color: yellow;
   text-decoration: none;
 }
 
+.calcinfo-mindmap-funnel {
+  font-weight: bolder;
+}
+
+.calcinfo td,
+th {
+  padding: 5px;
+}
 
 /* z-index:1 */
 canvas {
@@ -410,5 +424,3 @@ jmnodes.theme-asbestos jmexpander {
 }
 jmnodes.theme-asbestos jmexpander:hover {
 }
-
-
