@@ -412,8 +412,9 @@ export class ViewProvider {
     const self = this;
     this._loadBalance(node.id).then(value => {
       $('#balanceprofit-' + node.id).DataTable({
-        initComplete: function(settings, json) {
+        initComplete() {
           self.initNodesSize(node, $('#balanceprofit-' + node.id).height()).then(() => {
+            self.relayout();
             self.layout.layoutOffset();
           });
         },
