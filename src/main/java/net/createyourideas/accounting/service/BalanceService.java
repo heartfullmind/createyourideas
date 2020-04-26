@@ -52,4 +52,6 @@ public interface BalanceService {
     List<Balance> findAllByIdeaId(Long ideaId);
 
     Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date);
+
+    List<Balance> findAll();
 }

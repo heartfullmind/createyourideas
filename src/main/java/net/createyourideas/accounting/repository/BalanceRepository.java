@@ -22,5 +22,7 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
     List<Balance> findAllByIdeaId(Long ideaId);
 
+    List<Balance> findAll();
+
     Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date);
 }

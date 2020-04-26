@@ -89,8 +89,15 @@ public class BalanceServiceImpl implements BalanceService {
         return balanceRepository.findAllByIdeaId(ideaId, pageable);
     }
 
+    @Override
     public Balance findOneByIdeaIdAndDate(Long ideaId, LocalDate date) {
         log.debug("Request to get one Balances from specific idea and date");
         return balanceRepository.findOneByIdeaIdAndDate(ideaId, date);
+    }
+
+    @Override
+    public List<Balance> findAll() {
+        log.debug("Request to get all Balances as list");
+        return balanceRepository.findAll();
     }
 }

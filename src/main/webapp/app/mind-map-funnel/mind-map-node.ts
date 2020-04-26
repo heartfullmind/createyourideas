@@ -2,12 +2,6 @@ import { logger } from './config';
 import { FinanceService } from 'app/finance.service';
 import { CurrencyPipe } from '@angular/common';
 import { PercentPipe } from '@angular/common';
-import { ServiceLocator } from 'app/locale.service';
-import { ServiceProvider } from 'app/services.service';
-import { BalanceService } from '../entities/balance/balance.service';
-import * as $ from 'jquery';
-import 'datatables.net';
-import 'datatables.net-dt';
 
 interface NodeData {
   view?: NodeView;
@@ -24,17 +18,12 @@ export class MindMapNode {
   static compare;
   static inherited;
 
-  serviceProvider: ServiceProvider = ServiceLocator.injector.get(ServiceProvider);
-  balanceService: BalanceService = ServiceLocator.injector.get(BalanceService);
-
   id: string;
   index: any;
   topic: string;
   interest: number;
   distribution: number;
   investment: number;
-  dailyBalance: number;
-  profit: number;
   selectedType: string;
   description: string;
   active: boolean;
@@ -51,10 +40,9 @@ export class MindMapNode {
   selectable: boolean;
   private _data: NodeData;
   financeService: FinanceService;
-  profitToSpend: number;
-  netProfit: number;
   cPipe: CurrencyPipe;
   pPipe: PercentPipe;
+  _this: MindMapNode;
 
   constructor(
     sId,
@@ -74,11 +62,7 @@ export class MindMapNode {
     sDescription?,
     bActive?,
     logo?,
-    logoContentType?,
-    dailyBalance?,
-    profit?,
-    profitToSpend?,
-    netProfit?
+    logoContentType?
   ) {
     if (!sId) {
       logger.error('invalid nodeid');
@@ -117,10 +101,7 @@ export class MindMapNode {
     this.pPipe = new PercentPipe('en-US');
     this.logo = logo;
     this.logoContentType = logoContentType;
-    this.dailyBalance = dailyBalance;
-    this.profit = profit;
-    this.profitToSpend = profitToSpend;
-    this.netProfit = netProfit;
+    this._this = this;
   }
 
   show() {
@@ -129,7 +110,9 @@ export class MindMapNode {
       /* '[' +
         this.selectedType +
         ']' + */
-      "<table id='calcinfo'>" +
+      '<table id="balanceinfo-' +
+      this.id +
+      '">' +
       '<tr><td><span class="title">Idea:</span></td><td>' +
       '<span class="title"><a href="/idea-pinwall;id=' +
       this.id +
@@ -147,15 +130,10 @@ export class MindMapNode {
       this.cPipe.transform(this.investment) +
       '</td></tr>' +
       '</table>' +
-      '<div id="accordion-' +
+      '<table id="balanceprofit-' +
       this.id +
-      '">' +
-      '<h3>Balance</h3>' +
-      '<div>' +
-      '<table id="balance-' +
-      this.id +
-      '" class="display" width="530px"></table>' +
-      '</div>' +
+      '" class="balanceprofit" width="100%"></table>';
+    /*
       '<h3>Logo</h3>' +
       '<div>' +
       '<img src="data:' +
@@ -163,47 +141,9 @@ export class MindMapNode {
       ';base64,' +
       this.logo +
       '" style="max-height: 200px;max-width: 550px;" alt="idea image"/>' +
-      '</div>' +
       '</div>';
+      */
     return nodeView;
-  }
-
-  readyFn() {
-    return new Promise(resolve => {
-      let balance;
-      const dataset = [];
-      this.balanceService.queryByIdeaId(Number(this.id)).subscribe(res => {
-        balance = res.body;
-        balance.forEach(b => {
-          const data = [
-            this.id.toString(),
-            b.date._i,
-            b.dailyBalance.toString(),
-            b.profit.toString(),
-            b.profitToSpend.toString(),
-            b.netProfit.toString()
-          ];
-          dataset.push(data);
-          resolve(dataset);
-        });
-      });
-    });
-  }
-
-  createBalanceTable(id, dataset) {
-    return new Promise(resolve => {
-      $('#balance-' + id).DataTable({
-        data: dataset,
-        columns: [
-          { title: 'Date' },
-          { title: 'Daily balance' },
-          { title: 'Profit' },
-          { title: 'Profiit to spend' },
-          { title: 'Net profit' }
-        ]
-      });
-      resolve(true);
-    });
   }
 
   getLocation() {
@@ -220,38 +160,6 @@ export class MindMapNode {
       w: vd.width,
       h: vd.height
     };
-  }
-
-  setProfit(profit: number) {
-    this.profit = profit;
-  }
-
-  getProfit() {
-    return this.profit;
-  }
-
-  setProfitToSpend(profit: number) {
-    this.profitToSpend = profit;
-  }
-
-  getProfitToSpend() {
-    return this.profitToSpend;
-  }
-
-  setNetProfit(profit: number) {
-    this.netProfit = profit;
-  }
-
-  getNetProfit() {
-    return this.netProfit;
-  }
-
-  setDailyBalance(dailyBalance: number) {
-    this.dailyBalance = dailyBalance;
-  }
-
-  getDailyBalance() {
-    return this.dailyBalance;
   }
 }
 

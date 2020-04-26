@@ -295,7 +295,7 @@ export class LayoutProvider {
     let node = null;
     let pout = null;
     for (const nodeid in nodes) {
-      if(nodeid) {
+      if (nodeid) {
         node = nodes[nodeid];
         pout = this.getNodePointOut(node);
         if (pout.x > this.bounds.e) {
@@ -329,11 +329,6 @@ export class LayoutProvider {
     this.setVisible(node.children, true);
   }
 
-  expandCalcInfo(node) {
-    this.partLayout(node);
-    this.setVisible(node.children, true);
-  }
-
   collapseNode(node) {
     node.expanded = false;
     this.partLayout(node);
@@ -345,7 +340,7 @@ export class LayoutProvider {
     let c = 0;
     let node;
     for (const nodeid in nodes) {
-      if(nodeid) {
+      if (nodeid) {
         node = nodes[nodeid];
         if (!node.expanded) {
           node.expanded = true;
@@ -365,7 +360,7 @@ export class LayoutProvider {
     let c = 0;
     let node;
     for (const nodeid in nodes) {
-      if(nodeid) {
+      if (nodeid) {
         node = nodes[nodeid];
         if (node.expanded && !node.isroot) {
           node.expanded = false;

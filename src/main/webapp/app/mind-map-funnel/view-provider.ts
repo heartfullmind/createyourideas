@@ -3,6 +3,10 @@ import { $create, $document, $get, $html, $text, logger } from './config';
 import { CalcProvider } from './mind-map-calc';
 import { MindMapMain } from './mind-map-main';
 import { customizeUtil } from './util';
+import { ServiceLocator } from 'app/locale.service';
+import { BalanceService } from 'app/entities/balance/balance.service';
+import * as $ from 'jquery';
+import 'datatables.net';
 
 export class ViewProvider {
   opts: any;
@@ -31,6 +35,7 @@ export class ViewProvider {
   maxZoom;
 
   calc: CalcProvider;
+  balanceService: BalanceService = ServiceLocator.injector.get(BalanceService);
 
   constructor(jm, options, calc) {
     this.opts = options;
@@ -342,10 +347,13 @@ export class ViewProvider {
   }
 
   initNodesSize(node, table?) {
-    const viewData = node._data.view;
-    viewData.width = viewData.element.clientWidth;
-    if (table) viewData.height = viewData.element.clientHeight + table;
-    else viewData.height = viewData.element.clientHeight;
+    return new Promise(resolve => {
+      const viewData = node._data.view;
+      viewData.width = viewData.element.clientWidth;
+      if (table) viewData.height = viewData.element.clientHeight + table;
+      else viewData.height = viewData.element.clientHeight;
+      resolve(true);
+    });
   }
 
   initNodes() {
@@ -380,6 +388,8 @@ export class ViewProvider {
     const d = $create('jmnode');
     d.setAttribute('class', 'jmnode');
     d.setAttribute('id', 'jmnode-' + node.id);
+    d.setAttribute('nodeid', node.id);
+    d.style.visibility = 'hidden';
     if (node.isroot) {
       d.className = 'root';
     } else {
@@ -390,53 +400,42 @@ export class ViewProvider {
       parentNode.appendChild(expander);
       viewData.expander = expander;
     }
-
-    if (node.topic) {
+    if (node.topic && node.interest && node.distribution && node.investment) {
       if (this.opts.supportHtml) {
         $html(d, node.show());
       } else {
         $text(d, node.show());
       }
     }
-    if (node.interest) {
-      if (this.opts.supportHtml) {
-        $html(d, node.show());
-      } else {
-        $text(d, node.show());
-      }
-    }
-    if (node.distribution) {
-      if (this.opts.supportHtml) {
-        $html(d, node.show());
-      } else {
-        $text(d, node.show());
-      }
-    }
-    if (node.investment) {
-      if (this.opts.supportHtml) {
-        $html(d, node.show());
-      } else {
-        $text(d, node.show());
-      }
-    }
-
-    d.setAttribute('nodeid', node.id);
-    d.style.visibility = 'hidden';
-    this._resetNodeCustomStyle(d, node.data);
     parentNode.appendChild(d);
     viewData.element = d;
-    let id;
-    const newResultBack = [];
-    node.readyFn().then(result => {
-      result.forEach(balance => {
-        id = balance[0];
-        const newResult = [balance[1], balance[2], balance[3], balance[4], balance[5]];
-        newResultBack.push(newResult);
+    const self = this;
+    this._loadBalance(node.id).then(value => {
+      $('#balanceprofit-' + node.id).DataTable({
+        initComplete: function(settings, json) {
+          self.initNodesSize(node, $('#balanceprofit-' + node.id).height()).then(() => {
+            self.layout.layoutOffset();
+          });
+        },
+        data: value,
+        columns: [{ title: 'Date' }, { title: 'Daily Balance' }, { title: 'Profit' }, { title: 'Profit to spend' }, { title: 'Net profit' }]
       });
-      node.createBalanceTable(id, newResultBack).then(() => {
-        const i = document.getElementById('balance-' + id);
-        this.initNodesSize(node, i.clientHeight);
-        this._show();
+    });
+  }
+
+  _loadBalance(id: number) {
+    const dataset = [];
+    return new Promise<any[]>(resolve => {
+      this.balanceService.queryByIdeaId(Number(id)).subscribe(res => {
+        const balances = res.body;
+        let i = 0;
+        balances.forEach(b => {
+          i++;
+          dataset.push([b.date._i, b.dailyBalance.toString(), b.profit.toString(), b.profitToSpend.toString(), b.netProfit.toString()]);
+          if (balances.length === i) {
+            resolve(dataset);
+          }
+        });
       });
     });
   }

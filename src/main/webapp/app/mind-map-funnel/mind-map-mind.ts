@@ -29,38 +29,33 @@ export class MindMapMind {
     }
   }
 
-  setRoot(nodeid, topic, data, interest?, distribution?, description?, active?, logo?, logoContentType?, dailyBalance?, profit?, profitToSpend?, netProfit?, investment?) {
-      if (this.root == null) {
-        this.root = new MindMapNode(
-          nodeid,
-          0,
-          topic,
-          data,
-          true,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          interest,
-          investment,
-          distribution,
-          description,
-          active,
-          logo,
-          logoContentType,
-          dailyBalance,
-          profit,
-          profitToSpend,
-          netProfit
-        );
-        this.putNode(this.root);
-      } else {
-        logger.error('root node is already exist');
-      }
+  setRoot(nodeid, topic, data, interest?, investment?, distribution?, description?, active?, logo?, logoContentType?) {
+    if (this.root == null) {
+      this.root = new MindMapNode(
+        nodeid,
+        0,
+        topic,
+        data,
+        true,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        interest,
+        investment,
+        distribution,
+        description,
+        active,
+        logo,
+        logoContentType
+      );
+      this.putNode(this.root);
+    } else {
+      logger.error('root node is already exist');
+    }
   }
-
 
   getCurrentHierarchyRule(parentNode) {
     if (!this.opts.hierarchyRule) {
@@ -71,8 +66,6 @@ export class MindMapMind {
     }
     return _.find(this.opts.hierarchyRule, { name: parentNode.selectedType }).getChildren()[0];
   }
-
-
 
   addNode(
     parentNode,
@@ -91,11 +84,7 @@ export class MindMapMind {
     description?,
     active?,
     logo?,
-    logoContentType?,
-    dailyBalance?,
-    profit?,
-    profitToSpend?,
-    netProfit?
+    logoContentType?
   ) {
     if (!customizeUtil.isNode(parentNode)) {
       return this.addNode(
@@ -115,19 +104,13 @@ export class MindMapMind {
         description,
         active,
         logo,
-        logoContentType,
-        dailyBalance,
-        profit,
-        profitToSpend,
-        netProfit
+        logoContentType
       );
     }
     const nodeindex = idx || -1;
 
     if (parentNode) {
       // logger.debug(parentNode);
-
-
 
       const currentRule = this.getCurrentHierarchyRule(parentNode);
       const selType = currentRule && currentRule.name;
@@ -142,8 +125,6 @@ export class MindMapMind {
       if (currentRule.color) {
         data['color'] = currentRule.color;
       }
-
-
 
       let node = null;
       if (parentNode.isroot) {
@@ -175,12 +156,7 @@ export class MindMapMind {
           description,
           active,
           logo,
-          logoContentType,
-          dailyBalance,
-          profit,
-          profitToSpend,
-          netProfit
-
+          logoContentType
         );
       } else {
         node = new MindMapNode(
@@ -201,11 +177,7 @@ export class MindMapMind {
           description,
           active,
           logo,
-          logoContentType,
-          dailyBalance,
-          profit,
-          profitToSpend,
-          netProfit
+          logoContentType
         );
       }
       if (this.putNode(node)) {
@@ -393,8 +365,7 @@ export class MindMapMind {
     delete this.nodes[node.id];
     // clean all properties
     for (const k in node) {
-      if(k)
-        delete node[k];
+      if (k) delete node[k];
     }
     // remove it's self
     node = null;

@@ -5,12 +5,7 @@ import { MindMapMain, MindMapModuleOpts } from './mind-map-main';
 import { MindMapMind } from './mind-map-mind';
 import { MindMapNode } from './mind-map-node';
 
-function getBasicMind(
-  source,
-  formatType: 'nodeTree' | 'nodeArray',
-  calc: CalcProvider,
-  opts: MindMapModuleOpts
-) {
+function getBasicMind(source, formatType: 'nodeTree' | 'nodeArray', calc: CalcProvider, opts: MindMapModuleOpts) {
   const df = customizeFormat[formatType];
   const mind = new MindMapMind(calc, opts);
   mind.name = _.get(source, 'meta.name', NAME);
@@ -38,7 +33,14 @@ export const customizeFormat = {
         version: VERSION
       },
       format: 'nodeTree',
-      data: { id: 'root', topic: 'Main Node', interest: '0.1', distribution: '0.03', investment: '15000', description: 'Muster muster muster...' }
+      data: {
+        id: 'root',
+        topic: 'Main Node',
+        interest: '0.1',
+        distribution: '0.03',
+        investment: '15000',
+        description: 'Muster muster muster...'
+      }
     },
     getMind(source, calc?: CalcProvider, opts?: MindMapModuleOpts) {
       return getBasicMind(source, 'nodeTree', calc, opts);
@@ -60,43 +62,22 @@ export const customizeFormat = {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(nodeRoot);
 
-      let dailyBalance;
-      let profit;
-      let profitToSpend;
-      let netProfit;
-      if(nodeRoot.balances.balance == null){
-        dailyBalance = 0;
-        profit = 0;
-        profitToSpend = 0;
-        netProfit = 0;
-      }
-      else {
-        dailyBalance = nodeRoot.balances.balance.dailyBalance;
-        profit = nodeRoot.balances.balance.profit;
-        profitToSpend = nodeRoot.balances.balance.profitToSpend;
-        netProfit = nodeRoot.balances.balance.netProfit;
-      }
-
       mind.setRoot(
         nodeRoot.id,
         nodeRoot.topic,
         data,
         nodeRoot.interest,
+        nodeRoot.investment,
         nodeRoot.distribution,
         nodeRoot.description,
         nodeRoot.active,
         nodeRoot.logo,
-        nodeRoot.logoContentType,
-        dailyBalance,
-        profit,
-        profitToSpend,
-        netProfit,
-        nodeRoot.investment
+        nodeRoot.logoContentType
       );
       if ('children' in nodeRoot) {
         const children = nodeRoot.children;
         for (let i = 0; i < children.length; i++) {
-         df._extractSubNode(mind, mind.root, children[i], calc);
+          df._extractSubNode(mind, mind.root, children[i], calc);
         }
       }
     },
@@ -117,11 +98,7 @@ export const customizeFormat = {
           k === 'description' ||
           k === 'active' ||
           k === 'logo' ||
-          k === 'logoContentType' ||
-          k === 'dailyBalance' ||
-          k === 'profit' ||
-          k === 'profitToSpend' ||
-          k === 'netProfit'
+          k === 'logoContentType'
         ) {
           continue;
         }
@@ -134,12 +111,7 @@ export const customizeFormat = {
       return data;
     },
 
-    _extractSubNode(
-      mind,
-      nodeParent,
-      nodeJson,
-      calc: CalcProvider,
-    ) {
+    _extractSubNode(mind, nodeParent, nodeJson, calc: CalcProvider) {
       const df = customizeFormat.nodeTree;
       const data = df._extractData(nodeJson);
       let d = null;
@@ -163,11 +135,7 @@ export const customizeFormat = {
         nodeJson.description,
         nodeJson.active,
         nodeJson.logo,
-        nodeJson.logoContentType,
-        nodeJson.balances.balance.dailyBalance,
-        nodeJson.balances.balance.profit,
-        nodeJson.balances.balance.profitToSpend,
-        nodeJson.balances.balance.netProfit
+        nodeJson.logoContentType
       );
 
       if ('children' in nodeJson) {
@@ -202,8 +170,7 @@ export const customizeFormat = {
       if (node.data != null) {
         const nodeData = node.data;
         for (const k in nodeData) {
-          if(k)
-            o[k] = nodeData[k];
+          if (k) o[k] = nodeData[k];
         }
       }
       const children = node.children;
@@ -263,23 +230,14 @@ export const customizeFormat = {
       }
     },
 
-    _extractRoot(
-      mind,
-      nodeArray,
-    ) {
+    _extractRoot(mind, nodeArray) {
       const df = customizeFormat.nodeArray;
       let i = nodeArray.length;
       while (i--) {
         if ('isroot' in nodeArray[i] && nodeArray[i].isroot) {
           const rootJson = nodeArray[i];
           const data = df._extractData(rootJson);
-          mind.setRoot(
-            rootJson.id,
-            rootJson.topic,
-            data,
-            rootJson.interest,
-            rootJson.distribution
-          );
+          mind.setRoot(rootJson.id, rootJson.topic, data, rootJson.interest, rootJson.distribution);
           nodeArray.splice(i, 1);
           return rootJson.id;
         }
@@ -287,11 +245,7 @@ export const customizeFormat = {
       return null;
     },
 
-    _extractSubNode(
-      mind,
-      parentid,
-      nodeArray,
-    ) {
+    _extractSubNode(mind, parentid, nodeArray) {
       const df = customizeFormat.nodeArray;
       let i = nodeArray.length;
       let nodeJson = null;
@@ -318,7 +272,7 @@ export const customizeFormat = {
             null,
             nodeJson.interest,
             nodeJson.investment,
-            nodeJson.distribution,
+            nodeJson.distribution
           );
           nodeArray.splice(i, 1);
           extractCount++;
@@ -377,8 +331,7 @@ export const customizeFormat = {
       if (node.data != null) {
         const nodeData = node.data;
         for (const k in nodeData) {
-          if(k)
-            o[k] = nodeData[k];
+          if (k) o[k] = nodeData[k];
         }
       }
       nodeArray.push(o);
@@ -563,8 +516,7 @@ export const customizeFormat = {
       const nodeData = node.data;
       if (nodeData != null) {
         for (const k in nodeData) {
-          if(k)
-            xmllines.push('<attribute NAME="' + k + '" VALUE="' + nodeData[k] + '"/>');
+          if (k) xmllines.push('<attribute NAME="' + k + '" VALUE="' + nodeData[k] + '"/>');
         }
       }
 
