@@ -432,7 +432,8 @@ export class ViewProvider {
         let i = 0;
         balances.forEach(b => {
           i++;
-          dataset.push([b.date._i, b.dailyBalance.toString(), b.profit.toString(), b.profitToSpend.toString(), b.netProfit.toString()]);
+          const ts = b.date.get('year') + '-' + (Number(b.date.get('month')) + 1) + '-' + b.date.get('date');
+          dataset.push([ts, b.dailyBalance.toString(), b.profit.toString(), b.profitToSpend.toString(), b.netProfit.toString()]);
           if (balances.length === i) {
             resolve(dataset);
           }
