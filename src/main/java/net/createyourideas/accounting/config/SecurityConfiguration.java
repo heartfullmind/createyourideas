@@ -89,6 +89,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/ideas/ideafunnel").permitAll()
             .antMatchers("/api/calculation/**").permitAll()
             .antMatchers("/api/balances/**").permitAll()
+            .antMatchers("/feedback/**").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()

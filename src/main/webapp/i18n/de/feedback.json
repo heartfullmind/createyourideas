@@ -1,0 +1,26 @@
+{
+  "homeApp": {
+    "feedback": {
+      "home": {
+        "title": "Feedbacks",
+        "createLabel": "Feedback erstellen",
+        "createOrEditLabel": "Geben Sie uns ein Feedback!",
+        "notFound": "No Feedbacks found"
+      },
+      "created": "Feedback erstellt mit ID {{ param }}",
+      "updated": "Feedback aktualisiert mit ID {{ param }}",
+      "deleted": "Feedback gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Feedback {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Feedback"
+      },
+      "creationDate": "Creation Date",
+      "name": "Name",
+      "email": "Email",
+      "feedback": "Feedback",
+      "description": "Bitte helfen Sie uns, diese Plattform für alle zu einem neuartigen Markt machen. Dazu sind wir zwingend angewiesen auf so viel wie mögliche Feedbacks und Inputs ihrerseits. Weiter können Sie auch bei Fragen oder Unklarheiten sich über dieses Formular hier bei uns melden. Wir versuchen so schnell wie möglich Ihnen konkrete Antworten zu senden. Danke für Ihr Verständnis."
+    }
+  }
+}

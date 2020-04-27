@@ -1,0 +1,26 @@
+{
+  "homeApp": {
+    "feedback": {
+      "home": {
+        "title": "Feedbacks",
+        "createLabel": "Create a new Feedback",
+        "createOrEditLabel": "Give us a feedback!",
+        "notFound": "No Feedbacks found"
+      },
+      "created": "A new Feedback is created with identifier {{ param }}",
+      "updated": "A Feedback is updated with identifier {{ param }}",
+      "deleted": "A Feedback is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Feedback {{ id }}?"
+      },
+      "detail": {
+        "title": "Feedback"
+      },
+      "creationDate": "Creation Date",
+      "name": "Name",
+      "email": "Email",
+      "feedback": "Feedback",
+      "description": "Please help us make this platform a new market for everyone. To do this, we are absolutely dependent on as much feedback and input as possible from you. You can also contact us using this form if you have any questions or anything is unclear. We try to send you concrete answers as soon as possible. Thank you for your comprehension."
+    }
+  }
+}

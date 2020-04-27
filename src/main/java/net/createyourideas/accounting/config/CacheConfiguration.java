@@ -58,6 +58,7 @@ public class CacheConfiguration {
             createCache(cm, net.createyourideas.accounting.domain.ProfitBalance.class.getName() + ".ideas");
             createCache(cm, net.createyourideas.accounting.domain.Idea.class.getName() + ".balances");
             createCache(cm, net.createyourideas.accounting.domain.Balance.class.getName());
+            createCache(cm, net.createyourideas.accounting.domain.Feedback.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

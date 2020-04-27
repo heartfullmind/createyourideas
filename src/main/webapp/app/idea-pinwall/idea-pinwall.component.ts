@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 export class IdeaPinwallComponent implements OnInit {
   ideas: IIdea[];
   selectedIdea: IIdea;
-  paramId: number;
+  paramId: number = 0;
 
   selectIdeaForm = this.fb.group({
     ideaName: ['']
@@ -29,8 +29,8 @@ export class IdeaPinwallComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe(params => {
-      if (!params) this.paramId = 0;
-      else this.paramId = params['id'];
+      this.paramId = 0;
+      if (params) this.paramId = params['id'];
     });
     this.loadAll();
   }

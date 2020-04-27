@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { PledgeRoutingModule } from './pledge-routing.module';
 import { PledgeComponent } from './pledge.component';
 import { HomeSharedModule } from 'app/shared/shared.module';
-
+import { RouterModule } from '@angular/router';
+import { PLEDGE_ROUTE } from './pledge.route';
 
 @NgModule({
   declarations: [PledgeComponent],
-  imports: [
-    HomeSharedModule,
-    CommonModule,
-    PledgeRoutingModule
-  ]
+  imports: [HomeSharedModule, CommonModule, RouterModule.forChild([PLEDGE_ROUTE])],
+  exports: [RouterModule]
 })
-export class PledgeModule { }
+export class PledgeModule {}

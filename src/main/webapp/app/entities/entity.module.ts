@@ -27,6 +27,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'balance',
         loadChildren: () => import('./balance/balance.module').then(m => m.HomeBalanceModule)
+      },
+      {
+        path: 'feedback',
+        loadChildren: () => import('./feedback/feedback.module').then(m => m.HomeFeedbackModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

@@ -7,10 +7,12 @@
       "idea": "Eigene Ideen",
       "idea-pinwall": "Ideen Pinwand",
       "accounting": "Buchhaltung",
-      "about-us": "über uns",
+      "about-us": "Über uns",
+      "contact-us": "Kontakt",
       "idea-funnel": "Ideentrichter",
       "calculate": "Berechne Ideeentrichter",
       "pledge": "Spende",
+      "feedback": "Alle Feedbacks",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entitäten",
@@ -22,6 +24,7 @@
         "ideapinwall": "Ideapinwall",
         "profitBalance": "Profit Balance",
         "balance": "Balance",
+        "feedback": "Feedback",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

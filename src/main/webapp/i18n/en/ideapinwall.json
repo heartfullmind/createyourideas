@@ -2,7 +2,7 @@
   "homeApp": {
     "ideapinwall": {
       "home": {
-        "title": "Ideapinwalls",
+        "title": "Idea-pinwall",
         "createLabel": "Create a new Ideapinwall",
         "createOrEditLabel": "Create or edit a Ideapinwall",
         "notFound": "No Ideapinwalls found"

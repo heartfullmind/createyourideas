@@ -1,8 +1,9 @@
 {
   "pledge": {
-    "title": "Pledge",
+    "title": "Pledge for this project.",
     "form": {
-      "info": "In order to realize this complete project and to realize further ideas we are very dependent on your help. We build this platform completely without advertising and debt financing. For this reason we are really happy for every little help. In any case, we thank you in advance for your support and wish you every success."
+      "info": "In order to realize this complete project and to realize further ideas we are very dependent on your help. We build this platform completely without advertising and debt financing. For this reason, we are really happy for every little help. In any case, we thank you in advance for your support and wish you every success.",
+      "title": "Please help us."
     }
   }
 }
